@@ -10,7 +10,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { Button, MantineProvider } from "@mantine/core";
-import { DrawerExample } from "../components/DrawerExample/DrawerExample";
+
 import '@mantine/core/styles.css';
 
 export const links: Route.LinksFunction = () => [

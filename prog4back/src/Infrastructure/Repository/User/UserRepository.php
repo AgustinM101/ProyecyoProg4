@@ -27,7 +27,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
 
         return $this->toUser($result[0] ?? null);
     }
-    public function findByToken(string $token, string $token_expiration_date): ?User
+    public function findByToken(string $token): ?User
     {
         $query = <<<HEREDOC
                         SELECT 
@@ -36,13 +36,13 @@ final readonly class UserRepository extends PDOManager implements UserRepository
                             users U
                         WHERE
                             U.token = :token
-                            AND U.token_expiration_date > :token_expiration_date
+                            AND :date <= :token_expiration_date
 
                     HEREDOC;
 
         $parameters = [
             "token" => $token,
-            "token_expiration_date" => $token_expiration_date,
+            "date" => date("Y-m-d H:i:s"),
         ];
 
         $result = $this->execute($query, $parameters);

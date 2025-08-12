@@ -2,6 +2,8 @@
 
 namespace Src\Entity\User;
 
+use DateTime;
+
 final class User {
     public function __construct(
         private readonly ?int $id,
@@ -9,7 +11,7 @@ final class User {
         private string $email,
         private string $password,
         private string $token,
-        private date $token_expiration_date,
+        private DateTime $token_expiration_date,
         
 
     ) {
@@ -37,7 +39,7 @@ final class User {
     {
         return $this->token;
     }
-    public function token_expiration_date(): date
+    public function token_expiration_date(): dateTime
     {
         return $this->token_expiration_date;
     }
