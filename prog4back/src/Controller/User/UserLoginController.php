@@ -1,26 +1,25 @@
-<?php 
+<?php
 
-use Src\Service\User\UserFinderService;
+use Src\Utils\ControllerUtils;
+use Src\Service\User\UserLoginService;
 
 final readonly class UserLoginController {
-
-    private UserFinderService $service;
+    private UserLoginService $service;
 
     public function __construct() {
-        $this->service = new UserFinderService();
+        $this->service = new UserLoginService();
     }
 
-    public function start(int $id): void
+    public function start(): void
     {
-        $user = $this->service->find($id);
-        
+        $email = ControllerUtils::getPost("email");
+        $password = ControllerUtils::getPost("password");
+
+        $user = $this->service->login($email, $password);
+
         echo json_encode([
-                "id" => $user->id(),
-                "name" => $user->name(),
-                "email" => $user->email(),
-                "password" => $user->password(),
-                "token" => $user->token(),
-                "token_expiration_date" => $user->token_expiration_date()
+            "token" => $user->token(),
+            "expiration_date" => $user->tokenAuthDate()->format("Y-m-d H:i:s"),
         ]);
     }
 }

@@ -1142,3 +1142,5 @@
 172.18.0.1 - - [04/Jul/2025:22:24:35 +0000] "GET /articles/4 HTTP/1.1" 200 643 "http://localhost:9092/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
 172.18.0.1 - - [04/Jul/2025:22:33:14 +0000] "GET /articles HTTP/1.1" 200 1344 "http://localhost:9092/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
 172.18.0.1 - - [04/Jul/2025:22:33:16 +0000] "GET /articles HTTP/1.1" 200 1343 "http://localhost:9092/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
+172.18.0.1 - - [12/Aug/2025:22:27:11 +0000] "GET / HTTP/1.1" 404 364 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+172.18.0.1 - - [12/Aug/2025:22:27:15 +0000] "GET /favicon.ico HTTP/1.1" 404 364 "http://localhost:9091/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"

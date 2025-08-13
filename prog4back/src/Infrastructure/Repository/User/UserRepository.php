@@ -1,44 +1,37 @@
 <?php 
 
+declare(strict_types = 1);
+
 namespace Src\Infrastructure\Repository\User;
 
+use DateTime;
 use Src\Infrastructure\PDO\PDOManager;
 use Src\Entity\User\User;
 
 final readonly class UserRepository extends PDOManager implements UserRepositoryInterface {
-    public function findByEmailAndPassword(string $email, string $password): ?User
+
+    public function findByEmailAndPassword(string $email, string $password): ?User 
     {
-        $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            users U
-                        WHERE
-                            U.email = :email
-                            AND U.password = :password
-                    HEREDOC;
+        $query = "SELECT * FROM users WHERE email = :email";
 
         $parameters = [
             "email" => $email,
-            "password" => $password,
         ];
 
         $result = $this->execute($query, $parameters);
+        
+        $user = $this->primitiveToUser($result[0] ?? null); 
 
-        return $this->toUser($result[0] ?? null);
+        if (password_verify($password, $user->password())) {
+            return $user;
+        }
+        
+        return null;
     }
-    public function findByToken(string $token): ?User
-    {
-        $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            users U
-                        WHERE
-                            U.token = :token
-                            AND :date <= :token_expiration_date
 
-                    HEREDOC;
+    public function findByToken(string $token): ?User 
+    {
+        $query = "SELECT * FROM users WHERE token = :token AND :date <= token_auth_date";
 
         $parameters = [
             "token" => $token,
@@ -46,33 +39,57 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         ];
 
         $result = $this->execute($query, $parameters);
-
-        return $this->toUser($result[0] ?? null);
+        
+        return $this->primitiveToUser($result[0] ?? null);
     }
 
-    /** @return User[] */
-    
-
-    public function update(User $user): void
+    public function insert(User $user): void
     {
-        $query = <<< UPDATE_QUERY
-                        UPDATE users
-                        SET name = :name, email = :email, password = :password, token = :token, token_expiration_date = :token_expiration_date
-                        WHERE id = :id
-                        UPDATE_QUERY;
-
+        $query = <<<INSERT_QUERY
+                    INSERT INTO
+                        users
+                    (name, email, password, token)
+                        VALUES
+                    (:name, :email, :password, :token)
+                INSERT_QUERY;
+            
         $parameters = [
-            "id" => $user->id(),
             "name" => $user->name(),
             "email" => $user->email(),
             "password" => $user->password(),
-            "token" => $user-> token(),
-            "token_expiration_date" => $user-> tokenExpirationDate(),
+            "token" => "",
         ];
 
         $this->execute($query, $parameters);
-    }   
-    private function toUser(?array $primitive): ?User {
+    }
+
+    public function update(User $user): void
+    {
+        $query = <<<UPDATE_QUERY
+                        UPDATE
+                            users
+                        SET
+                            email = :email,
+                            password = :password,
+                            token = :token,
+                            token_auth_date = :tokenAuthDate
+                        WHERE
+                            id = :id
+                    UPDATE_QUERY;
+
+        $parameters = [
+            "email" => $user->email(),
+            "password" => $user->password(),
+            "token" => $user->token(),
+            "tokenAuthDate" => $user->tokenAuthDate()->format("Y-m-d H:i:s"),
+            "id" => $user->id()
+        ];
+
+        $this->execute($query, $parameters);
+    }
+
+    private function primitiveToUser(?array $primitive): ?User
+    {
         if ($primitive === null) {
             return null;
         }
@@ -83,8 +100,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             $primitive["email"],
             $primitive["password"],
             $primitive["token"],
-            $primitive["token_expiration_date"]
-
+            new DateTime($primitive["token_auth_date"]),
         );
     }
 }
