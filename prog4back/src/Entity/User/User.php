@@ -11,15 +11,11 @@ final class User {
         private string $name,
         private string $email,
         private string $password,
-        private ?string $token,
-        private ?DateTime $tokenAuthDate
+        private string $token,
+        private DateTime $tokenAuthDate
     ) {
     }
 
-    public static function create(string $name, string $email, string $password): self
-    {
-        return new self(null, $name, $email, password_hash($password, PASSWORD_BCRYPT), null, null);
-    }
 
     public function id(): ?int
     {

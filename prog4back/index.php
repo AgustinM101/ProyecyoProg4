@@ -23,7 +23,8 @@ spl_autoload_register(
             "src/Entity",
             "src/Infrastructure",
             "src/Category",
-            "src/Utils"
+            "src/Utils",
+            "src/Middleware"
         ]);
     }
 );
