@@ -1,17 +1,4 @@
-<?php 
 
-final readonly class PlanAlimentoRoutes {
-  public static function getRoutes(): array {
-    return [
-
-
-     [
-        "name" => "PlanAlimento_create",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
-        "method" => "POST"
-      ],
-     
       [
         "name" => "planAlimento_get",
         "url" => "/planAlimentos",
@@ -26,7 +13,20 @@ final readonly class PlanAlimentoRoutes {
       ],
       [
         "name" => "planAlimentos_get",
+        "url" => "/planAlimentos"<?php 
+
+final readonly class PlanAlimentoRoutes {
+  public static function getRoutes(): array {
+    return [
+
+
+     [
+        "name" => "PlanAlimento_create",
         "url" => "/planAlimentos",
+        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
+        "method" => "POST"
+      ],
+     ,
         "controller" => "PlanAlimento/PlanAlimentosGetController.php",
         "method" => "GET"
       ],
