@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload con Fetch</title>
+</head>
+<body>
+  <h2>Subir imagen con Fetch</h2>
+  <input type="file" id="fileInput">
+  <button id="uploadBtn">Subir</button>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById("uploadBtn").addEventListener("click", async () => {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Selecciona un archivo primero");
+        return;
+      }
+
+      // Crear el formData con el archivo
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("http://localhost:9091/files/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      const json = await response.json();
+      console.log(json);
+    });
+  </script>
+</body>
+</html>
