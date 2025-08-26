@@ -44,7 +44,7 @@ services:
     depends_on:
       - mysql
     ports:
-      - "8081:80"
+      - "8082:80"
     networks:
       - programacionIII-chivilcoy.network
     environment:

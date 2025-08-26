@@ -16,13 +16,10 @@ readonly class PDOManager {
 	public function execute(
 		string $query,
 		array $parameters = []
-	): array{
-
-
-
+	): array 
+	{
 		$stmt = $this->client->prepare($query);
 		$stmt->execute($parameters);
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
+	}	
 }
