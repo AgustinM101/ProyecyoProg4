@@ -26,7 +26,7 @@ export function RegisterPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) navigate("/home")
-    }, []);
+    }, [navigate]);
 
     async function onSubmit(formData) {
         const formDataJson = JSON.stringify(formData)
