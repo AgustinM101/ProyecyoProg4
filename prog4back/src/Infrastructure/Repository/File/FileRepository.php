@@ -13,4 +13,3 @@ final readonly class FileRepository extends S3Manager implements FileRepositoryI
     {
         return $this->doUpload($file);
     }
-}
