@@ -7,8 +7,22 @@ function startRouter(): Router
 {
     $routes = [];
 
-    include_once "Routes/DomainRoutes.php";
-    $routes = array_merge($routes, DomainRoutes::getRoutes());
+    
+
+    include_once "Routes/ItemsOrder.php";
+    $routes = array_merge($routes, ItemsOrderRoutes::getRoutes());
+
+    include_once "Routes/OrderList.php";
+    $routes = array_merge($routes, OrderList::getRoutes());
+
+    include_once "Routes/PlanAlimentoRoutes.php";
+    $routes = array_merge($routes, PlanAlimentoRoutes::getRoutes());
+
+    include_once "Routes/PlanEjercicioRoutes.php";
+    $routes = array_merge($routes, PlanEjercicioRoutes::getRoutes());
+
+    include_once "Routes/PlanRoutes.php";
+    $routes = array_merge($routes, PlanRoutes::getRoutes());
 
     include_once "Routes/UserRoutes.php";
     $routes = array_merge($routes, UserRoutes::getRoutes());
