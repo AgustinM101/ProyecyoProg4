@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 final readonly class ItemsOrderRoutes {
   public static function getRoutes(): array {
     return [
       [
         "name" => "itemsOrder_get",
-        "url" => "/itemsOrders",
+        "url" => "/itemsOrders/{id}",
         "controller" => "ItemsOrder/ItemsOrderGetController.php",
         "method" => "GET",
         "parameters" => [
@@ -29,7 +29,7 @@ final readonly class ItemsOrderRoutes {
       ],
       [
         "name" => "itemsOrder_update",
-        "url" => "/itemsOrders",
+        "url" => "/itemsOrders/{id}",
         "controller" => "ItemsOrder/ItemsOrderPutController.php",
         "method" => "PUT",
         "parameters" => [
@@ -38,18 +38,19 @@ final readonly class ItemsOrderRoutes {
             "type" => "int"
           ]
         ]
-          ],
+      ],
+      [
+        "name" => "itemsOrder_delete",
+        "url" => "/itemsOrders/{id}",
+        "controller" => "ItemsOrder/ItemsOrderDeleteController.php",
+        "method" => "DELETE",
+        "parameters" => [
           [
-            "name" => "itemsOrder_delete",
-            "url" => "/itemsOrders",
-            "controller" => "ItemsOrder/ItemsOrderDeleteController.php",
-            "method" => "DELETE",
-            "parameters" => [
-              [
-                "name" => "id",
-                "type" => "int"
-              ]
-            ]
+            "name" => "id",
+            "type" => "int"
           ]
+        ]
+      ]
     ];
   }
+}
