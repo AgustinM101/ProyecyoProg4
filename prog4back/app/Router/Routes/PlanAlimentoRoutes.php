@@ -1,20 +1,20 @@
 <?php 
 
-final readonly class PlanEjercicioRoutes {
+final readonly class PlanAlimentoRoutes {
   public static function getRoutes(): array {
     return [
 
       [
-        "name" => "planEjercicio_create",
-        "url" => "/planEjercicios",
-        "controller" => "PlanEjercicio/PlanEjercicioPostController.php",
+        "name" => "planAlimento_create",
+        "url" => "/planAlimento",
+        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
         "method" => "POST"
       ],
 
       [
-        "name" => "planEjercicio_get",
-        "url" => "/planEjercicios/{id}",
-        "controller" => "PlanEjercicio/PlanEjercicioGetController.php",
+        "name" => "planAlimento_get",
+        "url" => "/planAlimento/{id}",
+        "controller" => "PlanAlimento/PlanAlimentoGetController.php",
         "method" => "GET",
         "parameters" => [
           [
@@ -25,16 +25,16 @@ final readonly class PlanEjercicioRoutes {
       ],
 
       [
-        "name" => "planEjercicios_get",
-        "url" => "/planEjercicios",
-        "controller" => "PlanEjercicio/PlanEjerciciosGetController.php",
+        "name" => "planAlimento_get",
+        "url" => "/planAlimento",
+        "controller" => "PlanAlimento/PlanAlimentoGetController.php",
         "method" => "GET"
       ],
 
       [
-        "name" => "planEjercicio_update",
-        "url" => "/planEjercicios/{id}",
-        "controller" => "PlanEjercicio/PlanEjercicioPutController.php",
+        "name" => "planAlimento_update",
+        "url" => "/planAlimento/{id}",
+        "controller" => "PlanAlimento/PlanAlimentoPutController.php",
         "method" => "PUT",
         "parameters" => [
           [
@@ -45,9 +45,9 @@ final readonly class PlanEjercicioRoutes {
       ],
 
       [
-        "name" => "planEjercicio_delete",
-        "url" => "/planEjercicios/{id}",
-        "controller" => "PlanEjercicio/PlanEjercicioDeleteController.php",
+        "name" => "planAlimento_delete",
+        "url" => "/planAlimento/{id}",
+        "controller" => "PlanAlimento/PlanAlimentoDeleteController.php",
         "method" => "DELETE",
         "parameters" => [
           [
