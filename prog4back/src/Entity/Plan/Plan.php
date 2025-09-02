@@ -1,25 +1,25 @@
 <?php 
 
-namespace Src\Entity\PlanEjercicio;
+namespace Src\Entity\Plan;
 
-final class PlanEjercicio {
+final class Plan {
     public function __construct(
         private readonly ?int $id,
         private string $name,
-        private string $tipo,
-        private string $description
+        private string $description,
+        private int $price
         
 
     ) {
     }
-    public static function create(string $name,string $tipo,string $description ): self
+    public static function create(string $name, string $description,string $price ): self
     {
-        return new self(null,$name,$tipo,$description);
+        return new self(null,$name,$description,$price);
     }
-    public function modify( string $name,$tipo,$description): void {
+    public function modify( string $name,$description,$price): void {
         $this->name = $name;
-        $this->tipo = $tipo;
         $this->description = $description;
+        $this->price = $price;
     }
 
 
@@ -33,13 +33,14 @@ final class PlanEjercicio {
     }
 
    
-    public function tipo(): string
-    {
-        return $this->tipo;
-    }
     public function description(): string
     {
         return $this->description;
+    }
+    
+    public function price(): string
+    {
+        return $this->price;
     }
 
 }
