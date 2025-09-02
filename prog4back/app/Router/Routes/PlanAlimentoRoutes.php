@@ -1,68 +1,62 @@
+<?php 
+
+final readonly class PlanEjercicioRoutes {
+  public static function getRoutes(): array {
+    return [
 
       [
-        "name" => "planAlimento_get",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoGetController.php",
+        "name" => "planEjercicio_create",
+        "url" => "/planEjercicios",
+        "controller" => "PlanEjercicio/PlanEjercicioPostController.php",
+        "method" => "POST"
+      ],
+
+      [
+        "name" => "planEjercicio_get",
+        "url" => "/planEjercicios/{id}",
+        "controller" => "PlanEjercicio/PlanEjercicioGetController.php",
         "method" => "GET",
         "parameters" => [
           [
             "name" => "id",
-            "type" => "int",
+            "type" => "int"
           ]
         ]
       ],
+
       [
-        "name" => "planAlimentos_get",
-        "url" => "/planAlimentos"<?php 
-
-final readonly class PlanAlimentoRoutes {
-  public static function getRoutes(): array {
-    return [
-
-
-     [
-        "name" => "PlanAlimento_create",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
-        "method" => "POST"
-      ],
-     ,
-        "controller" => "PlanAlimento/PlanAlimentosGetController.php",
+        "name" => "planEjercicios_get",
+        "url" => "/planEjercicios",
+        "controller" => "PlanEjercicio/PlanEjerciciosGetController.php",
         "method" => "GET"
       ],
+
       [
-        "name" => "planAlimento_create",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
-        "method" => "POST"
-      ],
-      [
-        "name" => "planAlimento_update",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPutController.php",
+        "name" => "planEjercicio_update",
+        "url" => "/planEjercicios/{id}",
+        "controller" => "PlanEjercicio/PlanEjercicioPutController.php",
         "method" => "PUT",
         "parameters" => [
           [
             "name" => "id",
-            "type" => "int",
-
+            "type" => "int"
           ]
         ]
-          ],
-          [
-            "name" => "planAlimento_delete",
-            "url" => "/planAlimentos",
-            "controller" => "PlanAlimento/PlanAlimentoDeleteController.php",
-            "method" => "DELETE",
-            "parameters" => [
-              [
-                "name" => "id",
-                "type" => "int"
-              ]
-            ]
-          ]
+      ],
 
-          
+      [
+        "name" => "planEjercicio_delete",
+        "url" => "/planEjercicios/{id}",
+        "controller" => "PlanEjercicio/PlanEjercicioDeleteController.php",
+        "method" => "DELETE",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
+      ]
+
     ];
   }
 }
