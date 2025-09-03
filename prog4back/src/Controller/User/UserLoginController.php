@@ -14,11 +14,9 @@ final readonly class UserLoginController {
     {
         $email = ControllerUtils::getPost("email");
         $password = ControllerUtils::getPost("password");
-        $token = ControllerUtils::getPost("token");
-        $tokenExpirationDate = ControllerUtils::getPost("token_expiration_date");
-        $role = ControllerUtils::getPost("role");
 
-        $user = $this->service->login($email, $password, $token, $tokenExpirationDate, $role);
+
+        $user = $this->service->login($email, $password);
 
         echo json_encode([
             "token" => $user->token(),

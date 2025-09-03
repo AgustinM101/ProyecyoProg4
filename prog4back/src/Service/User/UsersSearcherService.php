@@ -5,16 +5,16 @@ namespace Src\Service\User;
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserGeneratorService {
+final readonly class UsersSearcherService {
     private UserRepository $repository;
 
     public function __construct() {
         $this->repository = new UserRepository();
     }
 
-    public function create(string $name, string $email, string $password): void
+    /** @return User[] */
+    public function search(): array
     {
-        $user = User::create($name, $email, $password);
-        $this->repository->insert($user);
+        return $this->repository->search();
     }
 }

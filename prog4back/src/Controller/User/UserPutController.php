@@ -15,13 +15,11 @@ final readonly class UserPutController
         $name = ControllerUtils::getPost("name");
         $email = ControllerUtils::getPost("email");
         $password = ControllerUtils::getPost("password");
-        $token = ControllerUtils::getPost("token");
-        $tokenExpirationDate = ControllerUtils::getPost("token_expiration_date");
-        $role = ControllerUtils::getPost("role");
+
 
     }
 
-    $user = $this->service->update($name, $email, $password, $token, $tokenExpirationDate, $role, $id);
+    $user = $this->service->update($name, $email, $password, $id);
     }
 
 

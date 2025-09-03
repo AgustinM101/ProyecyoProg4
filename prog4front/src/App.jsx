@@ -22,6 +22,7 @@ function App() {
 					{/*Rutas privadas */}
 					<Route element={<PrivateRoute />}>
 						<Route path="/home" element={<HomePage />} />
+						
 					</Route>
 				</Routes>
 			</BrowserRouter>

@@ -15,12 +15,12 @@ final readonly class UserJwtValidatorService{
         $this->repository = new UserRepository();
         $this->finderService = new UserFinderService();
     }
-    public function findByToken(string $token, string $token_expiration_date): void{
+    public function findByToken(string $token, string $token_auth_date): void{
 
     
 
         $user = $this->finderService->find($id);
-        $jwt = md5(rand(1000, 9999))!;
+        $jwt = md5(rand(1000, 9999));
         $user->modify($jwt, date("Y-m-d H:i:s", strtotime("+1 hour")));
         
 

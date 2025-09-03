@@ -43,6 +43,7 @@ export function RegisterPage() {
 
 			const formDataJson = JSON.stringify(formData);
 			const response = await authService.register(formDataJson);
+			console.log(response);
 			
 			if (response.status == 200) navigate("/login");
 			else throw new Error("Ocurrió un error inesperado");
