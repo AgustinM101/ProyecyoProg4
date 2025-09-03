@@ -1,0 +1,116 @@
+<?php 
+
+namespace Src\Infrastructure\Repository\Plan;
+
+use Src\Infrastructure\PDO\PDOManager;
+use Src\Entity\Plan\Plan;
+
+final readonly class PlanRepository extends PDOManager implements PlanRepositoryInterface {
+    public function find(int $id): ?Plan
+    {
+        $query = <<<HEREDOC
+                        SELECT 
+                            *
+                        FROM
+                            plan A
+                        WHERE
+                            A.id = :id
+                    HEREDOC;
+
+        $parameters = [
+            "id" => $id,
+        ];
+
+        $result = $this->execute($query, $parameters);
+
+        return $this->toPlan($result[0] ?? null);
+    }
+
+    /** @return Plan[] */
+    public function search(): array
+    {
+        $query = <<<HEREDOC
+                        SELECT
+                            *
+                        FROM
+                            plan A
+                    HEREDOC;
+        
+        $results = $this->execute($query);
+
+        $plans = [];
+        foreach($results as $result) {
+            $plans[] = $this->toPlan($result);
+        }
+
+        return $plans;
+    }
+    public function create(Plan $plan): void{
+
+
+
+        $query = <<< INSERT_QUERY
+                        INSERT INTO plan (name, description, price, deleted)
+                        VALUES (:name, :description, :price, :deleted)
+                        INSERT_QUERY;
+        
+        $parameters = [
+            "name" => $plan->name(),
+            "description" => $plan->description(),
+            "price" => $plan->price(),
+            "deleted" => $plan->deleted(),
+        ];
+
+        $this->execute($query, $parameters);
+    }
+    public function update(Plan $plan): void
+    {
+        $query = <<< UPDATE_QUERY
+                        UPDATE plan
+                        SET name = :name, description = :description, price = :price, deleted = :deleted
+                        WHERE id = :id
+                    UPDATE_QUERY;
+
+        $parameters = [
+            "id" => $plan->id(),
+            "name" => $plan->name(),
+            "description" => $plan->description(),
+            "price" => $plan->price(),
+            "deleted" => $plan->deleted(),
+        ];
+    
+
+        $this->execute($query, $parameters);
+    }
+    public function update(Plan $plan): void
+    {
+        $query = <<< UPDATE_QUERY
+                        UPDATE plan
+                        SET name = :name, description = :description, price = :price, deleted = :deleted
+                        WHERE id = :id
+                        UPDATE_QUERY;
+
+        $parameters = [
+            "id" => $plan->id(),
+            "name" => $plan->name(),
+            "description" => $plan->description(),
+            "price" => $plan->price(),
+            "deleted" => $plan->deleted(),
+        ];
+
+        $this->execute($query, $parameters);
+    }
+    private function toPlan(?array $primitive): ?Plan {
+        if ($primitive === null) {
+            return null;
+        }
+
+        return new Plan(
+            $primitive["id"],
+            $primitive["name"],
+            $primitive["description"],
+            $primitive["price"],
+            $primitive["deleted"],
+        );
+    }
+}
