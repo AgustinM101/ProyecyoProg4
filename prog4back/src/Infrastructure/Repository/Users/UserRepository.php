@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Src\Infrastructure\Repository\User;
+namespace Src\Infrastructure\Repository\Users;
 
 use DateTime;
 use Src\Infrastructure\PDO\PDOManager;
-use Src\Entity\User\User;
+use Src\Entity\Users\Users;
 
 final readonly class UserRepository extends PDOManager implements UserRepositoryInterface {
 
-    public function findByEmail(string $email): ?User 
+    public function findByEmail(string $email): ?Users 
     {
         $query = "SELECT * FROM users WHERE email = :email";
 
@@ -22,29 +22,29 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         
         $user = $this->primitiveToUser($result[0] ?? null); 
 
-        if (empty($user)) {
+        if (empty($users)) {
             return null;
         }
 
         return $user;
     }
 
-    public function findByEmailAndPassword(string $email, string $password): ?User 
+    public function findByEmailAndPassword(string $email, string $password): ?Users
     {
-        $user = $this->findByEmail($email);
+        $users = $this->findByEmail($email);
 
-        if (empty($user)) {
+        if (empty($users)) {
             return null;
         }
 
-        if (password_verify($password, $user->password())) {
-            return $user;
+        if (password_verify($password, $users->password())) {
+            return $users;
         }
         
         return null;
     }
 
-    public function findByToken(string $token): ?User 
+    public function findByToken(string $token): ?Users
     {
         $query = "SELECT * FROM users WHERE token = :token AND :date <= token_auth_date";
 
@@ -58,7 +58,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         return $this->primitiveToUser($result[0] ?? null);
     }
 
-    public function insert(User $user): void
+    public function insert(Users $users): void
     {
         $query = <<<INSERT_QUERY
                     INSERT INTO
@@ -69,16 +69,16 @@ final readonly class UserRepository extends PDOManager implements UserRepository
                 INSERT_QUERY;
             
         $parameters = [
-            "name" => $user->name(),
-            "email" => $user->email(),
-            "password" => $user->password(),
+            "name" => $users->name(),
+            "email" => $users->email(),
+            "password" => $users->password(),
             "token" => "",
         ];
 
         $this->execute($query, $parameters);
     }
 
-    public function update(User $user): void
+    public function update(Users $users): void
     {
         $query = <<<UPDATE_QUERY
                         UPDATE
@@ -93,23 +93,23 @@ final readonly class UserRepository extends PDOManager implements UserRepository
                     UPDATE_QUERY;
 
         $parameters = [
-            "email" => $user->email(),
-            "password" => $user->password(),
-            "token" => $user->token(),
-            "tokenAuthDate" => $user->tokenAuthDate()->format("Y-m-d H:i:s"),
-            "id" => $user->id()
+            "email" => $users->email(),
+            "password" => $users->password(),
+            "token" => $users->token(),
+            "tokenAuthDate" => $users->tokenAuthDate()->format("Y-m-d H:i:s"),
+            "id" => $users->id()
         ];
 
         $this->execute($query, $parameters);
     }
 
-    private function primitiveToUser(?array $primitive): ?User
+    private function primitiveToUser(?array $primitive): ?Users
     {
         if ($primitive === null) {
             return null;
         }
 
-        return new User(
+        return new Users(
             $primitive["id"],
             $primitive["name"],
             $primitive["email"],
