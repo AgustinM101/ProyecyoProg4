@@ -1,0 +1,26 @@
+<?php
+
+namespace Src\Service\Plan;
+
+use Src\Entity\Plan\Plan;
+use Src\Infrastructure\Repository\Plan\PlanRepository;
+
+final readonly class PlanUpdaterService{
+
+    private PlanRepository $repository;
+
+    private PlanFinderService $finderService;
+
+    public function __construct() {
+        $this->repository = new PlanRepository();
+        $this->finderService = new PlanFinderService();
+    }
+    public function update(string $name, string $description, int $price): void{
+
+        $plan = $this->finderService->find($id);
+        $plan->modify($name, $description, $price);
+
+        $this->repository->update($plan);
+    }
+    
+}
