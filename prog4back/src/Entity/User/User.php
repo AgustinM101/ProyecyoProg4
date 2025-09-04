@@ -12,13 +12,14 @@ final class User {
         private string $email,
         private string $password,
         private ?string $token,
-        private ?DateTime $tokenAuthDate
+        private ?DateTime $tokenAuthDate,
+        private ?string $role = 'user'
     ) {
     }
 
-    public static function create(string $name, string $email, string $password): self
+    public static function create(string $name, string $email, string $password, ?string $role = 'user'): self
     {
-        return new self(null, $name, $email, password_hash($password, PASSWORD_BCRYPT), null, null);
+        return new self(null, $name, $email, password_hash($password, PASSWORD_BCRYPT), null, null, $role);
     }
 
     public function id(): ?int
@@ -49,6 +50,11 @@ final class User {
     public function tokenAuthDate(): ?DateTime
     {
         return $this->tokenAuthDate;
+    }
+
+    public function role(): ?string
+    {
+        return $this->role;
     }
 
     public function generateToken(): void

@@ -14,6 +14,12 @@ final readonly class UserRoutes {
         "url"=>"/users",
         "controller"=>"User/UserPostController.php",
         "method"=>"POST"
+      ],
+      [
+        "name" => "users_get",
+        "url" => "/users",
+        "controller" => "User/UsersGetController.php",
+        "method" => "GET"
       ]
     ];
   }

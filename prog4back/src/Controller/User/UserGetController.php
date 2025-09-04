@@ -20,7 +20,7 @@ final readonly class UserGetController {
             "email" => $user->email(),
             "password" => $user->password(),
             "token" => $user->token(),
-            "token_expiration_date" => $user->token_Expiration_date(),
+            "token_auth_date" => $user->tokenAuthDate(),
             "role" => $user->role(),
         ]);
     }

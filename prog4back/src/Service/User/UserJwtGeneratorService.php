@@ -15,10 +15,10 @@ final readonly class UserUpdaterService{
         $this->repository = new UserRepository();
         $this->finderService = new UserFinderService();
     }
-    public function update(string $name, string $email, string $password, string $token, string $token_expiration_date, int $id): void{
+    public function update(string $name, string $email, string $password, string $token, string $token_auth_date, int $id): void{
 
         $user = $this->finderService->find($id);
-        $jwt = md5(rand(1000, 9999))!;
+        $jwt = md5(rand(1000, 9999));
         $user->modify($jwt);
         
 
