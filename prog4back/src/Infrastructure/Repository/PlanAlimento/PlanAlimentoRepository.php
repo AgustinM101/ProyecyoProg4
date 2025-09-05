@@ -50,15 +50,15 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO plan_alimento (name, description, tipo, deleted)
-                        VALUES (:name, :description, :tipo, :deleted)
+                        INSERT INTO plan_alimento (name, description, tipo)
+                        VALUES (:name, :description, :tipo)
                         INSERT_QUERY;
         
         $parameters = [
             "name" => $planAlimento->name(),
             "description" => $planAlimento->description(),
             "tipo" => $planAlimento->tipo(),
-            "deleted" => $planAlimento->deleted(),
+            
         ];
     
 
@@ -68,7 +68,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
     {
         $query = <<< UPDATE_QUERY
                         UPDATE plan_alimento
-                        SET name = :name, description = :description, tipo = :tipo, deleted = :deleted
+                        SET name = :name, description = :description, tipo = :tipo
                         WHERE id = :id
                         UPDATE_QUERY;
 
@@ -77,7 +77,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
             "name" => $planAlimento->name(),
             "description" => $planAlimento->description(),
             "tipo" => $planAlimento->tipo(),
-            "deleted" => $planAlimento->deleted(),
+            
         ];
 
         $this->execute($query, $parameters);
@@ -92,7 +92,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
             $primitive["name"],
             $primitive["description"],
             $primitive["tipo"],
-            $primitive["deleted"],
+            
         );
     }
 }

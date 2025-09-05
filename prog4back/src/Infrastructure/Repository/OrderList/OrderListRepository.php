@@ -10,9 +10,9 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
     {
         $query = <<<HEREDOC
                         SELECT 
-                            *
+                            id,id_user, date, total, status
                         FROM
-                            OrderList A
+                            order_lists A
                         WHERE
                             A.id = :id
                     HEREDOC;
@@ -31,9 +31,9 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
     {
         $query = <<<HEREDOC
                         SELECT
-                            *
+                            id,id_user, date, total, status
                         FROM
-                            OrderList A
+                            order_lists A
                     HEREDOC;
         
         $results = $this->execute($query);
@@ -50,15 +50,16 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO OrderList (date, total, status, deleted)
-                        VALUES (:date, :total, :status, :deleted)
+                        INSERT INTO order_lists (id_user, date, total, status )
+                        VALUES (:id_user, :date, :total, :status)
                         INSERT_QUERY;
         
         $parameters = [
-            "date" => $OrderList->date(),
+            "id_user" => $OrderList->id_user(),
+            "date" => $OrderList->date()->format('Y-m-d'),
             "total" => $OrderList->total(),
-            "status" => $OrderList->status(),
-            "deleted" => $OrderList->deleted()
+            "status" => $OrderList->status()
+            
         ];
 
         $this->execute($query, $parameters);
@@ -67,17 +68,18 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
     public function update(OrderList $OrderList): void
     {
         $query = <<< UPDATE_QUERY
-                        UPDATE OrderList
-                        SET date = :date, total = :total, status = :status, deleted = :deleted
+                        UPDATE order_lists
+                        SET id_user:id_user, date = :date, total = :total, status = :status
                         WHERE id = :id
                         UPDATE_QUERY;
 
         $parameters = [
             "id" => $OrderList->id(),
-            "date" => $OrderList->date(),
+            "id_user" => $OrderList->id_user(),
+            "date" => $OrderList->date()->format('Y-m-d'),
             "total" => $OrderList->total(),
             "status" => $OrderList->status(),
-            "deleted" => $OrderList->deleted(),
+            
         ];
 
         $this->execute($query, $parameters);
@@ -89,10 +91,10 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
 
         return new OrderList(
             $primitive["id"],
-            $primitive["date"],
+            (int)$primitive["id_user"],
+            new \DateTime($primitive["date"]),
             $primitive["total"],
-            $primitive["status"],
-            $primitive["deleted"]
+            $primitive["status"]
         );
     }
 }

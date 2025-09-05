@@ -23,7 +23,7 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
 
         $result = $this->execute($query, $parameters);
 
-        return $this->toArticle($result[0] ?? null);
+        return $this->toItemsOrder($result[0] ?? null);
     }
 
     /** @return ItemsOrder[] */
@@ -40,7 +40,7 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
 
         $ItemsOrders = [];
         foreach($results as $result) {
-            $ItemsOrders[] = $this->toArticle($result);
+            $ItemsOrders[] = $this->toItemsOrder($result);
         }
 
         return $ItemsOrders;
@@ -50,14 +50,14 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO ItemsOrder (quantity, unitPrice, deleted)
-                        VALUES (:quantity, :unitPrice, :deleted)
+                        INSERT INTO ItemsOrder (quantity, unitPrice)
+                        VALUES (:quantity, :unitPrice)
                         INSERT_QUERY;
         
         $parameters = [
             "quantity" => $ItemsOrder->quantity(),
-            "unitPrice" => $ItemsOrder->unitPrice(),
-            "deleted" => $ItemsOrder->deleted()
+            "unitPrice" => $ItemsOrder->unitPrice()
+            
            
             
         ];
@@ -69,15 +69,15 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
     {
         $query = <<<UPDATE_QUERY
                         UPDATE ItemsOrder
-                        SET quantity = :quantity, unitPrice = :unitPrice, deleted = :deleted
+                        SET quantity = :quantity, unitPrice = :unitPrice
                         WHERE id = :id
                     UPDATE_QUERY;
 
         $parameters = [
             "id" => $ItemsOrder->id(),
             "quantity" => $ItemsOrder->quantity(),
-            "unitPrice" => $ItemsOrder->unitPrice(),
-            "deleted" => $ItemsOrder->deleted()
+            "unitPrice" => $ItemsOrder->unitPrice()
+            
         ];
 
         $this->execute($query, $parameters);
@@ -91,8 +91,8 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
         return new ItemsOrder(
             $primitive["id"],
             $primitive["quantity"],
-            $primitive["unitPrice"],
-            $primitive["deleted"]
+            $primitive["unitPrice"]
+        
         );
     }
 
@@ -104,8 +104,8 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
         return new ItemsOrder(
             $primitive["id"],
             $primitive["quantity"],
-            $primitive["unitPrice"],
-            $primitive["deleted"]
+            $primitive["unitPrice"]
+            
         );
     }
 }

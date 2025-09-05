@@ -50,17 +50,15 @@ final readonly class PlanEjercicioRepository extends PDOManager implements PlanE
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO plan_ejercicio (name, duration_valor, duration_unidad, tipo, description, deleted)
-                        VALUES (:name, :duration_valor, :duration_unidad, :tipo, :description, :deleted)
+                        INSERT INTO plan_ejercicio (name, tipo, description)
+                        VALUES (:name,:tipo, :description)
                         INSERT_QUERY;
         
         $parameters = [
             "name" => $planEjercicio->name(),
-            "duration_valor" => $planEjercicio->durationValor(),
-            "duration_unidad" => $planEjercicio->durationUnidad(),
             "tipo" => $planEjercicio->tipo(),
             "description" => $planEjercicio->description(),
-            "deleted" => $planEjercicio->deleted(),
+            
         ];
     
 
@@ -70,18 +68,16 @@ final readonly class PlanEjercicioRepository extends PDOManager implements PlanE
     {
         $query = <<< UPDATE_QUERY
                         UPDATE plan_ejercicio
-                        SET name = :name, duration_valor = :duration_valor, duration_unidad = :duration_unidad, tipo = :tipo, description = :description, deleted = :deleted
+                        SET name = :name, tipo = :tipo, description = :description
                         WHERE id = :id
                         UPDATE_QUERY;
 
         $parameters = [
             "id" => $planEjercicio->id(),
             "name" => $planEjercicio->name(),
-            "duration_valor" => $planEjercicio->durationValor(),
-            "duration_unidad" => $planEjercicio->durationUnidad(),
             "tipo" => $planEjercicio->tipo(),
             "description" => $planEjercicio->description(),
-            "deleted" => $planEjercicio->deleted(),
+            
         ];
 
         $this->execute($query, $parameters);
@@ -94,11 +90,9 @@ final readonly class PlanEjercicioRepository extends PDOManager implements PlanE
         return new PlanEjercicio(
             $primitive["id"],
             $primitive["name"],
-            $primitive["duration_valor"],
-            $primitive["duration_unidad"],
             $primitive["tipo"],
             $primitive["description"],
-            $primitive["deleted"],
+            
         );
     }
 }
