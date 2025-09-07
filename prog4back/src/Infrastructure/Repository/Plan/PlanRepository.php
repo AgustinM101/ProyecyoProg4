@@ -50,15 +50,15 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO plan (name, description, price, deleted)
-                        VALUES (:name, :description, :price, :deleted)
+                        INSERT INTO plan (name, description, price)
+                        VALUES (:name, :description, :price)
                         INSERT_QUERY;
         
         $parameters = [
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
-            "deleted" => $plan->deleted(),
+            
         ];
 
         $this->execute($query, $parameters);
@@ -67,7 +67,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
     {
         $query = <<< UPDATE_QUERY
                         UPDATE plan
-                        SET name = :name, description = :description, price = :price, deleted = :deleted
+                        SET name = :name, description = :description, price = :price
                         WHERE id = :id
                     UPDATE_QUERY;
 
@@ -76,7 +76,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
-            "deleted" => $plan->deleted(),
+            
         ];
     
 
@@ -86,7 +86,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
     {
         $query = <<< UPDATE_QUERY
                         UPDATE plan
-                        SET name = :name, description = :description, price = :price, deleted = :deleted
+                        SET name = :name, description = :description, price = :price
                         WHERE id = :id
                         UPDATE_QUERY;
 
@@ -95,7 +95,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
-            "deleted" => $plan->deleted(),
+         
         ];
 
         $this->execute($query, $parameters);
@@ -110,7 +110,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             $primitive["name"],
             $primitive["description"],
             $primitive["price"],
-            $primitive["deleted"],
+           
         );
     }
 }

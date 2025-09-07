@@ -6,18 +6,18 @@ final class OrderList {
     public function __construct(
         private readonly ?int $id,
         private int $id_user,
-        private date $date,
+        private \Datetime $date,
         private int $total,
         private string $status
         
 
     ) {
     }
-    public static function create(int $id_user, date $date,int $total,string $status ): self
+    public static function create(int $id_user, \DateTime $date,int $total,string $status ): self
     {
         return new self(null,$id_user,$date,$total,$status);
     }
-    public function modify( int $id_user,$date,$total,$status): void {
+    public function modify( int $id_user,  \DateTime $date,int $total,string $status): void {
         $this->id_user = $id_user;
         $this->date = $date;
         $this->total = $total;
@@ -33,7 +33,7 @@ final class OrderList {
     {
         return $this->id_user;
     }
-    public function date(): date
+    public function date(): \DateTime
     {
         return $this->date;
     }
