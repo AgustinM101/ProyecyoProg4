@@ -5,7 +5,7 @@ final readonly class OrderListRoutes {
     return [
       [
         "name" => "orderList_get",
-        "url" => "/order-lists/{id}",
+        "url" => "/order-lists",
         "controller" => "OrderList/OrderListGetController.php",
         "method" => "GET",
         "parameters" => [
@@ -29,7 +29,7 @@ final readonly class OrderListRoutes {
       ],
       [
         "name" => "orderList_update",
-        "url" => "/order-lists/{id}",
+        "url" => "/order-lists",
         "controller" => "OrderList/OrderListPutController.php",
         "method" => "PUT",
         "parameters" => [
@@ -41,7 +41,7 @@ final readonly class OrderListRoutes {
       ],
       [
         "name" => "orderList_delete",
-        "url" => "/order-lists/{id}",
+        "url" => "/order-lists",
         "controller" => "OrderList/OrderListDeleteController.php",
         "method" => "DELETE",
         "parameters" => [

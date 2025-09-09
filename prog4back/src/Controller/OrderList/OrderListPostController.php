@@ -13,7 +13,7 @@ final readonly class OrderListPostController
 
     public function start(): void {
         $id_user = ControllerUtils::getPost("id_user");
-        $date = ControllerUtils::getPost("date");
+        $date = new \DateTime(ControllerUtils::getPost("date"));
         $total = ControllerUtils::getPost("total");
         $status = ControllerUtils::getPost("status");
 
