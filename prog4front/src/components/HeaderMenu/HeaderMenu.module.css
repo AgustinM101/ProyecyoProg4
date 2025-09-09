@@ -1,0 +1,39 @@
+.header {
+  height: 80px;
+  background-color: #000; 
+  border-bottom: 1px solid #222; 
+}
+
+.inner {
+  height: 74px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  display: block;
+  line-height: 1;
+  padding: 8px 24px;
+  border-radius: var(--mantine-radius-sm);
+  text-decoration: none;
+  color: #fff; 
+  font-size: 16px;
+  font-weight: 600; 
+  letter-spacing: 1px; 
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: #ffcc00; 
+  background-color: transparent; 
+}
+
+.linkLabel {
+  margin-right: 5px;
+}
+
+.logoInfinitsports {
+  height: 60px;
+  border-radius: 50%; 
+}

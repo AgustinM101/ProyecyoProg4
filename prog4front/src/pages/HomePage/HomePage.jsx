@@ -1,6 +1,7 @@
 import { Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { domainService } from "../../services/domainService";
+import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 
 export function HomePage() {
 	const [domain, setDomain] = useState(undefined);
@@ -14,5 +15,11 @@ export function HomePage() {
 		getDomain();
 	}, []);
 
-	return <Text>{domain ? domain.code : "Cargando..."} </Text>;
+	return <>
+		<HeaderMenu />
+
+		
+		
+		
+		 </>;
 }
