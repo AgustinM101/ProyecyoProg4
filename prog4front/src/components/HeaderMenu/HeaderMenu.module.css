@@ -1,11 +1,11 @@
 .header {
-  height: 56px;
+  height: 80px;
   background-color: #000; 
   border-bottom: 1px solid #222; 
 }
 
 .inner {
-  height: 56px;
+  height: 74px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,7 +14,7 @@
 .link {
   display: block;
   line-height: 1;
-  padding: 8px 16px;
+  padding: 8px 24px;
   border-radius: var(--mantine-radius-sm);
   text-decoration: none;
   color: #fff; 
@@ -34,6 +34,6 @@
 }
 
 .logoInfinitsports {
-  height: 40px;
+  height: 60px;
   border-radius: 50%; 
 }
