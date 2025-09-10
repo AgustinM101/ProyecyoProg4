@@ -10,6 +10,28 @@ use Src\Entity\User\User;
 
 final readonly class UserRepository extends PDOManager implements UserRepositoryInterface {
 
+    public function find(int $id): ?User
+    {
+        $query = <<<HEREDOC
+                        SELECT 
+                            *
+                        FROM
+                            users A
+                        WHERE
+                            A.id = :id
+                    HEREDOC;
+
+        $parameters = [
+            "id" => $id,
+        ];
+
+        $result = $this->execute($query, $parameters);
+
+        return $this->primitiveToUser($result[0] ?? null);
+    }
+
+
+
     public function findByEmail(string $email): ?User 
     {
         $query = "SELECT * FROM users WHERE email = :email";
@@ -121,6 +143,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
 
         return $users;
     }
+
 
     private function primitiveToUser(?array $primitive): ?User
     {
