@@ -20,6 +20,18 @@ final readonly class UserRoutes {
         "url" => "/users",
         "controller" => "User/UsersGetController.php",
         "method" => "GET"
+      ],
+      [
+        "name" => "user_get",
+        "url" => "/user",
+        "controller" => "User/UserGetController.php",
+        "method" => "GET",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
       ]
     ];
   }

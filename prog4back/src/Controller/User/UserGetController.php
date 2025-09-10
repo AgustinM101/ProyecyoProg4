@@ -18,9 +18,6 @@ final readonly class UserGetController {
             "id" => $user->id(),
             "name" => $user->name(),
             "email" => $user->email(),
-            "password" => $user->password(),
-            "token" => $user->token(),
-            "token_auth_date" => $user->tokenAuthDate(),
             "role" => $user->role(),
         ]);
     }

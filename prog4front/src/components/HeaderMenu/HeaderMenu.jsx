@@ -1,30 +1,33 @@
 import { IconChevronDown } from '@tabler/icons-react';
-import { Burger, Center, Container, Group, Menu } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Center, Container, Group, Menu } from '@mantine/core';
 
+import { UserMenu } from './UserMenu';
 import classes from './HeaderMenu.module.css';
+import { menuConfig } from '../../services/menuConfig';
+import { useEffect, useState } from 'react';
+import { getCurrentUser } from '../../services/userService';
 
-const links = [
-  { link: '/inicio', label: 'Inicio' },
-  {
-    link: '#planes',
-    label: 'Planes',
-    links: [
-      { link: '/planes/basico', label: 'Básico' },
-      { link: '/planes/intermedio', label: 'Intermedio' },
-      { link: '/planes/avanzado', label: 'Avanzado' },
-    ],
-  },
-  { link: '/faq', label: 'FAQ' },
-];
 
 export function HeaderMenu() {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [nombre, setNombre] = useState(undefined);
 
-  const items = links.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    ));
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const user = await getCurrentUser();
+        setNombre(user.nombre); 
+      } catch (error) {
+        console.error("Error al traer usuario:", error);
+      }
+    }
+    fetchUser();
+  }, []);
+
+
+  const items = menuConfig.map((link) => {
+  const menuItems = link.links?.map((item) => (
+    <Menu.Item key={item.link}>{item.label}</Menu.Item>
+  ));
 
     if (menuItems) {
       return (
@@ -65,17 +68,23 @@ export function HeaderMenu() {
 
   return (
     <header className={classes.header}>
-      <Container size="md">
+      <Container size="max-width">
         <div className={classes.inner}>
-          <img
-            className={classes.logoInfinitsports}
-            src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757358478/logo_infit_sport_jzpzya.jpg"
-            alt="logo infinit sports"
-          />
-          <Group gap={5} visibleFrom="sm">
-            {items}
-          </Group>
-          <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
+          <a href="/">
+            <img
+              className={classes.logoInfinitsports}
+              src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757462534/logo_nuevo_infinit_sports_nsmg9n.png"
+              alt="logo infinit sports"
+            />
+          </a>
+          <div className={classes.linksGroup}>
+            <Group gap={5} visibleFrom="sm">
+              {items}
+            </Group>
+          </div>
+          <div className={classes.userGroup}>
+            <UserMenu nombre={nombre}/>
+          </div>
         </div>
       </Container>
     </header>
