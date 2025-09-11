@@ -3,17 +3,9 @@
 final readonly class PlanRoutes {
   public static function getRoutes(): array {
     return [
-
-      [
-        "name" => "plan_create",
-        "url" => "/plans",
-        "controller" => "Plan/PlanPostController.php",
-        "method" => "POST"
-      ],
-     
       [
         "name" => "plan_get",
-        "url" => "/plans/{id}",
+        "url" => "/plans",
         "controller" => "Plan/PlanGetController.php",
         "method" => "GET",
         "parameters" => [
@@ -23,17 +15,21 @@ final readonly class PlanRoutes {
           ]
         ]
       ],
-
       [
         "name" => "plans_get",
         "url" => "/plans",
         "controller" => "Plan/PlansGetController.php",
         "method" => "GET"
       ],
-
+      [
+        "name" => "plan_create",
+        "url" => "/plans",
+        "controller" => "Plan/PlanPostController.php",
+        "method" => "POST"
+      ],
       [
         "name" => "plan_update",
-        "url" => "/plans/{id}",
+        "url" => "/plans",
         "controller" => "Plan/PlanPutController.php",
         "method" => "PUT",
         "parameters" => [
@@ -43,10 +39,9 @@ final readonly class PlanRoutes {
           ]
         ]
       ],
-
       [
         "name" => "plan_delete",
-        "url" => "/plans/{id}",
+        "url" => "/plans",
         "controller" => "Plan/PlanDeleteController.php",
         "method" => "DELETE",
         "parameters" => [
@@ -56,7 +51,6 @@ final readonly class PlanRoutes {
           ]
         ]
       ]
-
     ];
   }
 }

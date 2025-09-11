@@ -16,11 +16,7 @@ final readonly class PlanPostController
         $description = ControllerUtils::getPost("description");
         $price = ControllerUtils::getPost("price");
 
-
         $plan = $this->service->create($name, $description, $price);
-
     }
-
-
 }
 

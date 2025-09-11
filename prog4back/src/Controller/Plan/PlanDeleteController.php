@@ -15,6 +15,8 @@ final readonly class PlanDeleteController
 
     }
 
-        $this->service->delete($id);
+        $this->service->delete( $id);
     }
+
+
 
