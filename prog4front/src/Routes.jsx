@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router";
 // El usuario no debe tener un token
 export function PublicRoute() {
 	const token = localStorage.getItem("token");
-	if (token) return <Navigate to="/home" replace />;
+	if (token) return <Navigate to="/" replace />;
 	return <Outlet />; // Muestra el contenido de la ruta
 }
 

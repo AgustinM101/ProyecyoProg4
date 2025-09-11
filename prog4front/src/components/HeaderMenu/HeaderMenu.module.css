@@ -25,6 +25,11 @@
   margin-left: auto;
 }
 
+.menuLink {
+  text-decoration: none;
+  color: inherit;
+}
+
 .link {
   display: block;
   line-height: 1;
