@@ -13,15 +13,18 @@ function App() {
 		<MantineProvider defaultColorScheme="dark">
 			<BrowserRouter>
 				<Routes>
+					<Route path="/" element={<HomePage />} />
+					
 					{/*Rutas públicas*/}
 					<Route element={<PublicRoute />}>
+						
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/register" element={<RegisterPage />} />
 					</Route>
 
 					{/*Rutas privadas */}
 					<Route element={<PrivateRoute />}>
-						<Route path="/home" element={<HomePage />} />
+						
 						
 					</Route>
 				</Routes>

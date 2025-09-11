@@ -1,16 +1,26 @@
 <?php
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
-// Validacion para externos
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+// Estas cabeceras son necesarias para el funcionamiento de todos los endpoints
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: *');
+header('Access-Control-Allow-Headers: *');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
+// Si el metodo es OPTIONS (El cliente envia un OPTIONS antes de mandar el metodo real para verificar si el SV funciona)
+// Solo manda OPTIONS si el cliente quiere mandar un GET, POST, PUT, DELETE, PATCH, OPTIONS
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    
+    // Si el cliente pide el allow methods, devolvemos los allow methods
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        // may also be using PUT, PATCH, HEAD etc
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
+    
+    // Si el cliente pide las cabeceras, devolvemos las cabeceras
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+    exit(0);
 }
-
 // Cargamos configuración de composer
 require_once dirname(__DIR__).'/html/vendor/autoload.php';
 // Inicializamos el routeador

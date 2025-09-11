@@ -1,40 +1,26 @@
-import { useState, useEffect } from "react";
-import { Menu, Avatar, Group, Text, UnstyledButton } from "@mantine/core";
-import { IconChevronDown, IconLogout } from "@tabler/icons-react";
+import { useState } from "react";
+import { Menu, Avatar, Group, Text, UnstyledButton, Skeleton } from "@mantine/core";
+import { IconChevronDown, IconLogout, IconUser } from "@tabler/icons-react";
 import cx from "clsx";
 import classes from "./HeaderMenu.module.css";
-import { getCurrentUser } from "../../services/userService"; 
+import { Link, useNavigate } from "react-router";
 
-export function UserMenu() {
-  const [user, setUser] = useState(null);
+export function UserMenu({user}) {
+  const navigate = useNavigate()
   const [menuOpened, setMenuOpened] = useState(false);
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const data = await getCurrentUser(); 
-        setUser({
-          name: data.nombre, 
-          image: "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png", 
-        });
-      } catch (error) {
-        console.error("Error al traer usuario:", error);
-      }
-    }
-
-    fetchUser();
-  }, []);
-
-  if (!user) return null; 
+  if (!user){
+    return <Skeleton height={30} width={100} radius="xl" />;
+  }
 
   return (
-    <Menu
+      <Menu
       width={200}
       position="bottom-end"
       onOpen={() => setMenuOpened(true)}
       onClose={() => setMenuOpened(false)}
       withinPortal
-    >
+      >
       <Menu.Target>
         <UnstyledButton
           className={cx(classes.user, { [classes.userActive]: menuOpened })}
@@ -50,8 +36,17 @@ export function UserMenu() {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item leftSection={<IconLogout size={16} />}>Cerrar sesión</Menu.Item>
+        
+        <Link to={`/user/${user.id}`} className={classes.menuLink}>
+          <Menu.Item leftSection={<IconUser size={16} />} >Mi perfil</Menu.Item>
+        </Link>
+        <Menu.Item leftSection={<IconLogout size={16} />} onClick={() => {
+          localStorage.removeItem("token");
+          // llamaar a la api /logout para invalidar el token en el backend
+          navigate("/login")
+        }} >Cerrar sesión</Menu.Item>
       </Menu.Dropdown>
-    </Menu>
+      </Menu>
   );
+
 }

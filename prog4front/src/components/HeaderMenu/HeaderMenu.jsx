@@ -1,27 +1,32 @@
 import { IconChevronDown } from '@tabler/icons-react';
-import { Center, Container, Group, Menu } from '@mantine/core';
+import { Button, Center, Container, Group, Menu } from '@mantine/core';
 
 import { UserMenu } from './UserMenu';
 import classes from './HeaderMenu.module.css';
 import { menuConfig } from '../../services/menuConfig';
 import { useEffect, useState } from 'react';
-import { getCurrentUser } from '../../services/userService';
+import { userService } from '../../services/userService';
 
 
 export function HeaderMenu() {
-  const [nombre, setNombre] = useState(undefined);
+  const isLoggedIn = localStorage.getItem("token") != undefined;
+  const [user, setUser] = useState(null);
+
+  async function fetchUser() {
+    try {
+      const user = await userService.getCurrentUser();
+      setUser({
+        ...user.data,
+        image: "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png", 
+      });
+    } catch (error) {
+      console.error("Error al traer usuario:", error);
+    }
+  }
 
   useEffect(() => {
-    async function fetchUser() {
-      try {
-        const user = await getCurrentUser();
-        setNombre(user.nombre); 
-      } catch (error) {
-        console.error("Error al traer usuario:", error);
-      }
-    }
-    fetchUser();
-  }, []);
+    if(isLoggedIn) fetchUser();
+  }, [isLoggedIn]);
 
 
   const items = menuConfig.map((link) => {
@@ -83,7 +88,9 @@ export function HeaderMenu() {
             </Group>
           </div>
           <div className={classes.userGroup}>
-            <UserMenu nombre={nombre}/>
+          {
+            isLoggedIn ? <UserMenu user={user} /> : <Button>Iniciar sesion</Button>
+          }
           </div>
         </div>
       </Container>

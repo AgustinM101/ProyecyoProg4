@@ -1,21 +1,22 @@
 <?php 
 
-use Src\Service\User\UserFinderService;
+use Src\Infrastructure\Repository\User\UserRepository;
 
 final readonly class UserGetController {
 
-    private UserFinderService $service;
+    private UserRepository $service;
 
     public function __construct() {
-        $this->service = new UserFinderService();
+        $this->service = new UserRepository();
     }
 
-    public function start(int $id): void
+    public function start(): void
     {
-        $user = $this->service->find($id);
+        $token = $_SERVER["HTTP_X_API_KEY"] ?? "";
+        $user = $this->service->findByToken($token);
         
         echo json_encode([
-            "id" => $user->id(),
+            "token" => $user->id(),
             "name" => $user->name(),
             "email" => $user->email(),
             "role" => $user->role(),
