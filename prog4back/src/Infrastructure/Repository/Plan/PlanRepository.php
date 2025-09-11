@@ -12,7 +12,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
                         SELECT 
                             *
                         FROM
-                            plan A
+                            plans A
                         WHERE
                             A.id = :id
                     HEREDOC;
@@ -23,17 +23,17 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
 
         $result = $this->execute($query, $parameters);
 
-        return $this->toPlan($result[0] ?? null);
+        return $this->toClient($result[0] ?? null);
     }
 
-    /** @return Plan[] */
+    /** @return Client[] */
     public function search(): array
     {
         $query = <<<HEREDOC
                         SELECT
                             *
                         FROM
-                            plan A
+                            plans A
                     HEREDOC;
         
         $results = $this->execute($query);
@@ -50,7 +50,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO plan (name, description, price)
+                        INSERT INTO plans (name, description, price)
                         VALUES (:name, :description, :price)
                         INSERT_QUERY;
         
@@ -58,34 +58,28 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
-            
         ];
 
         $this->execute($query, $parameters);
     }
-    public function update(Plan $plan): void
+    public function delete(Plan $plan): void
     {
-        $query = <<< UPDATE_QUERY
-                        UPDATE plan
-                        SET name = :name, description = :description, price = :price
+        $query = <<< DELETE_QUERY
+                        DELETE FROM plans
                         WHERE id = :id
-                    UPDATE_QUERY;
+                        DELETE_QUERY;
 
         $parameters = [
             "id" => $plan->id(),
-            "name" => $plan->name(),
-            "description" => $plan->description(),
-            "price" => $plan->price(),
-            
         ];
-    
 
         $this->execute($query, $parameters);
     }
+
     public function update(Plan $plan): void
     {
         $query = <<< UPDATE_QUERY
-                        UPDATE plan
+                        UPDATE plans
                         SET name = :name, description = :description, price = :price
                         WHERE id = :id
                         UPDATE_QUERY;
@@ -95,7 +89,6 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
-         
         ];
 
         $this->execute($query, $parameters);
@@ -109,8 +102,8 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             $primitive["id"],
             $primitive["name"],
             $primitive["description"],
-            $primitive["price"],
-           
+            $primitive["price"]
         );
+
     }
 }

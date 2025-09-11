@@ -18,7 +18,7 @@ final readonly class PlanGetController {
             "id" => $plan->id(),
             "name" => $plan->name(),
             "description" => $plan->description(),
-            "price" => $plan->price(),
+            "price" => $plan->price()
         ]);
     }
 }

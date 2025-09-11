@@ -8,15 +8,13 @@ final class Plan {
         private string $name,
         private string $description,
         private int $price
-        
-
     ) {
     }
-    public static function create(string $name, string $description,string $price ): self
+    public static function create(string $name, string $description, int $price): self
     {
-        return new self(null,$name,$description,$price);
+        return new self(null, $name, $description, $price);
     }
-    public function modify( string $name,$description,$price): void {
+    public function modify(string $name, string $description, int $price): void {
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
@@ -32,13 +30,13 @@ final class Plan {
         return $this->name;
     }
 
-   
+
     public function description(): string
     {
         return $this->description;
     }
-    
-    public function price(): string
+
+    public function price(): int
     {
         return $this->price;
     }
