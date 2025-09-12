@@ -18,12 +18,12 @@ final readonly class UserRoutes {
       [
         "name" => "users_get",
         "url" => "/users",
-        "controller" => "User/UsersGetController.php",
+        "controller" => "User/UserGetController.php",
         "method" => "GET"
       ],
       [
         "name" => "user_get",
-        "url" => "/user",
+        "url" => "/users",
         "controller" => "User/UserGetController.php",
         "method" => "GET"
       ]
