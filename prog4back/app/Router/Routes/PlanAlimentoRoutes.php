@@ -3,17 +3,9 @@
 final readonly class PlanAlimentoRoutes {
   public static function getRoutes(): array {
     return [
-
-      [
-        "name" => "planAlimento_create",
-        "url" => "/planAlimento",
-        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
-        "method" => "POST"
-      ],
-
-      [
+  [
         "name" => "planAlimento_get",
-        "url" => "/planAlimento/{id}",
+        "url" => "/planAlimentos",
         "controller" => "PlanAlimento/PlanAlimentoGetController.php",
         "method" => "GET",
         "parameters" => [
@@ -21,19 +13,23 @@ final readonly class PlanAlimentoRoutes {
             "name" => "id",
             "type" => "int"
           ]
-        ]
+                  ]
       ],
-
       [
         "name" => "planAlimento_get",
-        "url" => "/planAlimento",
+        "url" => "/planAlimentos",
         "controller" => "PlanAlimento/PlanAlimentoGetController.php",
         "method" => "GET"
       ],
-
+      [
+        "name" => "planAlimento_create",
+        "url" => "/planAlimentos",
+        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
+        "method" => "POST"
+      ],
       [
         "name" => "planAlimento_update",
-        "url" => "/planAlimento/{id}",
+        "url" => "/planAlimentos",
         "controller" => "PlanAlimento/PlanAlimentoPutController.php",
         "method" => "PUT",
         "parameters" => [
@@ -43,10 +39,9 @@ final readonly class PlanAlimentoRoutes {
           ]
         ]
       ],
-
       [
         "name" => "planAlimento_delete",
-        "url" => "/planAlimento/{id}",
+        "url" => "/planAlimentos",
         "controller" => "PlanAlimento/PlanAlimentoDeleteController.php",
         "method" => "DELETE",
         "parameters" => [
@@ -56,7 +51,6 @@ final readonly class PlanAlimentoRoutes {
           ]
         ]
       ]
-
     ];
   }
 }

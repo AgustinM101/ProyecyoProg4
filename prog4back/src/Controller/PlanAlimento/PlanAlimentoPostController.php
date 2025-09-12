@@ -11,13 +11,14 @@ final readonly class PlanAlimentoPostController
         $this->service = new PlanAlimentoCreatorService();
     }
 
+    //va id-plan?
     public function start(): void {
-        $name = ControllerUtils::getPost("name");
-        $description = ControllerUtils::getPost("description");
+        $id_plan = ControllerUtils::getPost("id_plan");
+        $name= ControllerUtils::getPost("name");
+        $descripcion = ControllerUtils::getPost("descripcion");
         $tipo = ControllerUtils::getPost("tipo");
 
-
-        $planAlimento = $this->service->create($name, $description, $tipo);
+        $planAlimento = $this->service->create($id_plan, $name, $descripcion, $tipo);
 
     }
 
