@@ -12,7 +12,7 @@ final readonly class OrderListCreatorService{
     public function __construct() {
         $this->repository = new OrderListrepository();
     }
-    public function create(int $id_user, date $date, int $total, string $status): void{
+    public function create(int $id_user, \DateTime $date, int $total, string $status): void{
         $orderlist = OrderList::create($id_user, $date, $total, $status);
         $this->repository->create($orderlist);
     }

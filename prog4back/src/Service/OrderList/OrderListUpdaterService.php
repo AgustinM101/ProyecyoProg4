@@ -15,7 +15,7 @@ final readonly class OrderListUpdaterService{
         $this->repository = new OrderListRepository();
         $this->finderService = new OrderListFinderService();
     }
-    public function update(int $id_user, date $date, int $total, string $status, int $id): void{
+    public function update(int $id, \DateTime $date, int $total, string $status, int $id_user): void{
 
         $orderlist = $this->finderService->find($id);
         $orderlist->modify($id_user, $date, $total, $status);

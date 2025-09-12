@@ -11,11 +11,13 @@ final readonly class ItemsOrderDeleteController
         $this->service = new ItemsOrderDeleterService;
     }
 
-    public function start(int $id): void {
+    public function start(int $id_detalle): void {
+
+        $this->service->delete($id_detalle);
 
     }
 
-        $this->service->delete($id);
+        
     }
 
 

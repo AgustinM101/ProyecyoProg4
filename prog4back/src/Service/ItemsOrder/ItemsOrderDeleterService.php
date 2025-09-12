@@ -16,13 +16,17 @@ final readonly class ItemsOrderDeleterService{
         $this->finderService = new ItemsOrderFinderService();
     }
     
-    public function delete(int $id): void{
+   public function delete(int $id_detalle): void {
+    $query = <<<SQL
+        UPDATE items_orders
+        SET deleted = 1
+        WHERE id_detalle = :id_detalle
+    SQL;
 
+    $parameters = [
+        "id_detalle" => $id_detalle
+    ];
 
-        $itemsorder = $this->finderService->find($id);
-        $itemsorder->delete();
-
-        $this->repository->update($itemsorder);
-    }
-    
+    $this->repository->execute($query, $parameters);
+}
 }

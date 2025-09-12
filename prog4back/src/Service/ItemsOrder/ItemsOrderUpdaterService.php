@@ -15,10 +15,10 @@ final readonly class ItemsOrderUpdaterService{
         $this->repository = new ItemsOrderRepository();
         $this->finderService = new ItemsOrderFinderService();
     }
-    public function update(int $id_order, int $id_plan, int $quantity, string $unit_price, int $id_detalle): void{
+    public function update(int $id_detalle, int $id_order, int $id_plan, int $quantity, string $unit_price): void{
 
-        $itemsorder = $this->finderService->find($id);
-        $itemsorder->modify($id_order, $id_plan, $quantity, $unit_price);
+        $itemsorder = $this->finderService->find($id_detalle);
+        $itemsorder->modify( $id_order, $id_plan, $quantity, $unit_price);
 
         $this->repository->update($itemsorder);
     }
