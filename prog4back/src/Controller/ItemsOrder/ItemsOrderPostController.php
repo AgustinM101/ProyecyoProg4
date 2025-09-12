@@ -12,13 +12,27 @@ final readonly class ItemsOrderPostController
     }
 
     public function start(): void {
-        $id_order = ControllerUtils::getPost("id_order");
-        $id_plan = ControllerUtils::getPost("id_plan");
-        $quantity = ControllerUtils::getPost("quantity");
-        $unit_price = ControllerUtils::getPost("unit_price");
+         $data = json_decode(file_get_contents('php://input'), true);
+        $id_order =(int) ControllerUtils::getPost("id_order");
+        $id_plan =(int) ControllerUtils::getPost("id_plan");
+        $quantity =(int) ControllerUtils::getPost("quantity");
+        $unit_price =(float) ControllerUtils::getPost("unit_price");
 
-        $itemsOrder = $this->service->create($id_order, $id_plan, $quantity, $unit_price);
+if (!$id_order || !$id_plan || !$quantity || !$unit_price) {
+            echo json_encode([
+                "status" => 400,
+                "message" => "Faltan parámetros requeridos"
+            ]);
+            return;
+        }
 
+        // Llamada única
+        $this->service->create($id_order, $id_plan, $quantity, $unit_price);
+
+        echo json_encode([
+            "status" => 201,
+            "message" => "ItemsOrder creado correctamente"
+        ]);
     }
 
 

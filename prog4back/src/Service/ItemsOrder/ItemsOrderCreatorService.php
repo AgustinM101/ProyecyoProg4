@@ -10,9 +10,9 @@ final readonly class ItemsOrderCreatorService{
     private ItemsOrderRepository $repository;
 
     public function __construct() {
-        $this->repository = new ItemsOrderrepository();
+        $this->repository = new ItemsOrderRepository();
     }
-    public function create(int $id_order, int $id_plan, int $quantity, string $unit_price): void{
+    public function create(int $id_order, int $id_plan, int $quantity, float $unit_price): void{
         $itemsorder = ItemsOrder::create($id_order, $id_plan, $quantity, $unit_price);
         $this->repository->create($itemsorder);
     }

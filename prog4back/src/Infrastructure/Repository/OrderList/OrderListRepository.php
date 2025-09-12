@@ -14,7 +14,7 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
                         FROM
                             order_lists A
                         WHERE
-                            A.id = :id
+                            A.id = :id AND deleted = 0
                     HEREDOC;
 
         $parameters = [
@@ -33,7 +33,8 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
                         SELECT
                             id,id_user, date, total, status
                         FROM
-                            order_lists A
+                            order_lists A WHERE deleted = 0
+                    
                     HEREDOC;
         
         $results = $this->execute($query);
@@ -69,7 +70,7 @@ final readonly class OrderListRepository extends PDOManager implements OrderList
     {
         $query = <<< UPDATE_QUERY
                         UPDATE order_lists
-                        SET id_user:id_user, date = :date, total = :total, status = :status
+                        SET id_user=:id_user, date = :date, total = :total, status = :status
                         WHERE id = :id
                         UPDATE_QUERY;
 

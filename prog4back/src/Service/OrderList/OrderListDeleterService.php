@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Service\OrdersList;
+namespace Src\Service\OrderList;
 
 use Src\Entity\OrderList\OrderList;
 use Src\Infrastructure\Repository\OrderList\OrderListRepository;
@@ -20,7 +20,7 @@ final readonly class OrderListDeleterService{
 
 
         $orderlist = $this->finderService->find($id);
-        $orderlist->delete();
+        
 
         $this->repository->update($orderlist);
     }

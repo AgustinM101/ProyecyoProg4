@@ -5,7 +5,7 @@ final readonly class ItemsOrderRoutes {
     return [
       [
         "name" => "itemsOrder_get",
-        "url" => "/itemsOrders/{id}",
+        "url" => "/items-orders",
         "controller" => "ItemsOrder/ItemsOrderGetController.php",
         "method" => "GET",
         "parameters" => [
@@ -17,19 +17,19 @@ final readonly class ItemsOrderRoutes {
       ],
       [
         "name" => "itemsOrders_get",
-        "url" => "/itemsOrders",
+        "url" => "/items-orders",
         "controller" => "ItemsOrder/ItemsOrdersGetController.php",
         "method" => "GET"
       ],
       [
         "name" => "itemsOrder_create",
-        "url" => "/itemsOrders",
+        "url" => "/items-orders",
         "controller" => "ItemsOrder/ItemsOrderPostController.php",
         "method" => "POST"
       ],
       [
         "name" => "itemsOrder_update",
-        "url" => "/itemsOrders/{id}",
+        "url" => "/items-orders",
         "controller" => "ItemsOrder/ItemsOrderPutController.php",
         "method" => "PUT",
         "parameters" => [
@@ -41,7 +41,7 @@ final readonly class ItemsOrderRoutes {
       ],
       [
         "name" => "itemsOrder_delete",
-        "url" => "/itemsOrders/{id}",
+        "url" => "/items-orders",
         "controller" => "ItemsOrder/ItemsOrderDeleteController.php",
         "method" => "DELETE",
         "parameters" => [

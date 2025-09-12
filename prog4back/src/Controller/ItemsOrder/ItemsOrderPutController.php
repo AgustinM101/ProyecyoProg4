@@ -11,7 +11,7 @@ final readonly class ItemsOrderPutController
         $this->service = new ItemsOrderUpdaterService;
     }
 
-    public function start(int $id): void {
+    public function start(int $id_detalle): void {
         $id_order = ControllerUtils::getPost("id_order");
         $id_plan = ControllerUtils::getPost("id_plan");
         $quantity = ControllerUtils::getPost("quantity");
@@ -19,7 +19,7 @@ final readonly class ItemsOrderPutController
         
 
 
-        $itemsOrder = $this->service->update($id_order, $id_plan, $quantity, $unit_price, $id);
+        $itemsOrders = $this->service->update($id_detalle, $id_order, $id_plan, $quantity, $unit_price);
     }
 
 

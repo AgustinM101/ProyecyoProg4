@@ -1,6 +1,6 @@
 <?php 
 
-use Src\Service\ItemsOrder\ItemOrderFinderService;
+use Src\Service\ItemsOrder\ItemsOrderFinderService;
 
 final readonly class ItemsOrderGetController {
 

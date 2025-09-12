@@ -6,19 +6,19 @@ use Src\Infrastructure\PDO\PDOManager;
 use Src\Entity\ItemsOrder\ItemsOrder;
 
 final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrderRepositoryInterface {
-    public function find(int $id): ?ItemsOrder
+    public function find(int $id_detalle): ?ItemsOrder
     {
         $query = <<<HEREDOC
                         SELECT 
                             *
                         FROM
-                            ItemsOrder A
+                            items_orders 
                         WHERE
-                            A.id = :id 
+                            id_detalle = :id_detalle and deleted = 0
                     HEREDOC;
 
         $parameters = [
-            "id" => $id,
+            "id_detalle" => $id_detalle,
         ];
 
         $result = $this->execute($query, $parameters);
@@ -33,30 +33,32 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
                         SELECT
                             *
                         FROM
-                            ItemsOrder A
+                            items_orders WHERE and deleted = 0
                     HEREDOC;
         
         $results = $this->execute($query);
 
-        $ItemsOrders = [];
+        $itemsOrder = [];
         foreach($results as $result) {
-            $ItemsOrders[] = $this->toItemsOrder($result);
+            $itemsOrder[] = $this->toItemsOrder($result);
         }
 
-        return $ItemsOrders;
+        return $itemsOrder;
     }
-    public function create(ItemsOrder $ItemsOrder): void{
+    public function create(ItemsOrder $itemsOrder): void{
 
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO ItemsOrder (quantity, unitPrice)
-                        VALUES (:quantity, :unitPrice)
-                        INSERT_QUERY;
+                        INSERT INTO items_orders (id_order, id_plan, quantity, unit_price)
+                        VALUES (:id_order, :id_plan, :quantity, :unit_price)
+                    INSERT_QUERY;
         
         $parameters = [
-            "quantity" => $ItemsOrder->quantity(),
-            "unitPrice" => $ItemsOrder->unitPrice()
+            "id_order" => $itemsOrder->id_order(),
+            "id_plan" => $itemsOrder->id_plan(),
+            "quantity" => $itemsOrder->quantity(),
+            "unit_price" => $itemsOrder->unit_price()
             
            
             
@@ -65,18 +67,18 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
         $this->execute($query, $parameters);
     }
 
-    public function update(ItemsOrder $ItemsOrder): void
+    public function update(ItemsOrder $itemsOrder): void
     {
         $query = <<<UPDATE_QUERY
-                        UPDATE ItemsOrder
-                        SET quantity = :quantity, unitPrice = :unitPrice
-                        WHERE id = :id
+                        UPDATE items_orders
+                        SET quantity = :quantity, unit_price = :unit_price
+                        WHERE id_detalle = :id_detalle
                     UPDATE_QUERY;
 
         $parameters = [
-            "id" => $ItemsOrder->id(),
-            "quantity" => $ItemsOrder->quantity(),
-            "unitPrice" => $ItemsOrder->unitPrice()
+            "id_detalle" => $itemsOrder->id_detalle(),
+            "quantity" => $itemsOrder->quantity(),
+            "unit_price" => $itemsOrder->unit_price()
             
         ];
 
@@ -89,23 +91,14 @@ final readonly class ItemsOrderRepository extends PDOManager implements ItemsOrd
         }
 
         return new ItemsOrder(
-            $primitive["id"],
+            $primitive["id_detalle"],
+            $primitive["id_order"],
+            $primitive["id_plan"],
             $primitive["quantity"],
-            $primitive["unitPrice"]
+            $primitive["unit_price"]
         
         );
     }
 
-    private function toItemsOrder(?array $primitive): ?ItemsOrder {
-        if ($primitive === null) {
-            return null;
-        }
-
-        return new ItemsOrder(
-            $primitive["id"],
-            $primitive["quantity"],
-            $primitive["unitPrice"]
-            
-        );
-    }
+    
 }

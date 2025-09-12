@@ -8,12 +8,12 @@ final class ItemsOrder {
         private int $id_order,
         private int $id_plan,
         private int $quantity,
-        private string $unit_price
+        private float $unit_price
         
 
     ) {
     }
-    public static function create(int $id_order, int $id_plan,int $quantity,string $unit_price ): self
+    public static function create(int $id_order, int $id_plan,int $quantity,float $unit_price ): self
     {
         return new self(null,$id_order,$id_plan,$quantity,$unit_price);
     }
@@ -24,10 +24,10 @@ final class ItemsOrder {
         $this->unit_price = $unit_price;
     }
 
-
-    public function id(): ?int
+   
+    public function id_detalle(): ?int
     {
-        return $this->id;
+        return $this->id_detalle;
     }
    
     public function id_order(): int
@@ -42,7 +42,7 @@ final class ItemsOrder {
     {
         return $this->quantity;
     }
-    public function unit_price(): string
+    public function unit_price(): float
     {
         return $this->unit_price;
     }
