@@ -15,12 +15,12 @@ final readonly class PlanUpdaterService{
         $this->repository = new PlanRepository();
         $this->finderService = new PlanFinderService();
     }
-    public function update(string $name, string $description, int $price): void{
+    public function update(string $name, string $description, int $price, int $id): void{
 
         $plan = $this->finderService->find($id);
         $plan->modify($name, $description, $price);
 
         $this->repository->update($plan);
-    }
+    } 
     
 }

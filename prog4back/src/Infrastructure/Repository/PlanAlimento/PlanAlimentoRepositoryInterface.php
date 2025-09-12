@@ -11,7 +11,7 @@ interface PlanAlimentoRepositoryInterface {
     public function update(PlanAlimento $planAlimento): void;
 
     /** @return PlanAlimento[] */
-   public function search(): array;
+   
 
 }
 
