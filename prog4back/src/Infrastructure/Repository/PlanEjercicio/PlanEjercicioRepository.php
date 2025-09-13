@@ -1,6 +1,6 @@
 <?php 
 
-namespace Src\Infrastructure\Repository\Brand;
+namespace Src\Infrastructure\Repository\PlanEjercicio;
 
 use Src\Infrastructure\PDO\PDOManager;
 use Src\Entity\PlanEjercicio\PlanEjercicio;

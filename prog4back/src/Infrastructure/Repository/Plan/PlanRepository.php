@@ -23,10 +23,10 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
 
         $result = $this->execute($query, $parameters);
 
-        return $this->toClient($result[0] ?? null);
+        return $this->toPlan($result[0] ?? null);
     }
 
-    /** @return Client[] */
+    /** @return Plan[] */
     public function search(): array
     {
         $query = <<<HEREDOC
