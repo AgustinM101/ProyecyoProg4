@@ -5,94 +5,96 @@ namespace Src\Infrastructure\Repository\PlanAlimento;
 use Src\Infrastructure\PDO\PDOManager;
 use Src\Entity\PlanAlimento\PlanAlimento;
 
-final readonly class PlanAlimentoRepository extends PDOManager implements PlanAlimentoRepositoryInterface {
+final readonly class PlanAlimentoRepository extends PDOManager implements PlanAlimentoRepositoryInterface 
+{
+
+    // Buscar un PlanAlimento por ID
     public function find(int $id): ?PlanAlimento
     {
         $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            planAlimentos A
-                        WHERE
-                            A.id = :id
-                    HEREDOC;
+            SELECT 
+                id, name, description, tipo
+            FROM
+                planAlimentos A
+            WHERE
+                A.id = :id AND deleted = 0
+        HEREDOC;
 
-        $parameters = [
-            "id" => $id,
-        ];
-
-        $result = $this->execute($query, $parameters);
-
-        return $this->toPlanAlimento($result[0] ?? null);
-    }
-
-    /** @return PlanAlimento[] */
-    public function search(): array
-    {
-        $query = <<<HEREDOC
-                        SELECT
-                            *
-                        FROM
-                            planAlimentos A
-                    HEREDOC;
-        
-        $results = $this->execute($query);
+        $parameters = [ "id" => $id ];
+        $results = $this->execute($query, $parameters);
 
         $planAlimentos = [];
         foreach($results as $result) {
             $planAlimentos[] = $this->toPlanAlimento($result);
         }
 
+        return $planAlimentos[0] ?? null;
+    }
+
+    // Buscar todos los PlanAlimentos
+    public function search(): array
+    {
+        $query = "SELECT id, name, description, tipo FROM planAlimentos WHERE deleted = 0";
+        $results = $this->execute($query);
+        var_dump($results);
+
+        $planAlimentos = [];
+        foreach ($results as $result) {
+            $planAlimentos[] = $this->toPlanAlimento($result);
+        }
+
         return $planAlimentos;
     }
-    public function create(PlanAlimento $planAlimento): void{
 
-
-
-        $query = <<< INSERT_QUERY
-                        INSERT INTO planAlimento (name, description, tipo)
-                        VALUES (:name, :description, :tipo)
-                        INSERT_QUERY;
-        
-        $parameters = [
-            "name" => $planAlimento->name(),
-            "description" => $planAlimento->description(),
-            "tipo" => $planAlimento->tipo(),
-            
-        ];
-    
-
-        $this->execute($query, $parameters);
-    }
-    public function update(PlanAlimento $planAlimento): void
+    // Crear un nuevo PlanAlimento
+    public function create(PlanAlimento $PlanAlimento): void
     {
-        $query = <<< UPDATE_QUERY
-                        UPDATE planAlimentos
-                        SET name = :name, description = :description, tipo = :tipo
-                        WHERE id = :id
-                        UPDATE_QUERY;
+        $query = <<<INSERT_QUERY
+            INSERT INTO planAlimentos (name, description, tipo)
+            VALUES (:name, :description, :tipo)
+        INSERT_QUERY;
 
         $parameters = [
-            "id" => $planAlimento->id(),
-            "name" => $planAlimento->name(),
-            "description" => $planAlimento->description(),
-            "tipo" => $planAlimento->tipo(),
-            
+            "name" => $PlanAlimento->name(),
+            "description" => $PlanAlimento->description(),
+            "tipo" => $PlanAlimento->tipo()
         ];
 
         $this->execute($query, $parameters);
     }
-    private function toPlanAlimento(?array $primitive): ?PlanAlimento {
+
+    // Actualizar un PlanAlimento existente
+    public function update(PlanAlimento $PlanAlimento): void
+    {
+        $query = <<<UPDATE_QUERY
+            UPDATE planAlimentos
+            SET name = :name, description = :description, tipo = :tipo
+            WHERE id = :id
+        UPDATE_QUERY;
+
+        $parameters = [
+            "id" => $PlanAlimento->id(),
+            "name" => $PlanAlimento->name(),
+            "description" => $PlanAlimento->description(),
+            "tipo" => $PlanAlimento->tipo(),
+        ];
+
+        $this->execute($query, $parameters);
+    }
+
+    // Mapea un array de la DB a un objeto PlanAlimento
+    private function toPlanAlimento(?array $primitive): ?PlanAlimento
+    {
         if ($primitive === null) {
             return null;
         }
-
+        
         return new PlanAlimento(
             $primitive["id"],
             $primitive["name"],
             $primitive["description"],
-            $primitive["tipo"],
-            
+            $primitive["tipo"]
         );
     }
+    
 }
