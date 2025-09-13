@@ -12,7 +12,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
                         SELECT 
                             *
                         FROM
-                            plan_alimento A
+                            planAlimentos A
                         WHERE
                             A.id = :id
                     HEREDOC;
@@ -33,7 +33,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
                         SELECT
                             *
                         FROM
-                            plan_alimento A
+                            planAlimentos A
                     HEREDOC;
         
         $results = $this->execute($query);
@@ -50,7 +50,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
 
 
         $query = <<< INSERT_QUERY
-                        INSERT INTO plan_alimento (name, description, tipo)
+                        INSERT INTO planAlimento (name, description, tipo)
                         VALUES (:name, :description, :tipo)
                         INSERT_QUERY;
         
@@ -67,7 +67,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
     public function update(PlanAlimento $planAlimento): void
     {
         $query = <<< UPDATE_QUERY
-                        UPDATE plan_alimento
+                        UPDATE planAlimentos
                         SET name = :name, description = :description, tipo = :tipo
                         WHERE id = :id
                         UPDATE_QUERY;

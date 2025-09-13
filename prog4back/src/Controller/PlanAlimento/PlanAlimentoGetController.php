@@ -1,6 +1,6 @@
 <?php 
 
-use Src\Service\PlanAlimnto\PlanAlimentoFinderService;
+use Src\Service\PlanAlimento\PlanAlimentoFinderService;
 
 final readonly class PlanAlimentoGetController {
 
