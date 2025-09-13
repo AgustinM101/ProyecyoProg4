@@ -2,7 +2,7 @@
 
 namespace Src\Entity\PlanAlimento;
 
-final class PlanAlimento {
+final class PlanAlimento implements \JsonSerializable{
     public function __construct(
         private readonly ?int $id,
         private string $name,
@@ -16,7 +16,7 @@ final class PlanAlimento {
     {
         return new self(null,$name,$description,$tipo);
     }
-    public function modify( string $name,$description,$tipo): void {
+    public function modify( string $name, string $description, string $tipo): void {
         $this->name = $name;
         $this->description = $description;
         $this->tipo = $tipo;
@@ -43,4 +43,13 @@ final class PlanAlimento {
         return $this->tipo;
     }
 
+     public function jsonSerialize(): array
+    {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "description" => $this->description,
+            "tipo" => $this->tipo
+        ];
+}
 }

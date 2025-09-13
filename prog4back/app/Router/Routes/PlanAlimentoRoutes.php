@@ -13,12 +13,12 @@ final readonly class PlanAlimentoRoutes {
             "name" => "id",
             "type" => "int"
           ]
-                  ]
+        ]
       ],
       [
-        "name" => "planAlimento_get",
+        "name" => "planAlimentos_get",
         "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoGetController.php",
+        "controller" => "PlanAlimento/PlanAlimentosGetController.php",
         "method" => "GET"
       ],
       [

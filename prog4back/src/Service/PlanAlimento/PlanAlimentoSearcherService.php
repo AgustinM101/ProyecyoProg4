@@ -1,18 +1,18 @@
 <?php 
 
-namespace Src\Service\PlanEjercicio;
+namespace Src\Service\PlanAlimento;
 
-use Src\Entity\PlanEjercicio\PlanEjercicio;
-use Src\Infrastructure\Repository\PlanEjercicio\PlanEjercicioRepository;
+use Src\Entity\PlanAlimento\PlanAlimento;
+use Src\Infrastructure\Repository\PlanAlimento\PlanAlimentoRepository;
 
-final readonly class PlanEjerciciosSearcherService {
-    private PlanEjercicioRepository $repository;
+final readonly class PlanAlimentoSearcherService {
+    private PlanAlimentoRepository $repository;
 
     public function __construct() {
-        $this->repository = new PlanEjercicioRepository();
+        $this->repository = new PlanAlimentoRepository();
     }
 
-    /** @return PlanEjercicio[] */
+    /** @return PlanAlimento[] */
     public function search(): array
     {
         return $this->repository->search();

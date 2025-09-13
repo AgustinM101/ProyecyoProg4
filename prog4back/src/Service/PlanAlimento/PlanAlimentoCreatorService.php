@@ -12,9 +12,11 @@ final readonly class PlanAlimentoCreatorService{
     public function __construct() {
         $this->repository = new PlanAlimentorepository();
     }
-    public function create( string $name, string $description, int $tipo): void{
+    public function create( string $name, string $description, string $tipo): PlanAlimento{
         $planAlimento = PlanAlimento::create($name, $description, $tipo);
         $this->repository->create($planAlimento);
+
+        return $planAlimento;
     }
     
 }
