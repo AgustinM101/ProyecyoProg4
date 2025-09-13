@@ -1,0 +1,129 @@
+.hero {
+  background-image: url("https://res.cloudinary.com/dkv58dvqy/image/upload/v1757737796/fondo_gym_uhtlyx.png");
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  min-height:70vh;
+  display: flex;
+  align-items: center;
+  color: white;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8); 
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 1400px;
+  width: 100%;
+  margin-bottom: 1rem;
+
+}
+
+.hero-title {
+  font-weight: 500;
+  font-size: 40px;
+  text-transform: uppercase;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  color: #FFD700; 
+  font-family: 'Oswald', sans-serif;
+}
+
+.hero-slogan {
+  font-size: 5rem; 
+  color: #fff;
+  opacity: 0.2;
+  margin: 20px;
+  
+
+}
+
+.hero-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 48px;
+
+  gap: 12px;
+  justify-content: space-between;
+  
+}
+
+.hero-bottom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 220px;
+  position: relative;
+  justify-content: flex-end;
+}
+
+.hero-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+}
+
+.hero-schedule {
+  flex: 1;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.day{
+    font-family: 'Anton', sans-serif;
+    color: #FFD700;
+}
+.hours{
+    font-family: 'Oswald', sans-serif;
+    color: #fff;
+}
+
+
+.hero-btn-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-btn {
+  background: #FFD60A;
+  color: #000;
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  border-radius: 8px;
+}
+
+.hero-location {
+  flex: 1;
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  color: #fff;
+  font-weight: bold;
+  align-self: flex-end;
+  margin-top: 32px; /* separa del main-row */
+  margin-bottom: 16px;
+}
