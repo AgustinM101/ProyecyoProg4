@@ -16,6 +16,7 @@
     "@mantine/hooks": "^8.2.4",
     "@tabler/icons-react": "^3.34.1",
     "axios": "^1.11.0",
+    "embla-carousel-autoplay": "^8.6.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",

@@ -1,0 +1,41 @@
+.footer {
+  
+    border-top: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+    background-color: #FFD60A
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--mantine-spacing-md) var(--mantine-spacing-md);
+
+  @media (max-width: 576px) {
+  flex-direction: column;
+}
+}
+
+.links {
+    @media (max-width: 576px) {
+        margin-top: var(--mantine-spacing-lg);
+        margin-bottom: var(--mantine-spacing-sm);
+    }
+}
+
+.logoInfinitsports {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+
+}
+.titleAnton {
+  font-family: 'Anton', Arial, sans-serif;
+  letter-spacing: 2px;
+  color: #000;
+}
+:global(.mantine-ActionIcon-root) {
+  background: transparent !important;
+  color: #000 !important;
+  border: none !important;
+}

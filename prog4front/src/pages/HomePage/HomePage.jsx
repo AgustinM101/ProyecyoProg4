@@ -1,5 +1,7 @@
 
+import { Footer } from "../../components/Footer/Footer";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
+import { HeroSection } from "../../components/HeroSection/HeroSection";
 
 export function HomePage() {
 
@@ -9,6 +11,7 @@ export function HomePage() {
 
 		
 		
-		<h1>Home</h1>
-		 </>;
+		<HeroSection />		
+		<Footer />
+		</>;
 }
