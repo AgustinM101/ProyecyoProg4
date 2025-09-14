@@ -21,19 +21,52 @@ export function Footer() {
             </Group>
 
             <Group gap="xs" justify="flex-end" wrap="nowrap">
-                <ActionIcon size="lg" variant="default" color="rgba(0,0,0,1)" >
-                    <IconBrandGmail size={30} stroke={1.5} />
-                </ActionIcon>
-                <ActionIcon size="lg" variant="default" color="rgba(0,0,0,1)" >
-                    <IconBrandFacebook size={30} stroke={1.5} />
-                </ActionIcon>
-                <ActionIcon size="lg" variant="default" color="rgba(0,0,0,1)" >
-                    <IconBrandWhatsapp size={30} stroke={1.5} />
-                </ActionIcon>
-                <ActionIcon size="lg" variant="default" color="rgba(0,0,0,1)" >
-                    <IconBrandInstagram size={30} stroke={1.5} />
-                </ActionIcon>
-            </Group>
+                <a
+                    href="teaminfinit2020@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <ActionIcon
+                        className={classes.socialIcon}
+                        size="lg"
+                        variant="default"
+                        color="rgba(0,0,0,1)"
+                    >
+                        <IconBrandGmail size={30} stroke={1.5} />
+                    </ActionIcon>
+                </a>
+
+                <a
+                    href="https://www.facebook.com/profile.php?id=100063633664111"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <ActionIcon
+                        className={classes.socialIcon}
+                        size="lg"
+                        variant="default"
+                        color="rgba(0,0,0,1)"
+                    >
+                        <IconBrandFacebook size={30} stroke={1.5} />
+                    </ActionIcon>
+                </a>
+
+                    <a
+                        href="https://www.instagram.com/infinit_sport_/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <ActionIcon
+                            className={classes.socialIcon}
+                            size="lg"
+                            variant="default"
+                            color="rgba(0,0,0,1)"
+                        >
+                            <IconBrandInstagram size={30} stroke={1.5} />
+                        </ActionIcon>
+                    </a>
+                </Group>
+
         </div>
     </div>
   );
