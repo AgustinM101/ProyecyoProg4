@@ -42,7 +42,7 @@ export function HeroSection() {
                     </div>
                     <div className="hero-btn-container">
                         <Button className="hero-btn">
-                            EMPEZAR YA
+                            Empezar ya
                         </Button>
                     </div>
                     <div className="hero-location">

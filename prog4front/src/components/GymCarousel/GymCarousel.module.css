@@ -103,3 +103,32 @@
   background: #000 !important; /* fondo negro para el carrusel de Mantine */
 }
 
+
+
+/* Contenedor de los indicadores */
+.carousel :global(.mantine-Carousel-indicators) {
+  display: flex;
+  justify-content: center;
+  gap: 6px;          /* espacio entre rayitas */
+  width: auto;       /* que no se estire */
+  margin: 10px auto; /* centrado */
+  position: relative;
+  bottom: 0;
+}
+
+/* Cada rayita */
+.carousel :global(.mantine-Carousel-indicator) {
+  width: 10px;           /* largo */
+  height: 4px;           /* grosor */
+  border-radius: 2px;
+  background-color: #aaa;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+/* Activo */
+.carousel :global(.mantine-Carousel-indicator[data-active]) {
+  background-color: #fff;
+  opacity: 1;
+}
+

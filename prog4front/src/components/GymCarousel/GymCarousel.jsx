@@ -85,9 +85,9 @@ export function GymCarousel() {
               </Carousel.Slide>
             ))}
           </Carousel>
-          <Progress value={scrollProgressComp} maw={320} size="sm" mt="xl" mx="auto" />
-        </div>
+          
+        </div> 
       </div>
     </div>
   );
-}
+}/*<Progress value={scrollProgressComp} maw={320} size="sm" mt="xl" mx="auto" /> */

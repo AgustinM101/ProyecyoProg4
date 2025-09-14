@@ -16,7 +16,7 @@ export function Faqs() {
                 />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-                <Title order={2} ta="center" className="title">
+                <Title  order={2} ta="center" className="title">
                     FAQS
                 </Title>
                 <p className="subtitle">
