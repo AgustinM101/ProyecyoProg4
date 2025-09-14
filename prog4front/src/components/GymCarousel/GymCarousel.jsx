@@ -53,7 +53,7 @@ export function GymCarousel() {
       <div className={classes.wrapper}>
         {/* Título y subtítulo */}
         <div className={classes.header}>
-          <h2 className={classes.title}>Nuestro equipo de competición</h2>
+          <h2 className={classes.title}>NUESTRO EQUIPO DE COMPETICIÓN</h2>
           <p className={classes.subtitle}>
             El fisicoculturismo es una disciplina que combina entrenamiento de fuerza, nutrición y dedicación para esculpir el cuerpo. Nuestro equipo representa el esfuerzo, la constancia y la pasión por superar límites en cada competencia.
           </p>

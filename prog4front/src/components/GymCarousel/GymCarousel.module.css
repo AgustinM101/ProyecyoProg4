@@ -1,6 +1,6 @@
 .carouselBg {
   position: relative;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   background-image: url('https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792207/01E50EA4-5D62-44E6-910C-FF201FE46E80_zodhlk.jpg');
   background-size: cover;

@@ -1,4 +1,4 @@
-
+import { Faqs } from "../../components/Faqs/Faqs";
 import { Footer } from "../../components/Footer/Footer";
 import { GymCarousel } from "../../components/GymCarousel/GymCarousel";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
@@ -8,14 +8,15 @@ export function HomePage() {
 	return <>
 
 		<HeaderMenu />
+
 		<main>
 			<HeroSection />
 			<GymCarousel />
+			<Faqs />
 		</main>
+
 		<Footer />
 
-		</>;
-
-
+	</>;
 
 }

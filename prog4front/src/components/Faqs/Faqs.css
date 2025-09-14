@@ -1,0 +1,91 @@
+.wrapper {
+  background: #000;
+  padding-top: calc(var(--mantine-spacing-xl) * 2);
+  padding-bottom: calc(var(--mantine-spacing-xl) * 2);
+  
+}
+
+.title {
+  margin-bottom: var(--mantine-spacing-md);
+  padding-left: var(--mantine-spacing-md);
+  color: #FFD60A; 
+  font-family: 'Anton', sans-serif; 
+  font-weight: 500;
+  font-size: 3rem;
+  letter-spacing: 3px;
+  
+}
+
+.item {
+    font-size: var(--mantine-font-size-sm);
+    color: #FFD60A;
+    border: none;        
+    margin-bottom: 1rem;  
+    border-radius: 8px;   
+    overflow: hidden;     
+  
+}
+
+.mantine-Accordion-control {
+  background: #FFD60A !important;
+  color: #111 !important;
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  border-radius: 12px;
+  
+}
+
+.mantine-Accordion-label {
+  color: #111 !important;
+}
+
+.mantine-Accordion-panel {
+  background: #C7A600 !important;
+  color: #111 !important;
+  border-radius: 12px;
+  font-family: 'Oswald', sans-serif;
+}
+
+
+
+
+.faq-icon-blur {
+  filter: invert(70%) sepia(100%) saturate(500%) hue-rotate(10deg) blur(10px);
+  transition: filter 0.3s;
+  animation: faqLight 2s infinite alternate;
+}
+
+@keyframes faqLight {
+  0% {
+    filter: invert(70%) sepia(100%) saturate(500%) hue-rotate(10deg) blur(5px) brightness(1);
+    box-shadow: 0 0 0px #FFD60A;
+  }
+  60% {
+    filter: invert(70%) sepia(100%) saturate(500%) hue-rotate(10deg) blur(12px) brightness(1.5);
+    box-shadow: 0 0 12px #FFD60A;
+  }
+  100% {
+    filter: invert(70%) sepia(100%) saturate(500%) hue-rotate(10deg) blur(5px) brightness(1);
+    box-shadow: 0 0 0px #FFD60A;
+  }
+}
+
+.subtitle {
+  text-align:center;
+  font-size: 2rem;
+  font-family: 'Anton',sans-serif;
+  letter-spacing: 2px;
+   
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.preguntas {
+  color: #bbb;
+  font-weight: bold;
+}
+
+.frecuentes {
+  color: #bfa900;
+  font-weight: bold;
+}
