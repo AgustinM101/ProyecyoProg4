@@ -114,6 +114,11 @@
   border-radius: 8px;
 }
 
+.hero-btn:hover {
+  background: #FFC107;
+  color: #000;
+}
+
 .hero-location {
   flex: 1;
   max-width: 300px;
@@ -124,6 +129,6 @@
   color: #fff;
   font-weight: bold;
   align-self: flex-end;
-  margin-top: 32px; /* separa del main-row */
+  margin-top: 32px; 
   margin-bottom: 16px;
 }
