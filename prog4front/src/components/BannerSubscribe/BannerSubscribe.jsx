@@ -1,7 +1,7 @@
 
-import "./Banner.css"; 
+import "./BannerSubscribe.css"; 
 
-export default function Banner() {
+export default function BannerSubscribe() {
   return (
     <section className="banner-section">
       <div className="banner-content">

@@ -1,4 +1,7 @@
-import Banner from "../../components/Banner/Banner";
+
+
+import { BannerGym } from "../../components/BannerGym/BannerGym";
+import BannerSubscribe from "../../components/BannerSubscribe/BannerSubscribe";
 import { Faqs } from "../../components/Faqs/Faqs";
 import { Footer } from "../../components/Footer/Footer";
 import { GymCarousel } from "../../components/GymCarousel/GymCarousel";
@@ -14,9 +17,10 @@ export function HomePage() {
 
 		<main>
 			<HeroSection />
-			<Banner />
+			<BannerGym />
 			<GymCarousel />
 			<Transformations />
+			<BannerSubscribe />
 			<Faqs />
 		</main>
 
