@@ -11,21 +11,22 @@
 }
 
 .mainTitle {
-    font-weight: 500;
-    font-size: 40px;
-    text-transform: uppercase;
-    font-family: 'Anton', sans-serif;
-    letter-spacing: 3px;
-    margin-bottom: 30px;
+  font-weight: 200;
+  font-size: 50px;
+  text-transform: uppercase;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px #fff;
 }
 
 .logo {
-    width: 180px;
-    aspect-ratio: 1 / 1; /* mantiene la proporción cuadrada */
-    object-fit: contain;
-    margin: 20px 0;
-    filter: drop-shadow(0 0 5px #FFD60A);
-    border-radius: 50%;
+  width: 180px;
+  aspect-ratio: 1 / 1; /* mantiene la proporción cuadrada */
+  object-fit: contain;
+  margin: 20px 0;
+  filter: drop-shadow(0 0 5px #FFD60A);
+  border-radius: 50%;
 }
 
 

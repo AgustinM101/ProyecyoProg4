@@ -50,6 +50,20 @@ export function HeroSection() {
                             <IconMapPin size={20} />
                         </ThemeIcon>
                         <Text>SOLER 490, CHIVILCOY 6620</Text>
+                        <a
+                            href="https://wa.me/5492346551210"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Text size="sm">2346 55 1210 (Gym)</Text>
+                        </a>
+                        <a
+                            href="https://wa.me/549234568702"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Text size="sm">2346 56 8702 (Asesorías)</Text>
+                        </a>
                     </div>
                 </div>
             </div>
