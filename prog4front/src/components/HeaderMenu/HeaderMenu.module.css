@@ -53,6 +53,11 @@
 }
 
 .logoInfinitsports {
-  height: 80px;
+  height: 70px;
   border-radius: 50%; 
+}
+
+.logoInfinitsports:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
 }

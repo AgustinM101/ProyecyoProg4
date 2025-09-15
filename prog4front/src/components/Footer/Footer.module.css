@@ -39,3 +39,11 @@
   color: #000 !important;
   border: none !important;
 }
+.socialIcon {
+  transition: all 0.2s ease;
+}
+
+.socialIcon:hover {
+  transform: scale(1.2);
+  border-color: #1DA1F2;
+}

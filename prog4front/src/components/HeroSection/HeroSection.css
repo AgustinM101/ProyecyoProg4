@@ -34,6 +34,7 @@
   font-family: 'Anton', sans-serif;
   letter-spacing: 3px;
   margin-bottom: 30px;
+  text-shadow: 0 0 5px #fff;
 }
 
 .hero-subtitle {
@@ -47,6 +48,10 @@
   color: #fff;
   opacity: 0.2;
   margin: 20px;
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px #FFD60A;
   
 
 }
@@ -84,13 +89,18 @@
   max-width: 300px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;   
+  justify-content: center; 
   gap: 12px;
+  height: 100%; 
 }
+
 
 .day{
     font-family: 'Anton', sans-serif;
     color: #FFD700;
+    letter-spacing: 2px;
+    font-size: 16px;
 }
 .hours{
     font-family: 'Oswald', sans-serif;
@@ -108,15 +118,19 @@
 .hero-btn {
   background: #FFD60A;
   color: #000;
+  border: none;
+  padding: 5px 20px;
+  font-size: 1rem;
   font-weight: bold;
-  font-size: 18px;
-  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
   border-radius: 8px;
+  box-shadow: 0 0 12px 2px #000, 0 0 24px 4px #20201e55;
 }
 
 .hero-btn:hover {
-  background: #FFC107;
-  color: #000;
+  background: #000000;
+  color: #FFD60A;
 }
 
 .hero-location {
@@ -124,6 +138,7 @@
   max-width: 300px;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: flex-end;
   gap: 8px;
   color: #fff;
@@ -131,4 +146,14 @@
   align-self: flex-end;
   margin-top: 32px; 
   margin-bottom: 16px;
+}
+
+.hero-location a {
+  text-decoration: none; 
+  color: #fff;           
+  transition: color 0.2s ease; 
+}
+
+.hero-location a:hover {
+  color: #FFD60A; 
 }
