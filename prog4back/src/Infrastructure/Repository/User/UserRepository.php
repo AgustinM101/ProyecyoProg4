@@ -85,9 +85,9 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         $query = <<<INSERT_QUERY
                     INSERT INTO
                         users
-                    (name, email, password, token)
+                    (name, email, password, token, token_auth_date)
                         VALUES
-                    (:name, :email, :password, :token)
+                    (:name, :email, :password, :token, :tokenAuthDate)
                 INSERT_QUERY;
             
         $parameters = [
@@ -95,6 +95,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             "email" => $user->email(),
             "password" => $user->password(),
             "token" => "",
+            "tokenAuthDate" => date('Y-m-d H:i:s', strtotime('+1 day')), // 1 día de expiración
         ];
 
         $this->execute($query, $parameters);
@@ -106,6 +107,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
                         UPDATE
                             users
                         SET
+                            name = :name,
                             email = :email,
                             password = :password,
                             token = :token,
@@ -115,6 +117,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
                     UPDATE_QUERY;
 
         $parameters = [
+            "name" => $user->name(),
             "email" => $user->email(),
             "password" => $user->password(),
             "token" => $user->token(),
@@ -160,5 +163,21 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             !empty($primitive["token_auth_date"]) ? new DateTime($primitive["token_auth_date"]) : null,
             $primitive["role"] ?? 'user',
         );
+    }
+
+    public function delete(int $id): void
+    {
+        $query = <<<DELETE_QUERY
+                        DELETE FROM
+                            users
+                        WHERE
+                            id = :id
+                    DELETE_QUERY;
+
+        $parameters = [
+            "id" => $id,
+        ];
+
+        $this->execute($query, $parameters);
     }
 }
