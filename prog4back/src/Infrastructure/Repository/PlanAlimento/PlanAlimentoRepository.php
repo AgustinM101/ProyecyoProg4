@@ -82,6 +82,12 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
         $this->execute($query, $parameters);
     }
 
+     public function delete(int $id): void
+    {
+        $query = "DELETE FROM planAlimentos WHERE id = :id";
+        $parameters = [ "id" => $id ];
+        $this->execute($query, $parameters);
+    }
     // Mapea un array de la DB a un objeto PlanAlimento
     private function toPlanAlimento(?array $primitive): ?PlanAlimento
     {
