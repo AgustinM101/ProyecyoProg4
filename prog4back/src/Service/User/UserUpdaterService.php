@@ -5,7 +5,7 @@ namespace Src\Service\User;
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserJwtValidatorService{
+final readonly class UserUpdaterService{
 
     private UserRepository $repository;
 
@@ -15,14 +15,15 @@ final readonly class UserJwtValidatorService{
         $this->repository = new UserRepository();
         $this->finderService = new UserFinderService();
     }
-    public function findByToken(string $token, string $token_auth_date): void{
+    public function update(string $name, string $email, int $password,int $id): void{
 
+        $user = $this->finderService->find($id);
+        if (!$user) {
     
+        throw new \Exception("Usuario con ID $id no encontrado.");
+}
 
-       // $user = $this->finderService->find($id);
-        //$jwt = md5(rand(1000, 9999));
-        //$user->modify($jwt, date("Y-m-d H:i:s", strtotime("+1 hour")));
-        
+        $user->modify($name, $email, $password);
 
         $this->repository->update($user);
     }

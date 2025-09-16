@@ -3,8 +3,7 @@
 use Src\Service\User\UserUpdaterService;
 use Src\Utils\ControllerUtils;
 
-final readonly class UserPutController
-{
+final readonly class UserPutController{
     private UserUpdaterService $service;
 
     public function __construct() {
@@ -16,11 +15,12 @@ final readonly class UserPutController
         $email = ControllerUtils::getPost("email");
         $password = ControllerUtils::getPost("password");
 
+        $user= $this->service->update($name, $email, $password, $id);
+
 
     }
 
-    $user = $this->service->update($name, $email, $password, $id);
-    }
-
+    
+    
 
 }
