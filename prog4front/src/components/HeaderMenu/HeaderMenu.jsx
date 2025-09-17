@@ -30,6 +30,7 @@ export function HeaderMenu() {
   }
 
   useEffect(() => {
+    console.log("isLoggedIn:", isLoggedIn);
     if (isLoggedIn) fetchUser();
   }, [isLoggedIn]);
 
