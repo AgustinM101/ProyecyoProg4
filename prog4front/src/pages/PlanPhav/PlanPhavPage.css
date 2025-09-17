@@ -1,0 +1,61 @@
+.phav-wrapper {
+  background: linear-gradient(to bottom, #0b0b0b, #1a1a1a);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.phav-container {
+  max-width: 800px;
+}
+
+.phav-card {
+  background: #121212;
+  border: 2px solid #f5c400; /* amarillo del gimnasio */
+  color: #fff;
+  text-align: center;
+}
+
+.phav-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #f5c400;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.phav-description {
+  font-size: 1.1rem;
+  color: #ddd;
+  margin-bottom: 1.5rem;
+}
+
+.phav-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.phav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+}
+
+.phav-icon {
+  color: #f5c400;
+}
+
+.phav-btn {
+  background: #f5c400;
+  color: #000;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.phav-btn:hover {
+  background: #ffdd33;
+}

@@ -49,7 +49,7 @@ export function GymCarousel() {
   }, [emblaComp, handleScrollComp]);
 
   return (
-    <div className={classes.carouselBg}>
+    <div className={classes.carouselBg} id="culturismo">
       <div className={classes.wrapper}>
         {/* Título y subtítulo */}
         <div className={classes.header}>

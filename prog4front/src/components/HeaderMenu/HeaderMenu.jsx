@@ -1,15 +1,17 @@
-import { IconChevronDown } from '@tabler/icons-react';
-import { Button, Center, Container, Group, Menu } from '@mantine/core';
 
-import { UserMenu } from './UserMenu';
-import classes from './HeaderMenu.module.css';
-import { menuConfig } from '../../services/menuConfig';
-import { useEffect, useState } from 'react';
-import { userService } from '../../services/userService';
+import { IconChevronDown } from "@tabler/icons-react";
+import { Button, Center, Container, Group, Menu } from "@mantine/core";
+import { UserMenu } from "./UserMenu";
+import classes from "./HeaderMenu.module.css";
+import { menuConfig } from "../../services/menuConfig";
+import { useEffect, useState } from "react";
+import { userService } from "../../services/userService";
+import { HashLink } from "react-router-hash-link";
+import { Link } from "react-router-dom";
 
 
 export function HeaderMenu() {
-  const isLoggedIn = localStorage.getItem("token") != undefined;
+  const isLoggedIn = localStorage.getItem ("token") != undefined;
   const [user, setUser] = useState(null);
 
   async function fetchUser() {
@@ -17,7 +19,10 @@ export function HeaderMenu() {
       const user = await userService.getCurrentUser();
       setUser({
         ...user.data,
-        image: "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png", 
+
+        image:
+          "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png",
+
       });
     } catch (error) {
       console.error("Error al traer usuario:", error);
@@ -25,14 +30,32 @@ export function HeaderMenu() {
   }
 
   useEffect(() => {
-    if(isLoggedIn) fetchUser();
+    console.log("isLoggedIn:", isLoggedIn);
+    if (isLoggedIn) fetchUser();
   }, [isLoggedIn]);
 
 
+  const renderLink = (link, label) => {
+  if (link.startsWith("#")) {
+    return (
+      <HashLink smooth to={link} className={classes.link}>
+        {label}
+      </HashLink>
+    );
+  }
+  return (
+    <Link to={link} className={classes.link}>
+      {label}
+    </Link>
+  );
+};
+
+
   const items = menuConfig.map((link) => {
-  const menuItems = link.links?.map((item) => (
-    <Menu.Item key={item.link}>{item.label}</Menu.Item>
-  ));
+    const menuItems = link.links?.map((item) => (
+      <Menu.Item key={item.link}>{renderLink(item.link, item.label)}</Menu.Item>
+
+    ));
 
     if (menuItems) {
       return (
@@ -43,16 +66,17 @@ export function HeaderMenu() {
           withinPortal
         >
           <Menu.Target>
-            <a
-              href={link.link}
-              className={classes.link}
-              onClick={(event) => event.preventDefault()}
-            >
+
+            {renderLink(
+              link.link,
+
               <Center>
                 <span className={classes.linkLabel}>{link.label}</span>
                 <IconChevronDown size={14} stroke={1.5} />
               </Center>
-            </a>
+
+            )}
+
           </Menu.Target>
           <Menu.Dropdown>{menuItems}</Menu.Dropdown>
         </Menu>
@@ -60,14 +84,11 @@ export function HeaderMenu() {
     }
 
     return (
-      <a
-        key={link.label}
-        href={link.link}
-        className={classes.link}
-        onClick={(event) => event.preventDefault()}
-      >
-        {link.label}
-      </a>
+
+      <div key={link.label}>
+        {renderLink(link.link, link.label)}
+      </div>
+
     );
   });
 
@@ -75,22 +96,26 @@ export function HeaderMenu() {
     <header className={classes.header}>
       <Container size="max-width">
         <div className={classes.inner}>
-          <a href="/">
+          <Link to="/">
             <img
               className={classes.logoInfinitsports}
               src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757462534/logo_nuevo_infinit_sports_nsmg9n.png"
               alt="logo infinit sports"
             />
-          </a>
+          </Link>
           <div className={classes.linksGroup}>
             <Group gap={5} visibleFrom="sm">
               {items}
             </Group>
           </div>
           <div className={classes.userGroup}>
-          {
-            isLoggedIn ? <UserMenu user={user} /> : <Button>Iniciar sesion</Button>
-          }
+
+            {isLoggedIn ? (
+              <UserMenu user={user} />
+            ) : (
+              <Button>Iniciar sesion</Button>
+            )}
+
           </div>
         </div>
       </Container>

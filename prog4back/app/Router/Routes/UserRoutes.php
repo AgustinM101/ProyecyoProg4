@@ -10,10 +10,10 @@ final readonly class UserRoutes {
         "method" => "POST"
       ],
       [
-        "name"=>"user_create",
-        "url"=>"/users",
-        "controller"=>"User/UserPostController.php",
-        "method"=>"POST"
+        "name" => "user_create",
+        "url" => "/users",
+        "controller" => "User/UserPostController.php",
+        "method" => "POST"
       ],
       [
         "name" => "users_get",
@@ -22,9 +22,33 @@ final readonly class UserRoutes {
         "method" => "GET"
       ],
       [
+        "name" => "user_delete",
+        "url" => "/users",
+        "controller" => "User/UserDeleteController.php",
+        "method" => "DELETE",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
+      ],
+      [
+        "name" => "user_update",
+        "url" => "/users",
+        "controller" => "User/UserPutController.php",
+        "method" => "PUT",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
+      ],
+      [
         "name" => "user_get",
         "url" => "/user",
-        "controller" => "User/UserGetController.php",
+        "controller" => "User/UserGetLoggedController.php",
         "method" => "GET"
       ]
     ];

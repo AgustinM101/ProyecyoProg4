@@ -1,15 +1,17 @@
 export const menuConfig = [
-  { link: '/inicio', label: 'INICIO' },
+
+  { link: '/', label: 'INICIO' },
   {
-    link: '#planes',
+    link: '/plans',
     label: 'PLANES',
     links: [
       { link: '/plans/phav', label: 'PHAV' },
-      { link: '/plans/competicion', label: 'COMPETICIÓN' },
+      { link: '/plans/competition', label: 'COMPETICIÓN' },
     ],
   },
+
   { link: '/nosotros', label: 'NOSOTROS' },
-  { link: '/transformaciones', label: 'TRANSFORMACIONES' },
-  { link: '/culturismo', label: 'CULTURISMO' },
-  { link: '/faqs', label: 'FAQS' },
+  { link: '#transformations', label: 'TRANSFORMACIONES' },
+  { link: '#culturismo', label: 'CULTURISMO' },
+  { link: '#faqs', label: 'FAQS' },
 ];

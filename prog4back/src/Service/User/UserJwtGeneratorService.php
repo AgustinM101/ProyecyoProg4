@@ -2,10 +2,10 @@
 
 namespace Src\Service\User;
 
-use Src\Entity\Article\User;
+use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserUpdaterService{
+final readonly class UserJwtGeneratorService{
 
     private UserRepository $repository;
 
@@ -22,7 +22,7 @@ final readonly class UserUpdaterService{
         $user->modify($jwt);
         
 
-        $this->repository->update($article);
+        $this->repository->update($user);
     }
     
 }
