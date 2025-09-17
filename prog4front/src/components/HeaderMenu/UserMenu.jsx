@@ -3,7 +3,7 @@ import { Menu, Avatar, Group, Text, UnstyledButton, Skeleton } from "@mantine/co
 import { IconChevronDown, IconLogout, IconUser } from "@tabler/icons-react";
 import cx from "clsx";
 import classes from "./HeaderMenu.module.css";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 
 export function UserMenu({user}) {
   const navigate = useNavigate()

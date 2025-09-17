@@ -4,9 +4,10 @@ import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { RegisterPage } from "./pages/RegisterPage/RegisterPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { PrivateRoute, PublicRoute } from "./Routes";
+import { AdminPage } from "./pages/AdminPage/AdminPage";
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
+					<Route path="/admin" element={<AdminPage/>} />
 					
 					{/*Rutas públicas*/}
 					<Route element={<PublicRoute />}>
@@ -24,6 +26,7 @@ function App() {
 
 					{/*Rutas privadas */}
 					<Route element={<PrivateRoute />}>
+
 						
 						
 					</Route>
