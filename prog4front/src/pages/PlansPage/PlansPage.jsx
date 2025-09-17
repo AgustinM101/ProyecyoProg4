@@ -1,7 +1,9 @@
 import { Carousel } from "@mantine/carousel";
 import "@mantine/carousel/styles.css";
-import { Link } from "react-router-dom"; // <-- import necesario
+import { Link } from "react-router-dom"; 
 import "./PlansPage.css";
+import { Footer } from "../../components/Footer/Footer";
+import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 
 export function PlansPage() {
   const plans = [
@@ -31,6 +33,8 @@ export function PlansPage() {
   ];
 
   return (
+    <>
+    <HeaderMenu />
     <div className="plans-container">
       <h1 className="plans-title">Elegí tu plan</h1>
 
@@ -66,5 +70,7 @@ export function PlansPage() {
         ))}
       </div>
     </div>
+    <Footer />
+    </>
   );
 }

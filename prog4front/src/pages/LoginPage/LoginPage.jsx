@@ -1,5 +1,5 @@
 import "./LoginPage.css";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	Button,
 	Container,

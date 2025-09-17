@@ -7,10 +7,11 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { PrivateRoute, PublicRoute } from "./Routes";
-import { PlansPage } from './pages/PlanPage/PlansPage';
+
 
 
 import { AdminPage } from "./pages/AdminPage/AdminPage";
+import { PlansPage } from "./pages/PlansPage/PlansPage";
 
 
 function App() {
@@ -20,14 +21,16 @@ function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/admin" element={<AdminPage/>} />
-					
+					<Route path="/plans" element={<PlansPage />} />	
 					
 					{/*Rutas públicas*/}
 					<Route element={<PublicRoute />}>
 						
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/register" element={<RegisterPage />} />
-						<Route path="/plans" element={<PlansPage />} />
+						
+
+
 					</Route>
 
 					{/*Rutas privadas */}
@@ -36,6 +39,7 @@ function App() {
 						
 						
 					</Route>
+					<Route path="*" element={<h1>Ruta no encontrada</h1>} />
 				</Routes>
 			</BrowserRouter>
 		</MantineProvider>

@@ -6,7 +6,7 @@ export const menuConfig = [
     label: 'PLANES',
     links: [
       { link: '/plans/phav', label: 'PHAV' },
-      { link: '/plans/competicion', label: 'COMPETICIÓN' },
+      { link: '/plans/competition', label: 'COMPETICIÓN' },
     ],
   },
 
