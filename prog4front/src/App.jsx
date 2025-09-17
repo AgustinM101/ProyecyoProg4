@@ -7,7 +7,11 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { PrivateRoute, PublicRoute } from "./Routes";
+import { PlansPage } from './pages/PlanPage/PlansPage';
+
+
 import { AdminPage } from "./pages/AdminPage/AdminPage";
+
 
 function App() {
 	return (
@@ -17,11 +21,13 @@ function App() {
 					<Route path="/" element={<HomePage />} />
 					<Route path="/admin" element={<AdminPage/>} />
 					
+					
 					{/*Rutas públicas*/}
 					<Route element={<PublicRoute />}>
 						
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/register" element={<RegisterPage />} />
+						<Route path="/plans" element={<PlansPage />} />
 					</Route>
 
 					{/*Rutas privadas */}

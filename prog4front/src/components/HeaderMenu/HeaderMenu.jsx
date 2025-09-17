@@ -1,3 +1,4 @@
+
 import { IconChevronDown } from "@tabler/icons-react";
 import { Button, Center, Container, Group, Menu } from "@mantine/core";
 import { UserMenu } from "./UserMenu";
@@ -10,7 +11,7 @@ import { Link } from "react-router-dom";
 
 
 export function HeaderMenu() {
-  const isLoggedIn = localStorage.getItem("token") != undefined;
+  const isLoggedIn = localStorage.getItem ("token") != undefined;
   const [user, setUser] = useState(null);
 
   async function fetchUser() {
@@ -18,8 +19,10 @@ export function HeaderMenu() {
       const user = await userService.getCurrentUser();
       setUser({
         ...user.data,
+
         image:
           "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png",
+
       });
     } catch (error) {
       console.error("Error al traer usuario:", error);
@@ -29,6 +32,7 @@ export function HeaderMenu() {
   useEffect(() => {
     if (isLoggedIn) fetchUser();
   }, [isLoggedIn]);
+
 
   const renderLink = (link, label) => {
   if (link.startsWith("#")) {
@@ -49,6 +53,7 @@ export function HeaderMenu() {
   const items = menuConfig.map((link) => {
     const menuItems = link.links?.map((item) => (
       <Menu.Item key={item.link}>{renderLink(item.link, item.label)}</Menu.Item>
+
     ));
 
     if (menuItems) {
@@ -60,13 +65,17 @@ export function HeaderMenu() {
           withinPortal
         >
           <Menu.Target>
+
             {renderLink(
               link.link,
+
               <Center>
                 <span className={classes.linkLabel}>{link.label}</span>
                 <IconChevronDown size={14} stroke={1.5} />
               </Center>
+
             )}
+
           </Menu.Target>
           <Menu.Dropdown>{menuItems}</Menu.Dropdown>
         </Menu>
@@ -74,9 +83,11 @@ export function HeaderMenu() {
     }
 
     return (
+
       <div key={link.label}>
         {renderLink(link.link, link.label)}
       </div>
+
     );
   });
 
@@ -97,11 +108,13 @@ export function HeaderMenu() {
             </Group>
           </div>
           <div className={classes.userGroup}>
+
             {isLoggedIn ? (
               <UserMenu user={user} />
             ) : (
               <Button>Iniciar sesion</Button>
             )}
+
           </div>
         </div>
       </Container>

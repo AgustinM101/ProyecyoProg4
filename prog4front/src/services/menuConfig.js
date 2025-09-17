@@ -1,4 +1,5 @@
 export const menuConfig = [
+
   { link: '/', label: 'INICIO' },
   {
     link: '/plans',
@@ -8,6 +9,7 @@ export const menuConfig = [
       { link: '/plans/competicion', label: 'COMPETICIÓN' },
     ],
   },
+
   { link: '/nosotros', label: 'NOSOTROS' },
   { link: '#transformations', label: 'TRANSFORMACIONES' },
   { link: '#culturismo', label: 'CULTURISMO' },
