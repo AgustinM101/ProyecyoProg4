@@ -67,7 +67,7 @@ export function Transformations() {
   ];
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} id="transformations">
       {/* Encabezado */}
       <Center className={classes.header}>
         <Stack align="center" gap="xs">

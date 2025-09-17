@@ -62,4 +62,11 @@ final class User {
         $this->token = md5($this->email.$this->id.rand(1000, 9999).date("YmdHis"));
         $this->tokenAuthDate = new DateTime("+1 hours");
     }
+    public function modify(string $name, string $email, string $password): void
+{
+    $this->name = $name;
+    $this->email = $email;
+    $this->password = $password; // idealmente hasheada
+}
+
 }

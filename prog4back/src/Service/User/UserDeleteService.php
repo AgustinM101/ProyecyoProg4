@@ -5,7 +5,7 @@ namespace Src\Service\User;
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserJwtValidatorService{
+final readonly class UserDeleteService{
 
     private UserRepository $repository;
 
@@ -15,14 +15,12 @@ final readonly class UserJwtValidatorService{
         $this->repository = new UserRepository();
         $this->finderService = new UserFinderService();
     }
-    public function findByToken(string $token, string $token_auth_date): void{
-
     
+    public function delete(int $id): void{
 
-       // $user = $this->finderService->find($id);
-        //$jwt = md5(rand(1000, 9999));
-        //$user->modify($jwt, date("Y-m-d H:i:s", strtotime("+1 hour")));
-        
+
+        $user = $this->finderService->find($id);
+        $this->repository->delete($id);
 
         $this->repository->update($user);
     }

@@ -10,12 +10,16 @@ import { PrivateRoute, PublicRoute } from "./Routes";
 import { PlansPage } from './pages/PlanPage/PlansPage';
 
 
+import { AdminPage } from "./pages/AdminPage/AdminPage";
+
+
 function App() {
 	return (
 		<MantineProvider defaultColorScheme="dark">
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
+					<Route path="/admin" element={<AdminPage/>} />
 					
 					
 					{/*Rutas públicas*/}
@@ -23,11 +27,12 @@ function App() {
 						
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/register" element={<RegisterPage />} />
-						<Route path="/planes" element={<PlansPage />} />
+						<Route path="/plans" element={<PlansPage />} />
 					</Route>
 
 					{/*Rutas privadas */}
 					<Route element={<PrivateRoute />}>
+
 						
 						
 					</Route>
