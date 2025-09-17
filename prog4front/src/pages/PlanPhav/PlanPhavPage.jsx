@@ -1,5 +1,5 @@
 import { Container, Title, Text, Card, Button, Group, Divider } from "@mantine/core";
-import { IconDumbbell, IconClockHour4, IconCurrencyDollar } from "@tabler/icons-react";
+import {  IconClockHour4, IconCurrencyDollar } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import "./PlanPhavPage.css";
 
@@ -39,7 +39,7 @@ export function PlanPhavPage() {
             </div>
 
             <div className="phav-item">
-              <IconDumbbell size={30} className="phav-icon" />
+              
               <div>
                 <Text fw={700}>Entrenamiento</Text>
                 <Text>5 días por semana</Text>

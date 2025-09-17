@@ -12,8 +12,8 @@ import { PrivateRoute, PublicRoute } from "./Routes";
 
 import { AdminPage } from "./pages/AdminPage/AdminPage";
 import { PlansPage } from "./pages/PlansPage/PlansPage";
-import { PlanPhavPage } from "./pages/PlanPhavPage/PlanPhavPage";
-import { PlanCompeticionPage } from "./pages/PlanCompeticionPage/PlanCompeticionPage";
+import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
+
 
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
 					<Route path="/admin" element={<AdminPage/>} />
 					<Route path="/plans" element={<PlansPage />} />	
 					<Route path="/plans/phav" element={<PlanPhavPage />} />
-					<Route path="/plans/competicion" element={<PlanCompeticionPage />} />
+					
 
 
 					
