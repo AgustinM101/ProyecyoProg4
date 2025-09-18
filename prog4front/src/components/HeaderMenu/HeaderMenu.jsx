@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 
 
 export function HeaderMenu() {
-  const isLoggedIn = localStorage.getItem ("token") != undefined;
+  const token = localStorage.getItem("token");
+  const isLoggedIn = token != undefined && token != null && token != "";
   const [user, setUser] = useState(null);
 
   async function fetchUser() {
@@ -110,12 +111,9 @@ export function HeaderMenu() {
           </div>
           <div className={classes.userGroup}>
 
-            {isLoggedIn ? (
-              <UserMenu user={user} />
-            ) : (
-              <Button>Iniciar sesion</Button>
-            )}
-
+            {token && !user ? null
+            : <UserMenu user={user} />
+            }
           </div>
         </div>
       </Container>
