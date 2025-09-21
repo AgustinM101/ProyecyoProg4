@@ -1,29 +1,58 @@
+/* Sección completa */
 .nosotros-section {
   padding: 60px 20px 60px 20px; /* menos espacio arriba */
   width: 100%;
-  background: linear-gradient(135deg, #000, #000);
-  /* no display:flex ni align-items */
+  background: linear-gradient(
+      rgba(0,0,0,0.85),
+      rgba(0,0,0,0.95)
+    );
   overflow: visible;
 }
 
+/* Card esfumado / glassmorphism */
 .nosotros-card {
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffcc00;
-  padding: 40px;
+  background: rgba(0, 0, 0, 0.65); /* semi-transparente */
+  backdrop-filter: blur(15px);      /* efecto vidrio */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* borde sutil */
   border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5); /* sombra para profundidad */
+  padding: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-  flex-wrap: wrap; /* permite columnas largas */
-  width: 100%; /* ocupa todo el ancho disponible */
-  max-width: 1200px; /* limita ancho máximo */
-  margin: 0 auto; /* centra horizontalmente */
-  height: auto; /* crece según contenido */
+  flex-wrap: wrap; 
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: auto;
 }
 
+/* Encabezado del card */
+.nosotros-header {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Texto del encabezado */
+.nosotros-encabezado {
+  color: #ddd;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-right: 20px;
+  text-transform: uppercase;
+}
+
+/* Nombre del preparador en dorado */
+.nosotros-title {
+  color: #FFD60A !important; /* fuerza el color dorado */
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Texto completo */
 .nosotros-texto {
   margin-top: 20px;
   line-height: 1.8;
@@ -36,5 +65,25 @@
   white-space: normal;
 }
 
+@media (max-width: 768px) {
+  .nosotros-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
 
+  .nosotros-header {
+    justify-content: center;
+  }
 
+  .nosotros-title {
+    font-size: 1.5rem;
+  }
+
+  .nosotros-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+}

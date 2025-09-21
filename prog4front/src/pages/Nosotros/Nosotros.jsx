@@ -1,10 +1,11 @@
+
 import { 
-  Container, Title, Text, Card, Group, Image, Button, Typography, Stack 
+  Container, Title, Text, Card, Group, Image, Button, Stack, Typography 
 } from "@mantine/core";
-import "./Nosotros.css";
 import { Grid, SimpleGrid } from '@mantine/core';
 import { Footer } from "../../components/Footer/Footer";
-import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu"; // 👈 Header agregado
+import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu"; 
+import "./Nosotros.css";
 
 export function Nosotros() {
   return (
@@ -12,6 +13,7 @@ export function Nosotros() {
       {/* Header común */}
       <HeaderMenu />
 
+      {/* Sección Nosotros */}
       <section id="nosotros" className="nosotros-section">
         <Container size="lg" py="xl">
           <Card className="nosotros-card">
@@ -40,7 +42,7 @@ export function Nosotros() {
               {/* Columna Texto */}
               <Grid gutter="md">
                 <Grid.Col>
-                  <Group spacing="md" align="center" className="nosotros-header">
+                  <Group spacing="md" align="flex-start" className="nosotros-header">
                     <Typography className="nosotros-encabezado">
                       PREPARADOR FÍSICO, ATLETA PROFESIONAL DE CULTURISMO NATURAL, GRADUADO EN CIENCIAS DE LA ACTIVIDAD FÍSICA Y DEL DEPORTE.
                     </Typography>
@@ -50,7 +52,7 @@ export function Nosotros() {
                   </Group>
                 </Grid.Col>
 
-                <Grid.Col span={20}>
+                <Grid.Col>
                   <Text size="sm" mt="md" className="nosotros-texto">
                     Soy médico, preparador físico, profesor y atleta de culturismo natural. 
                     Estudié Medicina en la Universidad del País Vasco (2013–2019) y tras 
