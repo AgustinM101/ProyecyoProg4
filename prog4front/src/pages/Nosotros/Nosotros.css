@@ -1,66 +1,68 @@
- .nosotros-section {
-  padding: 80px 20px;
-  min-height: 100vh;
+/* Sección completa */
+.nosotros-section {
+  padding: 60px 20px 60px 20px; /* menos espacio arriba */
   width: 100%;
-  background: linear-gradient(135deg, #000, #000);;
+  background: linear-gradient(
+      rgba(0,0,0,0.85),
+      rgba(0,0,0,0.95)
+    );
+  overflow: visible;
 }
-html, body {
-  height: 100%;
-  margin: 0;
-  background: #000; /* por si hay zonas fuera de la sección */
-}
+
+/* Card esfumado / glassmorphism */
 .nosotros-card {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  padding: 40px;
+  background: rgba(0, 0, 0, 0.65); /* semi-transparente */
+  backdrop-filter: blur(15px);      /* efecto vidrio */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* borde sutil */
   border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5); /* sombra para profundidad */
+  padding: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  flex-wrap: wrap; 
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: auto;
 }
 
-
+/* Encabezado del card */
 .nosotros-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
+/* Texto del encabezado */
 .nosotros-encabezado {
   color: #ddd;
   font-weight: 600;
   font-size: 1.2rem;
   margin-right: 20px;
   text-transform: uppercase;
-  
 }
 
+/* Nombre del preparador en dorado */
 .nosotros-title {
-  color: #FFD60A;
-  border: #000;
+  color: #FFD60A !important; /* fuerza el color dorado */
   font-weight: 800;
   font-size: 2rem;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
+/* Texto completo */
 .nosotros-texto {
   margin-top: 20px;
   line-height: 1.8;
   color: #ddd;
   font-size: 1.1rem;
-  max-width: 700px;   /* límite de ancho */
-  margin-left: auto;  /* centrado horizontal */
+  max-width: 700px;
+  margin-left: auto;
   margin-right: auto;
-}
-.nosotros-texto strong {
-  color: #FFD60A;
-  font-weight: 600;
-}
-.nosotros-texto strong {
-  color: #FFD60A;
+  overflow: visible;
+  white-space: normal;
 }
 
 @media (max-width: 768px) {
@@ -77,10 +79,11 @@ html, body {
   .nosotros-title {
     font-size: 1.5rem;
   }
+
   .nosotros-container {
-  width: 100%;
-  max-width: 1200px; /* límite de ancho para no estirarse demasiado */
-  padding: 0 20px;   /* espacio interno */
-  box-sizing: border-box;
-}
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
 }

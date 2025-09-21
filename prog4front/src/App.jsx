@@ -10,12 +10,10 @@ import { HomePage } from "./pages/HomePage/HomePage";
 import { Nosotros } from "./pages/Nosotros/Nosotros";
 import { PrivateRoute, PublicRoute } from "./Routes";
 
-
-
-
 import { AdminPage } from "./pages/AdminPage/AdminPage";
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
+import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
 
 
 
@@ -29,6 +27,7 @@ function App() {
 					<Route path="/admin" element={<AdminPage/>} />
 					<Route path="/plans" element={<PlansPage />} />	
 					<Route path="/plans/phav" element={<PlanPhavPage />} />
+					<Route path="/plans/competition" element={<PlanCompeticionPage />} />
 					
 
 

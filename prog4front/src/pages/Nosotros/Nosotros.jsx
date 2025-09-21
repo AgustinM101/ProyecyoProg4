@@ -1,29 +1,24 @@
+
 import { 
-  Container, Title, Text, Card, Group, Image, Button, Typography, Stack 
+  Container, Title, Text, Card, Group, Image, Button, Stack, Typography 
 } from "@mantine/core";
-import "./Nosotros.css";
 import { Grid, SimpleGrid } from '@mantine/core';
 import { Footer } from "../../components/Footer/Footer";
+import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu"; 
+import "./Nosotros.css";
 
 export function Nosotros() {
   return (
-    <>  
+    <>
+      {/* Header común */}
+      <HeaderMenu />
+
+      {/* Sección Nosotros */}
       <section id="nosotros" className="nosotros-section">
         <Container size="lg" py="xl">
-          <Card
-            shadow="lg"
-            radius="lg"
-            size="lg"
-            withBorder={false}
-            padding="xl"
-            style={{
-              background: "rgba(255, 255, 255, 0.08)", // traslucido
-              backdropFilter: "blur(10px)", // efecto vidrio
-              border: "1px solid rgba(255, 255, 255, 0.2)", // borde sutil
-            }}
-          >
+          <Card className="nosotros-card">
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" align="flex-start">
-              
+
               {/* Columna Imagen + Botón */}
               <Stack spacing="md" align="center">
                 <Image
@@ -35,7 +30,7 @@ export function Nosotros() {
 
                 <Button 
                   variant="filled" 
-                  color="rgba(255, 214, 10, 0.7)" 
+                  color="#FFD60A" 
                   radius="md" 
                   size="md"
                   className="nosotros-button"
@@ -47,11 +42,9 @@ export function Nosotros() {
               {/* Columna Texto */}
               <Grid gutter="md">
                 <Grid.Col>
-                  <Group spacing="md" align="center" className="nosotros-header">
-                    <Typography>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: '<p> PREPARADOR FÍSICO, ATLETA PROFESIONAL DE CULTURISMO NATURAL, GRADUADO EN CIENCIAS DE LA ACTIVIDAD FÍSICA Y DEL DEPORTE.</p>' }}
-                      /> 
+                  <Group spacing="md" align="flex-start" className="nosotros-header">
+                    <Typography className="nosotros-encabezado">
+                      PREPARADOR FÍSICO, ATLETA PROFESIONAL DE CULTURISMO NATURAL, GRADUADO EN CIENCIAS DE LA ACTIVIDAD FÍSICA Y DEL DEPORTE.
                     </Typography>
                     <Title order={2} className="nosotros-title">
                       <strong>ADRIAN SALVATORI</strong>
@@ -59,7 +52,7 @@ export function Nosotros() {
                   </Group>
                 </Grid.Col>
 
-                <Grid.Col span={20}>
+                <Grid.Col>
                   <Text size="sm" mt="md" className="nosotros-texto">
                     Soy médico, preparador físico, profesor y atleta de culturismo natural. 
                     Estudié Medicina en la Universidad del País Vasco (2013–2019) y tras 
