@@ -15,6 +15,7 @@ export function PlanPhavPage() {
         <Container size="md" className="phav-container">
           <Card shadow="xl" padding="lg" radius="lg" className="phav-card">
 
+            {/* Logo */}
             <div className="phav-logo-container">
               <img
                 src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757462534/logo_nuevo_infinit_sports_nsmg9n.png"
@@ -23,10 +24,12 @@ export function PlanPhavPage() {
               />
             </div>
 
+            {/* Título */}
             <Title order={2} className="phav-title">
               PLAN PHAV
             </Title>
 
+            {/* Descripción */}
             <Text size="lg" className="phav-description">
               El plan PHAV está diseñado para lograr una recomposición corporal efectiva,
               mejorar fuerza, resistencia y estética de manera progresiva y saludable.
@@ -34,6 +37,7 @@ export function PlanPhavPage() {
 
             <Divider my="md" />
 
+            {/* Detalles del plan */}
             <Group className="phav-details" direction="column" spacing="md">
               <div className="phav-item">
                 <IconCurrencyDollar size={30} className="phav-icon" />
@@ -61,10 +65,18 @@ export function PlanPhavPage() {
 
             <Divider my="md" />
 
-            <Group justify="center" mt="lg">
-              <Button size="lg" radius="md" className="phav-btn">
-                Comprar plan
-              </Button>
+            {/* Botones */}
+            <Group position="center" spacing="md" mt="lg">
+              <div>
+                <Link to="/form">
+                  <Button size="lg" radius="md" className="phav-btn">
+                    Comprar plan
+                  </Button>
+                </Link>
+              </div>
+
+
+
               <Link to="/plans">
                 <Button size="lg" variant="outline" radius="md" color="gray">
                   Volver a planes
@@ -81,4 +93,5 @@ export function PlanPhavPage() {
     </>
   );
 }
+
 

@@ -14,6 +14,7 @@ import { AdminPage } from "./pages/AdminPage/AdminPage";
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
+import { FormPage } from "./pages/FormPage/FormPage";
 
 
 
@@ -28,7 +29,7 @@ function App() {
 					<Route path="/plans" element={<PlansPage />} />	
 					<Route path="/plans/phav" element={<PlanPhavPage />} />
 					<Route path="/plans/competition" element={<PlanCompeticionPage />} />
-					
+					<Route path="/form" element={<FormPage />} />
 
 
 					
