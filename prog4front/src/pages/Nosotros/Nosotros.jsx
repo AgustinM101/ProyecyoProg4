@@ -4,26 +4,19 @@ import {
 import "./Nosotros.css";
 import { Grid, SimpleGrid } from '@mantine/core';
 import { Footer } from "../../components/Footer/Footer";
+import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu"; // 👈 Header agregado
 
 export function Nosotros() {
   return (
-    <>  
+    <>
+      {/* Header común */}
+      <HeaderMenu />
+
       <section id="nosotros" className="nosotros-section">
         <Container size="lg" py="xl">
-          <Card
-            shadow="lg"
-            radius="lg"
-            size="lg"
-            withBorder={false}
-            padding="xl"
-            style={{
-              background: "rgba(255, 255, 255, 0.08)", // traslucido
-              backdropFilter: "blur(10px)", // efecto vidrio
-              border: "1px solid rgba(255, 255, 255, 0.2)", // borde sutil
-            }}
-          >
+          <Card className="nosotros-card">
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" align="flex-start">
-              
+
               {/* Columna Imagen + Botón */}
               <Stack spacing="md" align="center">
                 <Image
@@ -35,7 +28,7 @@ export function Nosotros() {
 
                 <Button 
                   variant="filled" 
-                  color="rgba(255, 214, 10, 0.7)" 
+                  color="#FFD60A" 
                   radius="md" 
                   size="md"
                   className="nosotros-button"
@@ -48,10 +41,8 @@ export function Nosotros() {
               <Grid gutter="md">
                 <Grid.Col>
                   <Group spacing="md" align="center" className="nosotros-header">
-                    <Typography>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: '<p> PREPARADOR FÍSICO, ATLETA PROFESIONAL DE CULTURISMO NATURAL, GRADUADO EN CIENCIAS DE LA ACTIVIDAD FÍSICA Y DEL DEPORTE.</p>' }}
-                      /> 
+                    <Typography className="nosotros-encabezado">
+                      PREPARADOR FÍSICO, ATLETA PROFESIONAL DE CULTURISMO NATURAL, GRADUADO EN CIENCIAS DE LA ACTIVIDAD FÍSICA Y DEL DEPORTE.
                     </Typography>
                     <Title order={2} className="nosotros-title">
                       <strong>ADRIAN SALVATORI</strong>
