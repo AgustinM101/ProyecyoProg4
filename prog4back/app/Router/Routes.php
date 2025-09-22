@@ -6,15 +6,13 @@ include_once "Router.php";
 function startRouter(): Router 
 {
     $routes = [];
-
     
-
     include_once "Routes/ItemsOrderRoutes.php";
     $routes = array_merge($routes, ItemsOrderRoutes::getRoutes());
 
     include_once "Routes/OrderListRoutes.php";
     $routes = array_merge($routes, OrderListRoutes::getRoutes());
-
+    
     include_once "Routes/PlanAlimentoRoutes.php";
     $routes = array_merge($routes, PlanAlimentoRoutes::getRoutes());
 

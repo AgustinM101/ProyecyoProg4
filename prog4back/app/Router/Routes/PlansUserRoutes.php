@@ -12,7 +12,7 @@ final readonly class PlansUserRoutes {
             ],
             [
                 "name" => "plans_users_get_by_user",
-                "url" => "/plans_users/{id_user}",
+                "url" => "/plansUsers/{id_user}",
                 "controller" => "PlansUser/PlansUserGetByUserController.php",
                 "method" => "GET",
                 "parameters" => [
@@ -24,13 +24,13 @@ final readonly class PlansUserRoutes {
             ],
             [
                 "name" => "plans_users_create",
-                "url" => "/plans_users",
+                "url" => "/plansUsers",
                 "controller" => "PlansUser/PlansUserCreateController.php",
                 "method" => "POST"
             ],
             [
                 "name" => "plans_users_remove",
-                "url" => "/plans_users",
+                "url" => "/plansUsers/{id_user}/{id_plan}",
                 "controller" => "PlansUser/PlansUserRemoveController.php",
                 "method" => "DELETE"
             ]

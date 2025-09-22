@@ -28,16 +28,18 @@ function App() {
           <Route path="/plans" element={<PlansPage />} />
           <Route path="/plans/phav" element={<PlanPhavPage />} />
           <Route path="/plans/competition" element={<PlanCompeticionPage />} />
-
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/nosotros" element={<Nosotros />} />
+          <Route path="/form" element={<FormPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            
           {/* Rutas públicas */}
           <Route element={<PublicRoute />}>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/nosotros" element={<Nosotros />} />
+            
 
             {/* 👇 agregadas aquí */}
-            <Route path="/form" element={<FormPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            
           </Route>
 
           {/* Rutas privadas */}
