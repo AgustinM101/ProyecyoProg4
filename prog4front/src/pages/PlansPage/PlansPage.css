@@ -7,7 +7,8 @@
   background: 
     linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), /* capa oscura encima */
     url("https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/151F91D9-5B13-43A5-9C7B-F2F6875E7057_e1zipk.jpg") center/cover no-repeat;
-}
+  filter: drop-shadow(0 0 5px #FFD60A);
+  }
 
 
 /* Título principal */

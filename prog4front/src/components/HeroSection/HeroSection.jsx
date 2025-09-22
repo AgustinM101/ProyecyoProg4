@@ -40,11 +40,7 @@ export function HeroSection() {
                         <Text className="day">SÁBADO</Text>
                         <Text className="hours">08:00 hs - 14:00 hs</Text>
                     </div>
-                    <div className="hero-btn-container">
-                        <Button className="hero-btn">
-                            Empezar ya
-                        </Button>
-                    </div>
+
                     <div className="hero-location">
                         <ThemeIcon color="yellow" radius="xl">
                             <IconMapPin size={20} />

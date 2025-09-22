@@ -8,6 +8,7 @@
   align-items: center;
   color: white;
   position: relative;
+  filter: drop-shadow(0 0 5px #FFD60A);
 }
 
 .overlay {
@@ -47,7 +48,8 @@
   font-size: 5rem; 
   color: #fff;
   opacity: 0.2;
-  margin: 20px;
+  margin: 40px 20px;
+
   text-shadow: 
     0 0 5px #fff,
     0 0 10px #fff,
@@ -108,30 +110,7 @@
 }
 
 
-.hero-btn-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.hero-btn {
-  background: #FFD60A;
-  color: #000;
-  border: none;
-  padding: 5px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-  border-radius: 8px;
-  box-shadow: 0 0 12px 2px #000, 0 0 24px 4px #20201e55;
-}
-
-.hero-btn:hover {
-  background: #000000;
-  color: #FFD60A;
-}
 
 .hero-location {
   flex: 1;

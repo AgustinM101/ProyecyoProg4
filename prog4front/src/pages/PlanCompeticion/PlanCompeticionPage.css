@@ -8,8 +8,9 @@
   background-size: cover;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* 👈 sube el recuadro hacia arriba */
-  padding: 4rem 2rem;       /* más espacio superior */
+  align-items: flex-start; 
+  padding: 4rem 2rem;      
+  filter: drop-shadow(0 0 5px #FFD60A);
 }
 
 .competicion-container {
@@ -19,7 +20,7 @@
   width: 100%;
   max-width: 850px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  margin-top: 2rem; /* 👈 control extra para subir/bajar */
+  margin-top: 2rem; 
 }
 
 .competicion-card {

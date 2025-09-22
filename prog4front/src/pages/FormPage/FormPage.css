@@ -5,9 +5,12 @@
               url('https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/5607F484-0890-4227-B154-67B45051E638_llzsrm.jpg') no-repeat center center fixed;
   background-size: cover;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   padding: 2rem;
+  filter: drop-shadow(0 0 5px #FFD60A);
+  gap: 20px;
 }
 
 /* Card del formulario */
