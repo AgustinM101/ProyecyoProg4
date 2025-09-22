@@ -1,46 +1,65 @@
-import { Container, Card, Title, Text, Stack, Button, Group } from "@mantine/core";
+import { Container, Card, Title, Text, Group, Divider } from "@mantine/core";
+import { IconUser, IconMail, IconPhone, IconCreditCard, IconCalendar, IconClockHour4 } from "@tabler/icons-react";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
-import { Link } from "react-router-dom";
 import "./ProfilePage.css";
 
 export function ProfilePage() {
-  // Simulación de datos de usuario
-  const user = {
-    nombre: "Norberto E. Díaz",
-    email: "norberto@example.com",
-    telefono: "+54 234 6551210",
-    plan: "Plan PHAV",
-  };
+  // Recuperamos datos del localStorage
+  const userData = JSON.parse(localStorage.getItem("userProfile"));
 
   return (
     <>
       <HeaderMenu />
 
       <div className="profile-wrapper">
-        <Container size="sm">
-          <Card className="profile-card" shadow="lg" padding="xl" radius="lg">
+        <Container size="md" className="profile-container">
+          <Card shadow="xl" radius="lg" padding="xl" className="profile-card">
             <Title order={2} className="profile-title">
-              Perfil de Usuario
+              Mi Perfil
             </Title>
 
-            <Stack spacing="md" mt="lg">
-              <Text><strong>Nombre:</strong> {user.nombre}</Text>
-              <Text><strong>Email:</strong> {user.email}</Text>
-              <Text><strong>Teléfono:</strong> {user.telefono}</Text>
-              <Text><strong>Plan contratado:</strong> {user.plan}</Text>
+            {!userData ? (
+              <Text>No hay datos de usuario. Por favor realiza una compra.</Text>
+            ) : (
+              <div className="profile-info">
+                <Group spacing="md">
+                  <IconUser size={24} className="profile-icon" />
+                  <Text><strong>Nombre:</strong> {userData.nombre}</Text>
+                </Group>
 
-              <Group position="center" mt="xl">
-                <Link to="/myplans">
-                  <Button variant="outline" radius="md">
-                    Ver mis planes
-                  </Button>
-                </Link>
-                <Button variant="filled" radius="md" color="#FFD60A">
-                  Editar perfil
-                </Button>
-              </Group>
-            </Stack>
+                <Group spacing="md">
+                  <IconMail size={24} className="profile-icon" />
+                  <Text><strong>Email:</strong> {userData.email}</Text>
+                </Group>
+
+                <Group spacing="md">
+                  <IconPhone size={24} className="profile-icon" />
+                  <Text><strong>Teléfono:</strong> {userData.telefono}</Text>
+                </Group>
+
+                <Divider my="md" />
+
+                <Group spacing="md">
+                  <IconCreditCard size={24} className="profile-icon" />
+                  <Text><strong>Método de pago:</strong> {userData.paymentMethod}</Text>
+                </Group>
+
+                <Group spacing="md">
+                  <IconCalendar size={24} className="profile-icon" />
+                  <Text><strong>Fecha de compra:</strong> {userData.fechaCompra}</Text>
+                </Group>
+
+                <Group spacing="md">
+                  <IconClockHour4 size={24} className="profile-icon" />
+                  <Text><strong>Duración:</strong> 3 meses</Text>
+                </Group>
+
+                <Group spacing="md">
+                  <Text><strong>Plan adquirido:</strong> {userData.plan}</Text>
+                </Group>
+              </div>
+            )}
           </Card>
         </Container>
       </div>
@@ -49,3 +68,4 @@ export function ProfilePage() {
     </>
   );
 }
+
