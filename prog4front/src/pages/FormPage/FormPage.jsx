@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Container, Card, TextInput, Title, Button, Stack, Select, Group, Text } from "@mantine/core";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
+import { useNavigate } from "react-router-dom";
 import "./FormPage.css";
 
 export function FormPage() {
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
   const [formData, setFormData] = useState({
     nombre: "",
@@ -22,8 +24,19 @@ export function FormPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Datos de compra:", formData, "Forma de pago:", paymentMethod);
-    alert("Compra simulada. Revisa la consola para los datos.");
+    const userData = {
+      ...formData,         
+      plan: "Plan PHAV",   
+      paymentMethod,       
+      fechaCompra: new Date().toLocaleDateString(), 
+    };
+
+    // Guardar en localStorage
+    localStorage.setItem("userProfile", JSON.stringify(userData));
+
+    // Simulación de redirección
+    alert("Compra simulada. Redirigiendo a tu perfil...");
+    navigate("/profile"); 
   };
 
   return (
@@ -79,7 +92,7 @@ export function FormPage() {
                   required
                 />
 
-                {/* Bloque de tarjeta simulada */}
+                {/* Si elige tarjeta, mostramos inputs simulados */}
                 {paymentMethod === "tarjeta" && (
                   <>
                     <Text className="card-info-text">Ingrese los datos de su tarjeta (simulación)</Text>

@@ -15,47 +15,43 @@ import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
 import { FormPage } from "./pages/FormPage/FormPage";
-
-
-
+import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 
 function App() {
-	return (
-		<MantineProvider defaultColorScheme="dark">
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<HomePage />} />
-					<Route path="/admin" element={<AdminPage/>} />
-					<Route path="/plans" element={<PlansPage />} />	
-					<Route path="/plans/phav" element={<PlanPhavPage />} />
-					<Route path="/plans/competition" element={<PlanCompeticionPage />} />
-					<Route path="/form" element={<FormPage />} />
+  return (
+    <MantineProvider defaultColorScheme="dark">
+      <BrowserRouter>
+        <Routes>
+          {/* Rutas generales */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/plans" element={<PlansPage />} />
+          <Route path="/plans/phav" element={<PlanPhavPage />} />
+          <Route path="/plans/competition" element={<PlanCompeticionPage />} />
 
+          {/* Rutas públicas */}
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/nosotros" element={<Nosotros />} />
 
-					
-					{/*Rutas públicas*/}
-					<Route element={<PublicRoute />}>
-						
-						<Route path="/login" element={<LoginPage />} />
-						<Route path="/register" element={<RegisterPage />} />
+            {/* 👇 agregadas aquí */}
+            <Route path="/form" element={<FormPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
 
-					    <Route path="/nosotros" element={<Nosotros />} />
-						
+          {/* Rutas privadas */}
+          <Route element={<PrivateRoute />}>
+            {/* acá van las rutas que requieran login */}
+          </Route>
 
-					</Route>
-
-					{/*Rutas privadas */}
-					<Route element={<PrivateRoute />}>
-
-						
-						
-					</Route>
-					<Route path="*" element={<h1>Ruta no encontrada</h1>} />
-				</Routes>
-			</BrowserRouter>
-		</MantineProvider>
-	);
-
-
+          {/* Ruta fallback */}
+          <Route path="*" element={<h1>Ruta no encontrada</h1>} />
+        </Routes>
+      </BrowserRouter>
+    </MantineProvider>
+  );
 }
-export default App;			
+
+export default App;
+
