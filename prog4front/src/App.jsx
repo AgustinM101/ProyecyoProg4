@@ -34,7 +34,7 @@ function App() {
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/form" element={<FormPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-
+            
           {/* Rutas públicas */}
           <Route element={<PublicRoute />}>
             

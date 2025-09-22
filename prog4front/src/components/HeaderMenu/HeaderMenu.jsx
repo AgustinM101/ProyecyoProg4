@@ -111,7 +111,7 @@ export function HeaderMenu() {
           </div>
           <div className={classes.userGroup}>
 
-            {token && !user ? <Skeleton height={50} circle mb="xl" />
+            {token && !user ? <Skeleton height={30} circle mb="xl" />
             : <UserMenu user={user} />
             }
           </div>

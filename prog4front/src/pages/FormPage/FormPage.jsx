@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { Container, Card, TextInput, Title, Button, Stack, Select, Group, Text } from "@mantine/core";
+import { Container, Card, TextInput, Title, Button, Stack, Select, Group, Text, Alert } from "@mantine/core";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
 import "./FormPage.css";
+import { IconAdjustmentsCheck } from "@tabler/icons-react";
 
 export function FormPage() {
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [success, setSuccess] = useState(false); // 👈 estado para controlar el Alert
+
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -21,7 +24,7 @@ export function FormPage() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = {
@@ -34,21 +37,45 @@ export function FormPage() {
     // Guardar en localStorage
     localStorage.setItem("userProfile", JSON.stringify(userData));
 
-    // Simulación de redirección
-    alert("Compra simulada. Redirigiendo a tu perfil...");
-    navigate("/profile"); 
+    // Mostrar alert de éxito
+    setSuccess(true);
+
+    // Redirigir después de 2 segundos
+    setTimeout(() => {
+      navigate("/profile");
+    }, 2000);
   };
 
   return (
     <>
       <HeaderMenu />
+      
 
       <div className="form-wrapper">
+        {/* Alert de éxito */}
+            {success && (
+              <Alert
+                icon={<IconAdjustmentsCheck size="1.2rem" />}
+                title="Compra exitosa"
+                color="green"
+                radius="md"
+                mt="md"
+                withCloseButton
+                onClose={() => setSuccess(false)}
+                delay={7000}
+                variant="filled"
+                
+              >
+                Tu compra se realizó con éxito. Serás redirigido a tu perfil en unos segundos.
+              </Alert>
+            )}
         <Container size="sm">
           <Card className="form-card" shadow="lg" padding="xl" radius="lg">
             <Title order={2} className="form-title">
               Formulario de Compra
             </Title>
+
+            
 
             <form onSubmit={handleSubmit}>
               <Stack className="form-stack">
@@ -92,7 +119,6 @@ export function FormPage() {
                   required
                 />
 
-                {/* Si elige tarjeta, mostramos inputs simulados */}
                 {paymentMethod === "tarjeta" && (
                   <>
                     <Text className="card-info-text">Ingrese los datos de su tarjeta (simulación)</Text>
