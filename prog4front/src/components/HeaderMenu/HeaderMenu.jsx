@@ -1,6 +1,6 @@
 
 import { IconChevronDown } from "@tabler/icons-react";
-import { Button, Center, Container, Group, Menu } from "@mantine/core";
+import { Button, Center, Container, Group, Menu, Skeleton } from "@mantine/core";
 import { UserMenu } from "./UserMenu";
 import classes from "./HeaderMenu.module.css";
 import { menuConfig } from "../../services/menuConfig";
@@ -111,7 +111,7 @@ export function HeaderMenu() {
           </div>
           <div className={classes.userGroup}>
 
-            {token && !user ? null
+            {token && !user ? <Skeleton height={50} circle mb="xl" />
             : <UserMenu user={user} />
             }
           </div>
