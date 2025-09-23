@@ -13,33 +13,32 @@ import {
   Avatar,
 } from "@mantine/core";
 import { IconCalendar, IconCreditCard } from "@tabler/icons-react";
+import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
+import { Footer } from "../../components/Footer/Footer";
 
 // Planes de ejemplo (mock)
+
 const mockPlans = [
   {
+    
     id: 1,
-    name: "Plan Básico",
-    description: "Acceso al gimnasio de lunes a viernes.",
+    name: "PLAN PHAV",
+    description: "El plan PHAV esta diseñado para lograr una recomposicion corporal efectiva, mejorar fuerza, resistencia y estetica de manera progresiva y saludable.",
     type: "Mensual",
     price: 3500,
     startDate: "2025-09-01",
+    finallyDate: "2025-10-01",
   },
   {
     id: 2,
-    name: "Plan Premium",
-    description: "Acceso libre todos los días + clases grupales.",
-    type: "Trimestral",
+    name: "PLAN COMPETITION",
+    description: "está diseñado para quienes buscan ingresar al equipo competitivo de fisicoculturismo. Este programa exige cumplir con condiciones físicas y disciplina estricta para alcanzar los objetivos planteados y competir al máximo nivel",
+    type: "Mensual",
     price: 9000,
     startDate: "2025-08-15",
+    finallyDate: "2025-09-15",
   },
-  {
-    id: 3,
-    name: "Plan Full",
-    description: "Acceso 24/7 + entrenador personal.",
-    type: "Anual",
-    price: 30000,
-    startDate: "2025-07-10",
-  },
+ 
 ];
 
 const MyPlansPage = () => {
@@ -80,10 +79,14 @@ const MyPlansPage = () => {
   }
 
   return (
+    <>
+    <HeaderMenu />
     <Container size="lg" py="xl">
       <Title order={2} align="center" mb="xl">
-        Mis Planes
+        MIS PLANES
+        
       </Title>
+      
 
       {plans.length > 0 ? (
         <Grid>
@@ -91,12 +94,12 @@ const MyPlansPage = () => {
             <Grid.Col span={{ base: 12, sm: 6, md: 4 }} key={plan.id}>
               <Card shadow="sm" padding="lg" radius="md" withBorder>
                 <Group mb="md">
-                  <Avatar color="teal" radius="xl">
+                  <Avatar color="yellow" radius="xl">
                     {plan.name.charAt(0).toUpperCase()}
                   </Avatar>
                   <div>
                     <Title order={4}>{plan.name}</Title>
-                    <Badge color="teal" variant="light">
+                    <Badge color="yellow" variant="light">
                       {plan.type}
                     </Badge>
                   </div>
@@ -109,14 +112,18 @@ const MyPlansPage = () => {
                 <Group mt="md" spacing="xs">
                   <IconCalendar size={18} />
                   <Text size="sm">Inicio: {plan.startDate || "N/D"}</Text>
+                 <br />
+                 <br />
+                   <IconCalendar size={18} />
+                  <Text size="sm">Fin: {plan.finallyDate || "N/D"}</Text>
                 </Group>
 
-                <Group mt="xs" spacing="xs">
+                <Group mt="xs" spacing="xs" color="yellow">
                   <IconCreditCard size={18} />
                   <Text fw={600}>${plan.price}</Text>
                 </Group>
 
-                <Button fullWidth mt="md" color="teal" variant="light">
+                <Button fullWidth mt="md" color="yellow" variant="light">
                   Ver detalles
                 </Button>
               </Card>
@@ -129,6 +136,8 @@ const MyPlansPage = () => {
         </Text>
       )}
     </Container>
+    <Footer />
+    </>
   );
 };
 
