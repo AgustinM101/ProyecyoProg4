@@ -1,0 +1,111 @@
+/* Fondo negro con marca de agua del logo */
+.notfound-container {
+  background-color: #000;
+  color: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.notfound-logo img {
+  width: 120px;
+  margin-bottom: 40px;
+  animation: pulse 3s infinite;
+}
+
+/* Grid para el contenido */
+.notfound-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1000px;
+  width: 100%;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .notfound-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: center;
+  }
+}
+
+/* Título */
+.notfound-title {
+  font-weight: 600;
+  font-size: 36px;
+  margin-bottom: 16px;
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+}
+
+.notfound-text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #aaa;
+}
+
+.notfound-button {
+  padding: 12px 24px;
+  border: 1px solid #555;
+  background: transparent;
+  color: #f0f0f0;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 24px;
+  text-decoration: none;
+  
+}
+
+.notfound-button:hover {
+  background: #222;
+  border-color: #888;
+}
+/* Contenido */
+.notfound-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Imagenes */
+.mobile-image,
+.desktop-image {
+  width: 100%;
+  max-width: 400px;
+  opacity: 0.7;
+  filter: grayscale(30%);
+}
+
+/* Animación de destello */
+.glow {
+  animation: glow 2.5s infinite;
+}
+
+@keyframes glow {
+  0% { filter: drop-shadow(0 0 5px #ff1e56) drop-shadow(0 0 10px #ffac41); }
+  50% { filter: drop-shadow(0 0 15px #ff1e56) drop-shadow(0 0 30px #ffac41); }
+  100% { filter: drop-shadow(0 0 5px #ff1e56) drop-shadow(0 0 10px #ffac41); }
+}
+
+/* Pulso suave para el logo */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+/* Responsive imágenes */
+@media (min-width: 768px) {
+  .mobile-image { display: none; }
+}
+@media (max-width: 767px) {
+  .desktop-image { display: none; }
+}

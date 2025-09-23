@@ -31,9 +31,9 @@ export function ProfilePage() {
               <Text><strong>Plan contratado:</strong> {user.plan}</Text>
 
               <Group position="center" mt="xl">
-                <Link to="/plans">
+                <Link to="/myplans">
                   <Button variant="outline" radius="md">
-                    Ver planes
+                    Ver mis planes
                   </Button>
                 </Link>
                 <Button variant="filled" radius="md" color="#FFD60A">

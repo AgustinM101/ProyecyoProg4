@@ -16,7 +16,11 @@ import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
 import { FormPage } from "./pages/FormPage/FormPage";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
+
 import MyPlansPage from "./pages/MyPlansPage/MyPlansPage";
+
+import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
+
 
 function App() {
   return (
@@ -50,7 +54,7 @@ function App() {
           </Route>
 
           {/* Ruta fallback */}
-          <Route path="*" element={<h1>Ruta no encontrada</h1>} />
+          <Route path="*" element={<ErrorPage/>} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>
