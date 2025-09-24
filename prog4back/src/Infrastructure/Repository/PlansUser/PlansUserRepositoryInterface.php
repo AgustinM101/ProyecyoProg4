@@ -7,7 +7,7 @@ use Src\Entity\PlansUser\PlansUser;
 interface PlansUserRepositoryInterface {
 
     /** @return PlansUser[] */
-    public function search(): array;
+    public function searchplans(): array;
 
     /** @return PlansUser[] */
     public function findByUserId(int $userId): array;

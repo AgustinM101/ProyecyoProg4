@@ -46,7 +46,7 @@ final readonly class Router
             $parameters = $this->getParameters($route, $url);
 
             if (
-                str_contains($url, $route->url()) &&
+                $url === $route->url() &&
                 $method === $route->method() &&
                 $this->validateParameters($parameters, $route->parameters())
             ) {
