@@ -20,6 +20,6 @@ final readonly class PlansUserFinderService {
 
     /** @return PlansUser[] */
     public function findAll(): array {
-        return $this->repository->search();
+        return $this->repository->searchplans();
     }
 }

@@ -8,21 +8,27 @@ use Src\Entity\PlansUser\PlansUser;
 final readonly class PlansUserRepository extends PDOManager implements PlansUserRepositoryInterface {
 
     /** @return PlansUser[] */
-    public function search(): array {
-        $query = <<<SQL
-            SELECT id_user, id_plan, status
-            FROM plans_user
-        SQL;
+    public function searchPlans(): array {
+    $query = <<<SQL
+        SELECT 
+            up.id_user,
+            up.id_plan,
+            up.status
+        FROM plans_user up
+        JOIN users u ON u.id = up.id_user
+        JOIN plans p ON p.id = up.id_plan
+    SQL;
 
-        $results = $this->execute($query);
+    $results = $this->execute($query);
 
-        $plansUsers = [];
-        foreach ($results as $row) {
-            $plansUsers[] = $this->toPlansUser($row);
-        }
-
-        return $plansUsers;
+    $plansUsers = [];
+    foreach ($results as $row) {
+        $plansUsers[] = $this->toPlansUser($row);
     }
+
+    return $plansUsers;
+}
+
 
     public function findByUserId(int $id_user): array {
         $query = <<<SQL

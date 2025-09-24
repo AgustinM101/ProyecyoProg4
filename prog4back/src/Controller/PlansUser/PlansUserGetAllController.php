@@ -1,7 +1,5 @@
 <?php
 
-namespace Src\Controller\PlansUser;
-
 use Src\Service\PlansUser\PlansUserFinderService;
 
 final readonly class PlansUserGetAllController {
