@@ -49,4 +49,12 @@ final readonly class ControllerUtils {
     {
         return $_FILES;
     }
+
+    public static function getHeaderToken(): string
+    {
+        $headers = getallheaders();
+        $token = $headers['x-api-key'] ?? null;
+        if ($token == null) throw new Exception("Token not found");
+        return $token;
+    }
 }

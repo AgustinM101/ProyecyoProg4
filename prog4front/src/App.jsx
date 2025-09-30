@@ -29,16 +29,16 @@ function App() {
         <Routes>
           {/* Rutas generales */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          
           <Route path="/plans" element={<PlansPage />} />
           <Route path="/plans/phav" element={<PlanPhavPage />} />
           <Route path="/plans/competition" element={<PlanCompeticionPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/nosotros" element={<Nosotros />} />
-          <Route path="/form" element={<FormPage />} />
+          
             <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/myplans" element={<MyPlansPage />} />
+          
             
           {/* Rutas públicas */}
           <Route element={<PublicRoute />}>
@@ -51,6 +51,9 @@ function App() {
           {/* Rutas privadas */}
           <Route element={<PrivateRoute />}>
             {/* acá van las rutas que requieran login */}
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/myplans" element={<MyPlansPage />} />
+            <Route path="/form" element={<FormPage />} />
           </Route>
 
           {/* Ruta fallback */}

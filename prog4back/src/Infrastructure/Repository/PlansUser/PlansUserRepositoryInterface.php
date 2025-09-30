@@ -8,6 +8,9 @@ interface PlansUserRepositoryInterface {
 
     /** @return PlansUser[] */
     public function searchplans(): array;
+    
+    public function findAllWithDetails(): array;
+    public function findByUserWithDetails(int $id_user): array;
 
     /** @return PlansUser[] */
     public function findByUserId(int $userId): array;

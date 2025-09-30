@@ -45,8 +45,10 @@ final readonly class Router
         foreach ($this->routes as $route) {
             $parameters = $this->getParameters($route, $url);
 
+            $baseUrl = $this->getBaseUrl($url);
+
             if (
-                $url === $route->url() &&
+                $baseUrl === $route->url() &&
                 $method === $route->method() &&
                 $this->validateParameters($parameters, $route->parameters())
             ) {
@@ -73,11 +75,6 @@ final readonly class Router
      */
     private function validateParameters(array $urlParameters, array $routeParameters): bool
     {
-        // Si no hay parámetros definidos en la ruta, aceptamos cualquier sobrante
-        if (empty($routeParameters)) {
-            return true;
-        }
-
         // Validamos cantidad de parámetros
         if (sizeof($urlParameters) !== sizeof($routeParameters)) {
             return false;
@@ -96,4 +93,12 @@ final readonly class Router
 
         return $validParams === sizeof($urlParameters);
     }
+
+    private function getBaseUrl(string $url): string
+    {
+        $url = substr($url, 1);
+        $baseUrl = explode('/', $url);
+        return '/' . $baseUrl[0];
+    }
+
 }

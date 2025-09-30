@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
 import {
-  Table,
   Container,
   Loader,
   Center,
@@ -9,39 +8,39 @@ import {
   TextInput,
   Group,
 } from "@mantine/core";
-import { userService } from "../../services/userService";
+import { plansUserService } from "../../services/plansUserService";
 import { UserTable } from "../../components/UserTable/UserTable";
 
-
 export function AdminPage() {
-  const [users, setUsers] = useState([]);
+  const [plansUsers, setPlansUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const itemsPerPage = 5;
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function fetchPlansUsers() {
       try {
-        const response = await userService.getAllUsers();
-        setUsers(response.data);
+        const response = await plansUserService.getPlansUsers();
+        setPlansUsers(response.data);
       } catch (error) {
-        console.error("Error al traer usuarios:", error);
+        console.error("Error al traer usuarios con planes:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchUsers();
+    fetchPlansUsers();
   }, []);
 
   const filteredUsers = useMemo(() => {
-    return users.filter(
-      (user) =>
-        user.name.toLowerCase().includes(search.toLowerCase()) ||
-        user.email.toLowerCase().includes(search.toLowerCase())
+    return plansUsers.filter(
+      (pu) =>
+        pu.user.name.toLowerCase().includes(search.toLowerCase()) ||
+        pu.user.email.toLowerCase().includes(search.toLowerCase()) ||
+        pu.plan.name.toLowerCase().includes(search.toLowerCase())
     );
-  }, [users, search]);
+  }, [plansUsers, search]);
 
   const paginatedUsers = useMemo(() => {
     const start = (page - 1) * itemsPerPage;
@@ -59,11 +58,11 @@ export function AdminPage() {
   return (
     <Container size="lg" py="md">
       <Group position="apart" mb="md">
-        <Text size="xl" weight={700}>
-          Admin - Usuarios
+        <Text size="xl" fw={700}>
+          Admin - Usuarios con Planes
         </Text>
         <TextInput
-          placeholder="Buscar por nombre o email"
+          placeholder="Buscar por usuario o plan"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
@@ -71,7 +70,7 @@ export function AdminPage() {
 
       {filteredUsers.length === 0 ? (
         <Center>
-          <Text>No hay usuarios que coincidan</Text>
+          <Text>No hay resultados</Text>
         </Center>
       ) : (
         <>
@@ -88,4 +87,3 @@ export function AdminPage() {
     </Container>
   );
 }
-
