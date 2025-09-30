@@ -85,41 +85,29 @@ export function PurchasePage() {
                   value={paymentMethod}
                   onChange={setPaymentMethod}
                   data={[
-                    { value: "tarjeta", label: "Tarjeta de crédito/débito" },
+                    { value: "transferencia", label: "Transferencia con alias" },
                     { value: "mercadopago", label: "Mercado Pago" },
-                    { value: "efectivo", label: "Efectivo / Transferencia" },
+                    { value: "efectivo", label: "Efectivo " },
                   ]}
                   required
                 />
 
                 {/* Si elige tarjeta, mostramos inputs simulados */}
-                {paymentMethod === "tarjeta" && (
+                {paymentMethod === "transferencia" && (
                   <>
-                    <Text className="card-info-text">Ingrese los datos de su tarjeta (simulación)</Text>
-                    <TextInput
-                      label="Número de tarjeta"
-                      placeholder="1234 1234 1234 1234"
-                      name="tarjetaNumero"
-                      value={formData.tarjetaNumero}
-                      onChange={handleChange}
-                      required
-                    />
-                    <TextInput
-                      label="Expiración"
-                      placeholder="MM/AA"
-                      name="tarjetaExp"
-                      value={formData.tarjetaExp}
-                      onChange={handleChange}
-                      required
-                    />
-                    <TextInput
-                      label="CVV"
-                      placeholder="123"
-                      name="tarjetaCVV"
-                      value={formData.tarjetaCVV}
-                      onChange={handleChange}
-                      required
-                    />
+                    <Text className="card-info-text">Transfiera a este Alias:InfinitSport12(simulación)</Text>
+                    <Text className="card-info-text">O a este CBU: 123-4567890123456789012-3(simulación)</Text>
+                  </>
+                )}
+                    
+                {paymentMethod === "mercadopago" && (
+                  <>
+                    <Text className="card-info-text">Será redirigido a Mercado Pago (simulación)</Text>
+                  </>
+                )}
+                {paymentMethod === "efectivo" && (
+                  <>
+                    <Text className="card-info-text">Pague en efectivo en nuestras instalaciones (simulación)</Text>
                   </>
                 )}
 
