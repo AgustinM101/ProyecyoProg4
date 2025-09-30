@@ -1,7 +1,5 @@
 <?php
 
-namespace Src\Controller\PlansUser;
-
 use Src\Service\PlansUser\PlansUserFinderService;
 
 final readonly class PlansUserGetByUserController {
@@ -12,23 +10,20 @@ final readonly class PlansUserGetByUserController {
         $this->service = new PlansUserFinderService();
     }
 
-    public function start(int $userId): void {
-        $plans = $this->service->findByUser($userId);
-        echo json_encode($this->toResponse($plans));
-    }
+    // Recibe el parámetro id_user desde el router (ej: /plansUsers/5)
+    public function start(int $id_user): void {
 
-    private function toResponse(array $plans): array {
-        $responses = [];
+        // Obtenemos los planes de ese usuario con detalles
+        $plansUsers = $this->service->findByUserWithDetails($id_user);
 
-        foreach ($plans as $plan) {
-            $responses[] = [
-                "id" => $plan->id(),
-                "id_user" => $plan->id_user(),
-                "id_plan" => $plan->id_plan(),
-                "status" => $plan->status()
-            ];
+        if (empty($plansUsers)) {
+            http_response_code(404);
+            echo json_encode([
+                "error" => "No se encontraron planes para este usuario"
+            ]);
+            return;
         }
 
-        return $responses;
+        echo json_encode($plansUsers);
     }
 }

@@ -1,5 +1,6 @@
 <?php 
 
+use Src\Utils\ControllerUtils;
 use Src\Infrastructure\Repository\User\UserRepository;
 
 final readonly class UserGetLoggedController {

@@ -9,27 +9,74 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
 
     /** @return PlansUser[] */
     public function searchPlans(): array {
-    $query = <<<SQL
-        SELECT 
-            up.id_user,
-            up.id_plan,
-            up.status
-        FROM plans_user up
-        JOIN users u ON u.id = up.id_user
-        JOIN plans p ON p.id = up.id_plan
-    SQL;
+        $query = <<<SQL
+            SELECT 
+                up.id_user,
+                up.id_plan,
+                up.status
+            FROM plans_user up
+            JOIN users u ON u.id = up.id_user
+            JOIN plans p ON p.id = up.id_plan
+        SQL;
 
-    $results = $this->execute($query);
+        $results = $this->execute($query);
 
-    $plansUsers = [];
-    foreach ($results as $row) {
-        $plansUsers[] = $this->toPlansUser($row);
+        $plansUsers = [];
+        foreach ($results as $row) {
+            $plansUsers[] = $this->toPlansUser($row);
+        }
+
+        return $plansUsers;
     }
 
-    return $plansUsers;
-}
+    /** @return array[] */
+    public function searchPlansWithDetails(): array {
+        $query = <<<SQL
+            SELECT 
+                up.id_user,
+                u.name AS user_name,
+                u.email AS user_email,
+                up.id_plan,
+                p.name AS plan_name,
+                up.status
+            FROM plans_user up
+            JOIN users u ON u.id = up.id_user
+            JOIN plans p ON p.id = up.id_plan
+        SQL;
 
+        return $this->execute($query);
+    }
 
+    /** @return array[] */
+    public function findByUserIdWithDetails(int $id_user): array {
+        $query = <<<SQL
+            SELECT 
+                up.id_user,
+                u.name AS user_name,
+                u.email AS user_email,
+                up.id_plan,
+                p.name AS plan_name,
+                up.status
+            FROM plans_user up
+            JOIN users u ON u.id = up.id_user
+            JOIN plans p ON p.id = up.id_plan
+            WHERE up.id_user = :id_user
+        SQL;
+
+        $params = ["id_user" => $id_user];
+        return $this->execute($query, $params);
+    }
+
+    // Métodos requeridos por la interfaz
+    public function findAllWithDetails(): array {
+        return $this->searchPlansWithDetails();
+    }
+
+    public function findByUserWithDetails(int $id_user): array {
+        return $this->findByUserIdWithDetails($id_user);
+    }
+
+    /** @return PlansUser[] */
     public function findByUserId(int $id_user): array {
         $query = <<<SQL
             SELECT id_user, id_plan, status

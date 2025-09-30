@@ -22,4 +22,14 @@ final readonly class PlansUserFinderService {
     public function findAll(): array {
         return $this->repository->searchplans();
     }
+
+    /** @return array[] */
+public function findAllWithDetails(): array {
+    return $this->repository->searchPlansWithDetails();
+}
+
+/** @return array[] */
+public function findByUserWithDetails(int $id_user): array {
+    return $this->repository->findByUserIdWithDetails($id_user);
+}
 }

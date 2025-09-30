@@ -10,7 +10,7 @@ export function FormPage() {
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
   const [success, setSuccess] = useState(false); // 👈 estado para controlar el Alert
-	const [error, setError] = useState(undefined); 
+	
 
   const [formData, setFormData] = useState({
     nombre: "",

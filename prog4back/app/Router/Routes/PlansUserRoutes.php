@@ -12,16 +12,17 @@ final readonly class PlansUserRoutes {
             ],
             [
                 "name" => "plans_users_get_by_user",
-                "url" => "/plansUsers/{id_user}",
+                "url" => "/plansUsers",
                 "controller" => "PlansUser/PlansUserGetByUserController.php",
                 "method" => "GET",
                 "parameters" => [
                     [
                         "name" => "id_user",
                         "type" => "int"
-                    ] 
+                    ]
                 ]
             ],
+
             [
                 "name" => "plans_users_create",
                 "url" => "/plansUsers",
