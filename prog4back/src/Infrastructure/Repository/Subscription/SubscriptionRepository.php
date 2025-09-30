@@ -1,83 +1,84 @@
 <?php
 
-namespace Src\Infrastructure\Repository\Suscription;
+namespace Src\Infrastructure\Repository\Subscription;
 
 use Src\Infrastructure\PDO\PDOManager;
-use Src\Entity\Suscription\Suscription;
+use Src\Entity\Subscription\Subscription;
 
-final readonly class SuscriptionRepository extends PDOManager implements SuscriptionRepositoryInterface {
+final readonly class SubscriptionRepository extends PDOManager implements SubscriptionRepositoryInterface {
 
-    /** @return Suscription[] */
+    /** @return Subscription[] */
     public function search(): array {
         $query = <<<SQL
-            SELECT id_user, id_plan, status
-            FROM plans_user
+            SELECT id, id_user, id_plan, payment_method, purchase_date, status
+            FROM subscriptions
         SQL;
 
         $results = $this->execute($query);
 
-        $plansUsers = [];
+        $subscriptions = [];
         foreach ($results as $row) {
-            $plansUsers[] = $this->toPlansUser($row);
+            $subscriptions[] = $this->toSubscription($row);
         }
 
-        return $plansUsers;
+        return $subscriptions;
     }
 
     public function findByUserId(int $id_user): array {
         $query = <<<SQL
-            SELECT id_user, id_plan, status
-            FROM plans_user
+            SELECT id, id_user, id_plan, payment_method, purchase_date, status
+            FROM subscriptions
             WHERE id_user = :id_user
         SQL;
 
         $parameters = ["id_user" => $id_user];
         $results = $this->execute($query, $parameters);
 
-        $plansUsers = [];
+        $subscriptions = [];
         foreach ($results as $row) {
-            $plansUsers[] = $this->toPlansUser($row);
+            $subscriptions[] = $this->toSubscription($row);
         }
 
-        return $plansUsers;
+        return $subscriptions;
     }
 
-    public function assignPlan(PlansUser $plan): void {
+    public function create(Subscription $subscription): void {
         $query = <<<SQL
-            INSERT INTO plans_user (id_user, id_plan, status)
-            VALUES (:id_user, :id_plan, :status)
+            INSERT INTO subscriptions (id_user, id_plan, payment_method, purchase_date, status)
+            VALUES (:id_user, :id_plan, :payment_method, :purchase_date, :status)
         SQL;
 
         $parameters = [
-            "id_user" => $plan->id_user(),
-            "id_plan" => $plan->id_plan(),
-            "status" => $plan->status()
+            "id_user"        => $subscription->id_user(),
+            "id_plan"        => $subscription->id_plan(),
+            "payment_method" => $subscription->paymentMethod(),
+            "purchase_date"  => $subscription->purchaseDate()->format("Y-m-d H:i:s"),
+            "status"         => $subscription->status()
         ];
 
-        $this->execute($parameters, $query);
+        $this->execute($query, $parameters);
     }
 
-    public function removePlan(int $id_user, int $id_plan): void {
+    public function cancel(int $id): void {
         $query = <<<SQL
-            DELETE FROM plans_user
-            WHERE id_user = :id_user AND id_plan = :id_plan
+            UPDATE subscriptions
+            SET status = 'cancelled'
+            WHERE id = :id
         SQL;
 
-        $parameters = [
-            "id_user" => $id_user,
-            "id_plan" => $id_plan
-        ];
-
-        $this->execute($parameters, $query);
+        $parameters = ["id" => $id];
+        $this->execute($query, $parameters);
     }
 
-    private function toPlansUser(?array $row): ?PlansUser {
+    private function toSubscription(?array $row): ?Subscription {
         if ($row === null) return null;
 
-        return new PlansUser(
-            null, // id si no está en la tabla
+        return new Subscription(
+            $row["id"],
             $row["id_user"],
             $row["id_plan"],
+            $row["payment_method"],
+            new \DateTime($row["purchase_date"]),
             $row["status"]
         );
     }

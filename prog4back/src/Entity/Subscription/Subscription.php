@@ -105,6 +105,7 @@ final class Subscription
     {
         return $this->createdAt;
     }
+    
 }
 
 

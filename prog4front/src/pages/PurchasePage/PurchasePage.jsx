@@ -3,9 +3,9 @@ import { Container, Card, TextInput, Title, Button, Stack, Select, Group, Text }
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
-import "./FormPage.css";
+import "./PurchasePage.css";
 
-export function FormPage() {
+export function PurchasePage() {
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
   const [formData, setFormData] = useState({
@@ -43,15 +43,15 @@ export function FormPage() {
     <>
       <HeaderMenu />
 
-      <div className="form-wrapper">
+      <div className="purch-wrapper">
         <Container size="sm">
-          <Card className="form-card" shadow="lg" padding="xl" radius="lg">
-            <Title order={2} className="form-title">
+          <Card className="purch-card" shadow="lg" padding="xl" radius="lg">
+            <Title order={2} className="purch-title">
               Formulario de Compra
             </Title>
 
             <form onSubmit={handleSubmit}>
-              <Stack className="form-stack">
+              <Stack className="purch-stack">
                 <TextInput
                   label="Nombre"
                   placeholder="Tu nombre completo"
@@ -124,7 +124,7 @@ export function FormPage() {
                 )}
 
                 <Group position="center" mt="md">
-                  <Button type="submit" size="lg" radius="md" className="form-btn">
+                  <Button type="submit" size="lg" radius="md" className="purch-btn">
                     Finalizar compra
                   </Button>
                 </Group>

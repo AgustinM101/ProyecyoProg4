@@ -14,7 +14,7 @@ import { AdminPage } from "./pages/AdminPage/AdminPage";
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
-import { FormPage } from "./pages/FormPage/FormPage";
+import { PurchasePage } from "./pages/PurchasePage/PurchasePage";
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
             <Route path="/nosotros" element={<Nosotros />} />
 
             {/* 👇 agregadas aquí */}
-            <Route path="/form" element={<FormPage />} />
+            <Route path="/Purchase" element={<PurchasePage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
 

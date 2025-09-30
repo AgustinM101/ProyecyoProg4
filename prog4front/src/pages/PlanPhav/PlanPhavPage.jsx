@@ -68,7 +68,7 @@ export function PlanPhavPage() {
             {/* Botones */}
             <Group position="center" spacing="md" mt="lg">
               <div>
-                <Link to="/form">
+                <Link to="/purchase">
                   <Button size="lg" radius="md" className="phav-btn">
                     Comprar plan
                   </Button>

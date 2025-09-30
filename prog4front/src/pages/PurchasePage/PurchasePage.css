@@ -1,5 +1,5 @@
 /* Fondo y sección principal */
-.form-wrapper {
+.purch-wrapper {
   min-height: 100vh;
   background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
               url('https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/5607F484-0890-4227-B154-67B45051E638_llzsrm.jpg') no-repeat center center fixed;
@@ -11,7 +11,7 @@
 }
 
 /* Card del formulario */
-.form-card {
+.purch-card {
   background-color: rgba(0, 0, 0, 0.75);
   border-radius: 20px;
   padding: 3rem 2.5rem;
@@ -22,7 +22,7 @@
 }
 
 /* Título del formulario */
-.form-title {
+.purch-title {
   font-size: 2rem;
   font-weight: 900;
   color: #FFD60A;
@@ -55,7 +55,7 @@
 }
 
 /* Botón principal */
-.form-btn {
+.purch-btn {
   background: #FFD60A;
   color: #000;
   font-weight: 700;
@@ -65,14 +65,14 @@
   transition: all 0.3s ease;
 }
 
-.form-btn:hover {
+.purch-btn:hover {
   background: #ffdd33;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.6);
 }
 
 /* Stack de inputs */
-.form-stack {
+.purch-stack {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -91,7 +91,7 @@
     padding: 2rem 1.5rem;
   }
 
-  .form-title {
+  .purch-title {
     font-size: 1.5rem;
   }
 }
