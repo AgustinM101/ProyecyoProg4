@@ -26,7 +26,7 @@ final readonly class PlansUserRoutes {
             [
                 "name" => "plans_users_create",
                 "url" => "/plansUsers",
-                "controller" => "PlansUser/PlansUserCreateController.php",
+                "controller" => "PlansUser/PlansUserPostController.php",
                 "method" => "POST"
             ],
             [
@@ -34,6 +34,18 @@ final readonly class PlansUserRoutes {
                 "url" => "/plansUsers",
                 "controller" => "PlansUser/PlansUserRemoveController.php",
                 "method" => "DELETE"
+            ],
+            [
+                "name" => "plans_users_update",
+                "url" => "/plansUsers",
+                "controller" => "PlansUser/PlansUserPutController.php",
+                "method" => "PUT",
+                "parameters" => [
+                    [
+                        "name" => "id",
+                        "type" => "int"
+                    ]
+                ]
             ]
         ];
     }

@@ -5,7 +5,7 @@ final readonly class UserRoutes {
     return [
       [
         "name" => "user_login",
-        "url" => "/users/login",
+        "url" => "/login",
         "controller" => "User/UserLoginController.php",
         "method" => "POST"
       ],
