@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+
 
 use Src\Service\PlanAlimento\PlanAlimentosSearcherService;
 
@@ -12,15 +14,13 @@ final readonly class PlanAlimentosGetController {
     public function start(): void
     {
         $planAlimentos = $this->service->search();
-
         echo json_encode($this->toResponse($planAlimentos));
     }
 
-    private function toResponse(array $planAlimentos): array 
+    private function toResponse(array $planAlimentos): array
     {
         $responses = [];
-        
-        foreach($planAlimentos as $planAlimento) {
+        foreach ($planAlimentos as $planAlimento) {
             $responses[] = [
                 "id" => $planAlimento->id(),
                 "name" => $planAlimento->name(),
@@ -28,7 +28,6 @@ final readonly class PlanAlimentosGetController {
                 "tipo" => $planAlimento->tipo()
             ];
         }
-
         return $responses;
     }
 }
