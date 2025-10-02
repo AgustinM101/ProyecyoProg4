@@ -5,7 +5,7 @@ namespace Src\Service\PlanAlimento;
 use Src\Entity\PlanAlimento\PlanAlimento;
 use Src\Infrastructure\Repository\PlanAlimento\PlanAlimentoRepository;
 
-final readonly class PlanAlimentoSearcherService {
+final readonly class PlanAlimentosSearcherService {
     private PlanAlimentoRepository $repository;
 
     public function __construct() {

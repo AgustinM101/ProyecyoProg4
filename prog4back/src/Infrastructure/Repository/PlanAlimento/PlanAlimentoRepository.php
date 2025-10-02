@@ -7,6 +7,25 @@ use Src\Entity\PlanAlimento\PlanAlimento;
 
 final readonly class PlanAlimentoRepository extends PDOManager implements PlanAlimentoRepositoryInterface 
 {
+    public function findByPlanUser(int $id): array {
+        // Busca todos los alimentos asociados al plan del usuario con la columna "plans_user_id = $id"
+        $query = <<<HEREDOC
+            SELECT * FROM
+                plan_alimentos
+            WHERE
+                plans_user_id = :id AND deleted = 0
+        HEREDOC;
+
+        $parameters = [ "id" => $id ];
+        $results = $this->execute($query, $parameters);
+
+        $planAlimentos = [];
+        foreach($results as $result) {
+            $planAlimentos[] = $this->toPlanAlimento($result);
+        }
+
+        return $planAlimentos;
+    }
 
     // Buscar un PlanAlimento por ID
     public function find(int $id): ?PlanAlimento
@@ -15,7 +34,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
             SELECT 
                 id, name, description, tipo
             FROM
-                planAlimentos A
+                plan_alimentos A
             WHERE
                 A.id = :id AND deleted = 0
         HEREDOC;
@@ -34,7 +53,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
     // Buscar todos los PlanAlimentos
     public function search(): array
     {
-        $query = "SELECT id, name, description, tipo FROM planAlimentos WHERE deleted = 0";
+        $query = "SELECT id, name, description, tipo FROM plan_alimentos WHERE deleted = 0";
         $results = $this->execute($query);
         var_dump($results);
 
@@ -50,7 +69,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
     public function create(PlanAlimento $PlanAlimento): void
     {
         $query = <<<INSERT_QUERY
-            INSERT INTO planAlimentos (name, description, tipo)
+            INSERT INTO plan_alimentos (name, description, tipo)
             VALUES (:name, :description, :tipo)
         INSERT_QUERY;
 
@@ -67,7 +86,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
     public function update(PlanAlimento $PlanAlimento): void
     {
         $query = <<<UPDATE_QUERY
-            UPDATE planAlimentos
+            UPDATE plan_alimentos
             SET name = :name, description = :description, tipo = :tipo
             WHERE id = :id
         UPDATE_QUERY;
@@ -84,7 +103,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
 
      public function delete(int $id): void
     {
-        $query = "DELETE FROM planAlimentos WHERE id = :id";
+        $query = "DELETE FROM plan_alimentos WHERE id = :id";
         $parameters = [ "id" => $id ];
         $this->execute($query, $parameters);
     }
