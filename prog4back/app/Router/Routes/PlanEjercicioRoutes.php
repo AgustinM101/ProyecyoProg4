@@ -13,7 +13,7 @@ final readonly class PlanEjercicioRoutes {
 
       [
         "name" => "planEjercicio_get",
-        "url" => "/planEjercicios/{id}",
+        "url" => "/planEjercicios",
         "controller" => "PlanEjercicio/PlanEjercicioGetController.php",
         "method" => "GET",
         "parameters" => [
@@ -33,7 +33,7 @@ final readonly class PlanEjercicioRoutes {
 
       [
         "name" => "planEjercicio_update",
-        "url" => "/planEjercicios/{id}",
+        "url" => "/planEjercicios",
         "controller" => "PlanEjercicio/PlanEjercicioPutController.php",
         "method" => "PUT",
         "parameters" => [
@@ -46,7 +46,7 @@ final readonly class PlanEjercicioRoutes {
 
       [
         "name" => "planEjercicio_delete",
-        "url" => "/planEjercicios/{id}",
+        "url" => "/planEjercicios",
         "controller" => "PlanEjercicio/PlanEjercicioDeleteController.php",
         "method" => "DELETE",
         "parameters" => [

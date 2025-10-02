@@ -2,27 +2,25 @@
 
 namespace Src\Service\PlanEjercicio;
 
-use Src\Entity\PlanEjercicio\PlanEjercicio;
 use Src\Infrastructure\Repository\PlanEjercicio\PlanEjercicioRepository;
 
-final readonly class PlanEjercicioDeleterService{
-
+final readonly class PlanEjercicioDeleterService
+{
     private PlanEjercicioRepository $repository;
-
-    private PlanEjercicioFinderService $finderService;
 
     public function __construct() {
         $this->repository = new PlanEjercicioRepository();
-        $this->finderService = new PlanEjercicioFinderService();
     }
-    
-    public function delete(int $id): void{
 
+    public function delete(int $id): bool
+    {
+        // Opcional: podés verificar si existe antes de borrar
+        $plan = $this->repository->find($id);
+        if ($plan === null) {
+            return false; // no existe
+        }
 
-        $planEjercicio = $this->finderService->find($id);
-        $planEjercicio->delete();
-
-        $this->repository->update($planEjercicio);
+        $this->repository->delete($id);
+        return true; // borrado exitoso
     }
-    
 }

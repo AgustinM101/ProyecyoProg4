@@ -5,83 +5,82 @@ namespace Src\Infrastructure\Repository\PlanEjercicio;
 use Src\Infrastructure\PDO\PDOManager;
 use Src\Entity\PlanEjercicio\PlanEjercicio;
 
-final readonly class PlanEjercicioRepository extends PDOManager implements PlanEjercicioRepositoryInterface {
-    public function find(int $id): ?PlanEjercicio
-    {
+final readonly class PlanEjercicioRepository extends PDOManager implements PlanEjercicioRepositoryInterface 
+{
+    public function find(int $id): ?PlanEjercicio {
         $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            plan_ejercicio A
-                        WHERE
-                            A.id = :id
-                    HEREDOC;
+            SELECT id, name, description, tipo
+            FROM plan_ejercicios
+            WHERE id = :id AND deleted = 0
+            LIMIT 1
+        HEREDOC;
 
-        $parameters = [
-            "id" => $id,
-        ];
+        $parameters = [ "id" => $id ];
+        $results = $this->execute($query, $parameters);
 
-        $result = $this->execute($query, $parameters);
-
-        return $this->toPlanEjercicio($result[0] ?? null);
+        return isset($results[0]) ? $this->toPlanEjercicio($results[0]) : null;
     }
 
-    /** @return PlanEjercicio[] */
-    public function search(): array
-    {
-        $query = <<<HEREDOC
-                        SELECT
-                            *
-                        FROM
-                            plan_ejercicio A
-                    HEREDOC;
-        
+    public function search(): array {
+        $query = "SELECT id, name, description, tipo FROM plan_ejercicios WHERE deleted = 0";
         $results = $this->execute($query);
 
         $planEjercicios = [];
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $planEjercicios[] = $this->toPlanEjercicio($result);
         }
 
         return $planEjercicios;
     }
-    public function create(PlanEjercicio $planEjercicio): void{
 
+    public function create(PlanEjercicio $planEjercicio): PlanEjercicio {
+        $query = <<<INSERT_QUERY
+            INSERT INTO plan_ejercicios (name, description, tipo, deleted)
+            VALUES (:name, :description, :tipo, 0)
+        INSERT_QUERY;
 
-
-        $query = <<< INSERT_QUERY
-                        INSERT INTO plan_ejercicio (name, tipo, description)
-                        VALUES (:name,:tipo, :description)
-                        INSERT_QUERY;
-        
         $parameters = [
             "name" => $planEjercicio->name(),
-            "tipo" => $planEjercicio->tipo(),
             "description" => $planEjercicio->description(),
-            
+            "tipo" => $planEjercicio->tipo()
         ];
-    
 
         $this->execute($query, $parameters);
+
+        // ✅ recuperar el último ID insertado
+        $id = $this->lastInsertId();
+
+        return new PlanEjercicio(
+            (int) $id,
+            $planEjercicio->name(),
+            $planEjercicio->description(),
+            $planEjercicio->tipo()
+        );
     }
-    public function update(PlanEjercicio $planEjercicio): void
-    {
-        $query = <<< UPDATE_QUERY
-                        UPDATE plan_ejercicio
-                        SET name = :name, tipo = :tipo, description = :description
-                        WHERE id = :id
-                        UPDATE_QUERY;
+
+    public function update(PlanEjercicio $planEjercicio): void {
+        $query = <<<UPDATE_QUERY
+            UPDATE plan_ejercicios
+            SET name = :name, description = :description, tipo = :tipo
+            WHERE id = :id AND deleted = 0
+        UPDATE_QUERY;
 
         $parameters = [
             "id" => $planEjercicio->id(),
             "name" => $planEjercicio->name(),
-            "tipo" => $planEjercicio->tipo(),
             "description" => $planEjercicio->description(),
-            
+            "tipo" => $planEjercicio->tipo(),
         ];
 
         $this->execute($query, $parameters);
     }
+
+    public function delete(int $id): void {
+        $query = "UPDATE plan_ejercicios SET deleted = 1 WHERE id = :id";
+        $parameters = [ "id" => $id ];
+        $this->execute($query, $parameters);
+    }
+
     private function toPlanEjercicio(?array $primitive): ?PlanEjercicio {
         if ($primitive === null) {
             return null;
@@ -90,9 +89,8 @@ final readonly class PlanEjercicioRepository extends PDOManager implements PlanE
         return new PlanEjercicio(
             $primitive["id"],
             $primitive["name"],
-            $primitive["tipo"],
             $primitive["description"],
-            
+            $primitive["tipo"]
         );
     }
 }
