@@ -2,25 +2,31 @@
 
 namespace Src\Service\PlanEjercicio;
 
-use Src\Entity\PlanEjercicio\PlanEjercicio;
 use Src\Infrastructure\Repository\PlanEjercicio\PlanEjercicioRepository;
+use Src\Entity\PlanEjercicio\PlanEjercicio;
 
-final readonly class PlanEjercicioUpdaterService{
-
+final readonly class PlanEjercicioUpdaterService
+{
     private PlanEjercicioRepository $repository;
-
-    private PlanEjercicioFinderService $finderService;
 
     public function __construct() {
         $this->repository = new PlanEjercicioRepository();
-        $this->finderService = new PlanEjercicioFinderService();
     }
-    public function update(string $name, string $tipo, int $desctription): void{
 
-        $planEjercicio = $this->finderService->find($id);
-        $planEjercicio->modify($name, $tipo, $desctription);
+    public function update(int $id, string $name, string $description, string $tipo): ?PlanEjercicio
+    {
+        // Verificar si existe
+        $plan = $this->repository->find($id);
+        if ($plan === null) {
+            return null;
+        }
 
-        $this->repository->update($planEjercicio);
+        // Crear objeto actualizado
+        $updatedPlan = new PlanEjercicio($id, $name, $description, $tipo);
+
+        // Actualizar en la base de datos
+        $this->repository->update($updatedPlan);
+
+        return $updatedPlan;
     }
-    
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Src\Entity\PlanEjercicio;
 
@@ -6,40 +6,33 @@ final class PlanEjercicio {
     public function __construct(
         private readonly ?int $id,
         private string $name,
-        private string $tipo,
-        private string $description
-        
+        private string $description,
+        private string $tipo
+    ) {}
 
-    ) {
-    }
-    public static function create(string $name,string $tipo,string $description ): self
-    {
-        return new self(null,$name,$tipo,$description);
-    }
-    public function modify( string $name,$tipo,$description): void {
-        $this->name = $name;
-        $this->tipo = $tipo;
-        $this->description = $description;
-    }
-
-
-    public function id(): ?int
-    {
+    public function id(): ?int {
         return $this->id;
     }
-    public function name(): string
-    {
+
+    public function name(): string {
         return $this->name;
     }
 
-   
-    public function tipo(): string
-    {
-        return $this->tipo;
-    }
-    public function description(): string
-    {
+    public function description(): string {
         return $this->description;
     }
 
+    public function tipo(): string {
+        return $this->tipo;
+    }
+
+    // ✅ Método para serializar a array
+    public function toArray(): array {
+        return [
+            "id" => $this->id(),
+            "name" => $this->name(),
+            "description" => $this->description(),
+            "tipo" => $this->tipo()
+        ];
+    }
 }
