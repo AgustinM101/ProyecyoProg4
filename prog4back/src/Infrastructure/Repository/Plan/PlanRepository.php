@@ -6,20 +6,16 @@ use Src\Infrastructure\PDO\PDOManager;
 use Src\Entity\Plan\Plan;
 
 final readonly class PlanRepository extends PDOManager implements PlanRepositoryInterface {
+
     public function find(int $id): ?Plan
     {
-        $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            plans A
-                        WHERE
-                            A.id = :id
-                    HEREDOC;
+        $query = <<<SQL
+            SELECT *
+            FROM plans
+            WHERE id = :id AND deleted = 0
+        SQL;
 
-        $parameters = [
-            "id" => $id,
-        ];
+        $parameters = ["id" => $id];
 
         $result = $this->execute($query, $parameters);
 
@@ -29,48 +25,30 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
     /** @return Plan[] */
     public function search(): array
     {
-        $query = <<<HEREDOC
-                        SELECT
-                            *
-                        FROM
-                            plans A
-                    HEREDOC;
-        
+        $query = "SELECT id, name, description, price FROM plans WHERE deleted = 0";
         $results = $this->execute($query);
+        var_dump($results); // <- para debug
 
         $plans = [];
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $plans[] = $this->toPlan($result);
         }
 
         return $plans;
     }
-    public function create(Plan $plan): void{
 
 
+    public function create(Plan $plan): void
+    {
+        $query = <<<SQL
+            INSERT INTO plans (name, description, price, deleted)
+            VALUES (:name, :description, :price, 0)
+        SQL;
 
-        $query = <<< INSERT_QUERY
-                        INSERT INTO plans (name, description, price)
-                        VALUES (:name, :description, :price)
-                        INSERT_QUERY;
-        
         $parameters = [
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
-        ];
-
-        $this->execute($query, $parameters);
-    }
-    public function delete(Plan $plan): void
-    {
-        $query = <<< DELETE_QUERY
-                        DELETE FROM plans
-                        WHERE id = :id
-                        DELETE_QUERY;
-
-        $parameters = [
-            "id" => $plan->id(),
         ];
 
         $this->execute($query, $parameters);
@@ -78,32 +56,53 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
 
     public function update(Plan $plan): void
     {
-        $query = <<< UPDATE_QUERY
-                        UPDATE plans
-                        SET name = :name, description = :description, price = :price
-                        WHERE id = :id
-                        UPDATE_QUERY;
+        $query = <<<SQL
+            UPDATE plans
+            SET name = :name, 
+                description = :description, 
+                price = :price,
+                deleted = :deleted
+            WHERE id = :id
+        SQL;
 
         $parameters = [
             "id" => $plan->id(),
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
+            "deleted" => $plan->deleted() ? 1 : 0
         ];
 
         $this->execute($query, $parameters);
     }
-    private function toPlan(?array $primitive): ?Plan {
-        if ($primitive === null) {
-            return null;
-        }
+
+
+    public function delete(Plan $plan): void
+    {
+        // Delete lógico
+        $query = "UPDATE plans SET deleted = 1 WHERE id = :id";
+        $parameters = ["id" => $plan->id()];
+
+        $this->execute($query, $parameters);
+    }
+
+    public function softDelete(int $id): void
+{
+    $query = "UPDATE plans SET deleted = 1 WHERE id = :id";
+    $parameters = ["id" => $id];
+    $this->execute($query, $parameters);
+}
+
+
+    private function toPlan(?array $row): ?Plan
+    {
+        if ($row === null) return null;
 
         return new Plan(
-            $primitive["id"],
-            $primitive["name"],
-            $primitive["description"],
-            $primitive["price"]
+            $row["id"],
+            $row["name"],
+            $row["description"],
+            $row["price"]
         );
-
     }
 }
