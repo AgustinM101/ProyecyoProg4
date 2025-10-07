@@ -36,12 +36,14 @@ function App() {
             <Route path="/nosotros" element={<Nosotros />} />
 
             {/* 👇 agregadas aquí */}
-            <Route path="/Purchase" element={<PurchasePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            
+           
           </Route>
 
           {/* Rutas privadas */}
           <Route element={<PrivateRoute />}>
+          <Route path="/purchase" element={<PurchasePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
             {/* acá van las rutas que requieran login */}
           </Route>
 

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Container, Card, Title, Text, Stack, Button, Group } from "@mantine/core";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
@@ -5,13 +6,37 @@ import { Link } from "react-router-dom";
 import "./ProfilePage.css";
 
 export function ProfilePage() {
-  // Simulación de datos de usuario
-  const user = {
-    nombre: "Norberto E. Díaz",
-    email: "norberto@example.com",
-    telefono: "+54 234 6551210",
-    plan: "Plan PHAV",
-  };
+  const [user, setUser] = useState(null); // Estado para guardar los datos del backend
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const [error, setError] = useState(null); // Estado de error
+
+  useEffect(() => {
+    // Suponiendo que tu endpoint es /user/logged
+    fetch("http://localhost:9091/user/logged", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // Si usas token para autenticación:
+        // "Authorization": `Bearer ${localStorage.getItem("token")}`
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al traer los datos del usuario");
+        return res.json();
+      })
+      .then((data) => {
+        setUser(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p>Cargando perfil...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <>
@@ -25,10 +50,10 @@ export function ProfilePage() {
             </Title>
 
             <Stack spacing="md" mt="lg">
-              <Text><strong>Nombre:</strong> {user.nombre}</Text>
+              <Text><strong>Nombre:</strong> {user.name}</Text>
               <Text><strong>Email:</strong> {user.email}</Text>
-              <Text><strong>Teléfono:</strong> {user.telefono}</Text>
-              <Text><strong>Plan contratado:</strong> {user.plan}</Text>
+              <Text><strong>Teléfono:</strong> {user.phone || "-"}</Text>
+              <Text><strong>Plan contratado:</strong> {user.plan || "-"}</Text>
 
               <Group position="center" mt="xl">
                 <Link to="/plans">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Card, TextInput, Title, Button, Stack, Select, Group, Text } from "@mantine/core";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
@@ -17,6 +17,15 @@ export function PurchasePage() {
     tarjetaCVV: "",
   });
 
+  // ✅ Validar si el usuario está logueado
+  useEffect(() => {
+    const user = localStorage.getItem("user"); // acá deberías tener guardado el user o token al loguear
+    if (!user) {
+      alert("Debes iniciar sesión o registrarte para comprar un plan.");
+      navigate("/login");
+    }
+  }, [navigate]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,10 +34,10 @@ export function PurchasePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = {
-      ...formData,         
-      plan: "Plan PHAV",   
-      paymentMethod,       
-      fechaCompra: new Date().toLocaleDateString(), 
+      ...formData,
+      plan: "Plan PHAV",
+      paymentMethod,
+      fechaCompra: new Date().toLocaleDateString(),
     };
 
     // Guardar en localStorage
@@ -36,7 +45,7 @@ export function PurchasePage() {
 
     // Simulación de redirección
     alert("Compra simulada. Redirigiendo a tu perfil...");
-    navigate("/profile"); 
+    navigate("/profile");
   };
 
   return (
@@ -92,23 +101,20 @@ export function PurchasePage() {
                   required
                 />
 
-                {/* Si elige tarjeta, mostramos inputs simulados */}
+                {/* Simulaciones según el método */}
                 {paymentMethod === "transferencia" && (
                   <>
-                    <Text className="card-info-text">Transfiera a este Alias:InfinitSport12(simulación)</Text>
-                    <Text className="card-info-text">O a este CBU: 123-4567890123456789012-3(simulación)</Text>
+                    <Text className="card-info-text">Alias: InfinitSport12 (simulación)</Text>
+                    <Text className="card-info-text">CBU: 123-4567890123456789012-3 (simulación)</Text>
                   </>
                 )}
-                    
+
                 {paymentMethod === "mercadopago" && (
-                  <>
-                    <Text className="card-info-text">Será redirigido a Mercado Pago (simulación)</Text>
-                  </>
+                  <Text className="card-info-text">Será redirigido a Mercado Pago (simulación)</Text>
                 )}
+
                 {paymentMethod === "efectivo" && (
-                  <>
-                    <Text className="card-info-text">Pague en efectivo en nuestras instalaciones (simulación)</Text>
-                  </>
+                  <Text className="card-info-text">Pague en efectivo en nuestras instalaciones (simulación)</Text>
                 )}
 
                 <Group position="center" mt="md">
