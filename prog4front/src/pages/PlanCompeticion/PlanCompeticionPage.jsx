@@ -1,9 +1,52 @@
-import { Container, Title, Text, Card, Button } from "@mantine/core";
+import { Container, Title, Text, Card, Button, Loader, Center } from "@mantine/core";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import "./PlanCompeticionPage.css";
+import { useEffect, useState } from "react";
+import { plansService } from "../../services/plansService";
 
 export function PlanCompeticionPage() {
+      const [plan, setPlan] = useState(null);
+      const [loading, setLoading] = useState(true);
+    
+      useEffect(() => {
+        async function fetchPlan() {
+          try {
+            const response = await plansService.getPlanCompeticionId();
+            setPlan(response.data);
+          } catch (error) {
+            console.error("Error al traer el plan Competicion:", error);
+          } finally {
+            setLoading(false);
+          }
+        }
+    
+        fetchPlan();
+      }, []);
+    
+      if (loading) {
+        return (
+          <Center style={{ height: "100vh" }}>
+            <Loader />
+          </Center>
+        );
+      }
+    
+      if (!plan) {
+        return (
+          <Center style={{ height: "100vh" }}>
+            <Text>No se encontró el plan Competicion.</Text>
+          </Center>
+        );
+      }
+
+
+
+
+
+
+
+
   return (
     <>
       {/* Header común */}
@@ -26,10 +69,8 @@ export function PlanCompeticionPage() {
             </Title>
 
             <Text size="lg" className="competicion-description">
-              El plan de Competición está diseñado para quienes buscan ingresar al equipo 
-              competitivo de fisicoculturismo. Este programa exige cumplir con condiciones 
-              físicas y disciplina estricta para alcanzar los objetivos planteados y competir 
-              al máximo nivel. <br /><br />
+              {plan.description}
+              <br /><br />
               Si estás preparado para dar el siguiente paso, podés ponerte en contacto 
               directamente con nuestro equipo vía WhatsApp.
             </Text>
