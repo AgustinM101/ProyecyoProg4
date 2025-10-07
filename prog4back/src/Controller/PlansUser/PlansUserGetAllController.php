@@ -21,12 +21,13 @@ final readonly class PlansUserGetAllController {
 
         foreach ($plansUsers as $plansUser) {
             $responses[] = [
-                "id_user"   => $plansUser["id_user"],
-                "user_name" => $plansUser["user_name"],
-                "user_email"=> $plansUser["user_email"],
-                "id_plan"   => $plansUser["id_plan"],
-                "plan_name" => $plansUser["plan_name"],
-                "status"    => $plansUser["status"] // sigue siendo de plans_user
+                "id_user"         => $plansUser["id_user"],
+                "user_name"       => $plansUser["user_name"],
+                "user_email"      => $plansUser["user_email"],
+                "id_plan"         => $plansUser["id_plan"],
+                "plan_name"       => $plansUser["plan_name"],
+                "status"          => $plansUser["status"], // sigue siendo de plans_user
+                "expiration_date" => $plansUser["expiration_date"] ?? null 
             ];
         }
 

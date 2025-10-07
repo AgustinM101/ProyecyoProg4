@@ -47,7 +47,7 @@ export function UserMenu({ user }) {
       <Menu.Dropdown>
         {user ? (
           <>
-            <Link to={`/user/${user.id}`} className={classes.menuLink}>
+            <Link to={`/profile`} className={classes.menuLink}>
               <Menu.Item leftSection={<IconUser size={16} />}>
                 Mi perfil
               </Menu.Item>
