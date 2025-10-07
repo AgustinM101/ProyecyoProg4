@@ -1,14 +1,49 @@
-import { Container, Title, Text, Card, Button, Group, Divider } from "@mantine/core";
+import { Container, Title, Text, Card, Button, Group, Divider, Center, Loader } from "@mantine/core";
 import { IconClockHour4, IconCurrencyDollar } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu"; // Importa el header
+import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import "./PlanPhavPage.css";
+import { useEffect, useState } from "react";
+import { plansService } from "../../services/plansService";
 
 export function PlanPhavPage() {
+  const [plan, setPlan] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPlan() {
+      try {
+        const response = await plansService.getPlanPhavId();
+        setPlan(response.data);
+      } catch (error) {
+        console.error("Error al traer el plan PHAV:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPlan();
+  }, []);
+
+  if (loading) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader />
+      </Center>
+    );
+  }
+
+  if (!plan) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Text>No se encontró el plan PHAV.</Text>
+      </Center>
+    );
+  }
+
   return (
     <>
-      {/* Header común a todas las páginas */}
       <HeaderMenu />
 
       <div className="phav-wrapper">
@@ -26,13 +61,12 @@ export function PlanPhavPage() {
 
             {/* Título */}
             <Title order={2} className="phav-title">
-              PLAN PHAV
+              {plan.name.toUpperCase()}
             </Title>
 
             {/* Descripción */}
             <Text size="lg" className="phav-description">
-              El plan PHAV está diseñado para lograr una recomposición corporal efectiva,
-              mejorar fuerza, resistencia y estética de manera progresiva y saludable.
+              {plan.description}
             </Text>
 
             <Divider my="md" />
@@ -43,7 +77,7 @@ export function PlanPhavPage() {
                 <IconCurrencyDollar size={30} className="phav-icon" />
                 <div>
                   <Text fw={700}>Precio</Text>
-                  <Text>$25.000 / mes</Text>
+                  <Text>${plan.price} / mes</Text>
                 </div>
               </div>
 
@@ -67,15 +101,11 @@ export function PlanPhavPage() {
 
             {/* Botones */}
             <Group position="center" spacing="md" mt="lg">
-              <div>
-                <Link to="/form">
-                  <Button size="lg" radius="md" className="phav-btn">
-                    Comprar plan
-                  </Button>
-                </Link>
-              </div>
-
-
+              <Link to="/form">
+                <Button size="lg" radius="md" className="phav-btn">
+                  Comprar plan
+                </Button>
+              </Link>
 
               <Link to="/plans">
                 <Button size="lg" variant="outline" radius="md" color="gray">
@@ -83,15 +113,11 @@ export function PlanPhavPage() {
                 </Button>
               </Link>
             </Group>
-
           </Card>
         </Container>
       </div>
 
-      {/* Footer */}
       <Footer />
     </>
   );
 }
-
-
