@@ -44,6 +44,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     public function searchPlansWithDetails(): array {
         $query = <<<SQL
             SELECT 
+                up.id,
                 up.id_user,
                 u.name AS user_name,
                 u.email AS user_email,
@@ -63,6 +64,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     public function findByUserIdWithDetails(int $id_user): array {
         $query = <<<SQL
             SELECT 
+                
                 up.id_user,
                 u.name AS user_name,
                 u.email AS user_email,
@@ -89,10 +91,13 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
         return $this->findByUserIdWithDetails($id_user);
     }
 
-    public function delete(PlansUser $plansUser): void {
+    public function delete(int $id): void {
         $query = "DELETE FROM plans_users WHERE id = :id";
-        $this->db->executeNonQuery($query, [":id" => $plansUser->id()]);
+        $parameters = ["id" => $id];
+
+        $this->execute($query, $parameters); // usa el método execute que ya maneja la conexión
     }
+
 
 
     /** @return PlansUser[] */
@@ -153,14 +158,17 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
 
 public function removePlanById(int $id): void {
     $query = "DELETE FROM plans_user WHERE id = :id";
-    $this->execute(["id" => $id], $query);
+    $params = ["id" => $id];
+    $this->execute($query, $params);
 }
+
+
 
 private function toPlansUser(?array $row): ?PlansUser {
     if ($row === null) return null;
 
     return new PlansUser(
-        null, // id si no lo usás en la entidad
+        $row["id"] ?? null,
         $row["id_user"],
         $row["id_plan"],
         $row["status"],

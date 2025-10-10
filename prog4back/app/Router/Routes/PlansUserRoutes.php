@@ -33,8 +33,15 @@ final readonly class PlansUserRoutes {
                 "name" => "plans_users_remove",
                 "url" => "/plansUsers",
                 "controller" => "PlansUser/PlansUserRemoveController.php",
-                "method" => "DELETE"
+                "method" => "DELETE",
+                "parameters" => [
+                    [
+                        "name" => "id",
+                        "type" => "int"
+                    ]
+                ]
             ],
+
             [
                 "name" => "plans_users_update",
                 "url" => "/plansUsers",

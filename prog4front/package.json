@@ -10,13 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@hookform/resolvers": "^5.2.1",
     "@mantine/carousel": "^8.3.1",
     "@mantine/core": "^8.2.4",
+    "@mantine/dates": "^8.3.3",
     "@mantine/form": "^8.2.4",
     "@mantine/hooks": "^8.2.4",
+    "@mui/material": "^7.3.4",
     "@tabler/icons-react": "^3.34.1",
     "axios": "^1.11.0",
+    "dayjs": "^1.11.18",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "react": "^19.1.1",
