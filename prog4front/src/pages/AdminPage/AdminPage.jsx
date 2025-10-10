@@ -16,11 +16,6 @@ import { plansUserService } from "../../services/plansUserService";
 import { DateInput } from '@mantine/dates';
 import { UserTable } from "../../components/UserTable/UserTable";
 import "./AdminPage.css";
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-
-dayjs.extend(customParseFormat);
-
 
 export function AdminPage() {
   const [plansUsers, setPlansUsers] = useState([]);
@@ -63,30 +58,24 @@ export function AdminPage() {
   }, [filteredUsers, page]);
 
   const formattedUsers = useMemo(() => {
-  return paginatedUsers.map((pu) => {
-    let formattedDate = "";
-    if (pu.expiration_date) {
-      const [year, month, day] = pu.expiration_date.slice(0, 10).split("-");
-      formattedDate = `${day}/${month}/${year}`;
-    }
-
-    return {
-      id: pu.id,
-      user: {
-        id: pu.id_user,
-        name: pu.user_name,
-        email: pu.user_email,
-      },
-      plan: {
-        id: pu.id_plan,
-        name: pu.plan_name,
-        price: pu.plan_price ?? 0,
-      },
-      status: pu.status?.toLowerCase(),
-      expiration_date: formattedDate,
-    };
-  });
-}, [paginatedUsers]);
+    return paginatedUsers.map((pu) => {
+      return {
+        id: pu.id,
+        user: {
+          id: pu.id_user,
+          name: pu.user_name,
+          email: pu.user_email,
+        },
+        plan: {
+          id: pu.id_plan,
+          name: pu.plan_name,
+          price: pu.plan_price ?? 0,
+        },
+        status: pu.status?.toLowerCase(),
+        expiration_date: pu.expiration_date,
+      };
+    });
+  }, [paginatedUsers]);
 
 
   const handleEdit = (user) => {
@@ -189,18 +178,18 @@ export function AdminPage() {
                 { value: "inactive", label: "Inactivo" },
               ]}
             />
+
             <DateInput
-              locale="es"
+              label="Expiración"
               valueFormat="DD/MM/YYYY"
-              value={selectedUser.expiration_date ? new Date(selectedUser.expiration_date.split('/').reverse().join('-')) : null}
+              value={selectedUser.expiration_date}
               onChange={(date) =>
                 setSelectedUser({
                   ...selectedUser,
-                  expiration_date: date.toISOString().slice(0, 10), // guardamos YYYY-MM-DD
+                  expiration_date: date
                 })
               }
             />
-
 
             <Button onClick={handleUpdate} fullWidth color="blue">
               Guardar Cambios

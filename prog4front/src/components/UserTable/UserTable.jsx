@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import "./UserTable.css";
 import { Table, Text, Button, Group } from "@mantine/core";
 
@@ -16,6 +17,7 @@ export function UserTable({ users, onEdit, onDelete }) {
           <th>Acciones</th>
         </tr>
       </thead>
+
       <tbody>
         {users.map((pu) => (
           <tr key={`${pu.user.id}-${pu.plan.id}`}>
@@ -28,7 +30,7 @@ export function UserTable({ users, onEdit, onDelete }) {
                 {pu.status === "active" ? "Activo" : "Inactivo"}
               </Text>
             </td>
-            <td>{pu.expiration_date}</td>
+            <td>{pu.expiration_date ? dayjs(pu.expiration_date).format("DD/MM/YYYY") : null}</td>
             <td>
               <Group spacing="xs">
                 <Button
@@ -39,6 +41,7 @@ export function UserTable({ users, onEdit, onDelete }) {
                 >
                   Editar
                 </Button>
+
                 <Button
                   size="xs"
                   color="red"
