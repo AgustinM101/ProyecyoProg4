@@ -32,16 +32,24 @@ final readonly class UserGetLoggedController {
         }
 
         echo json_encode([
-            "token" => $user->id(),
+            "id" => $user->id(),
             "name" => $user->name(),
             "email" => $user->email(),
             "role" => $user->role(),
-            "plan" => $plan != null ? [
-                "id" => $plan->id(),
-                "name" => $plan->name(),
-                "description" => $plan->description(),
-                "price" => $plan->price()
-            ] : null
+            "planUser" => $planUser != null ? [
+                "id" => $planUser->id(),
+                "id_user" => $planUser->id_user(),
+                "id_plan" => $planUser->id_plan(),
+                "status" => $planUser->status(),
+                "expiration_date" => $planUser->expiration_date(),
+
+                "plan" => $plan != null ? [
+                    "id" => $plan->id(),
+                    "name" => $plan->name(),
+                    "description" => $plan->description(),
+                    "price" => $plan->price()
+                ] : null
+            ] : null,
         ]);
     }
 }

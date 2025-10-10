@@ -1,20 +1,29 @@
-.avatar-col {
-  width: 80px;
-  text-align: center;
+/* Solo afecta las tablas dentro de AdminPage */
+.admin-page .user-table {
+  border: 1px solid #f5b301; /* borde amarillo */
+  border-radius: 8px;
+  border-collapse: collapse;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(245, 179, 1, 0.3); /* sombra amarilla suave */
 }
 
-.estado-col {
-  width: 120px;
-  text-align: center;
-}
-
-.acciones-col {
-  width: 180px;
-  text-align: center;
-}
-
-/* Centrar todas las celdas de la tabla */
-td, th {
+.admin-page .user-table th,
+.admin-page .user-table td {
+  border: 1px solid #f5b301;
   text-align: center;
   vertical-align: middle;
+  padding: 10px;
+  color: #fff; /* texto blanco */
+}
+
+/* Colores del header */
+.admin-page .user-table thead {
+  background-color: #222; /* header oscuro */
+}
+
+/* Efecto hover suave */
+.admin-page .user-table tbody tr:hover {
+  background-color: #333; /* fondo ligeramente más claro al pasar el mouse */
+  transition: background-color 0.2s ease-in-out;
 }
