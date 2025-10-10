@@ -44,50 +44,72 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
         return $plansForms;
     }
 
-   public function create(PlansForm $plansForm): PlansForm {
-    $query = <<<INSERT_QUERY
-        INSERT INTO plans_forms (nombre, edad, sexo, altura, peso_actual, peso_deseado,
-            actividad_fisica, antecedentes_medicos, alergias, medicamentos,
-            problemas_digestivos, comidas_diarias, alimentos_evitar, horarios_comidas,
-            consumo_agua, consumo_alcohol, fecha_registro, id_plans_user, deleted)
-        VALUES (:nombre, :edad, :sexo, :altura, :peso_actual, :peso_deseado,
-            :actividad_fisica, :antecedentes_medicos, :alergias, :medicamentos,
-            :problemas_digestivos, :comidas_diarias, :alimentos_evitar, :horarios_comidas,
-            :consumo_agua, :consumo_alcohol, :fecha_registro, :id_plans_user, 0)
-    INSERT_QUERY;
+    public function create(PlansForm $plansForm): PlansForm {
+        $query = <<<INSERT_QUERY
+            INSERT INTO plans_forms (nombre, edad, sexo, altura, peso_actual, peso_deseado,
+                actividad_fisica, antecedentes_medicos, alergias, medicamentos,
+                problemas_digestivos, comidas_diarias, alimentos_evitar, horarios_comidas,
+                consumo_agua, consumo_alcohol, fecha_registro, id_plans_user, deleted)
+            VALUES (:nombre, :edad, :sexo, :altura, :peso_actual, :peso_deseado,
+                :actividad_fisica, :antecedentes_medicos, :alergias, :medicamentos,
+                :problemas_digestivos, :comidas_diarias, :alimentos_evitar, :horarios_comidas,
+                :consumo_agua, :consumo_alcohol, :fecha_registro, :id_plans_user, 0)
+        INSERT_QUERY;
 
         $parameters = [
-            
-        "nombre" => $plansForm->nombre(),
-        "edad" => $plansForm->edad(),
-        "sexo" => $plansForm->sexo(),
-        "altura" => $plansForm->altura(),
-        "peso_actual" => $plansForm->pesoActual(),
-        "peso_deseado" => $plansForm->pesoDeseado(),
-        "actividad_fisica" => $plansForm->actividadFisica(),
-        "antecedentes_medicos" => $plansForm->antecedentesMedicos(),
-        "alergias" => $plansForm->alergias(),
-        "medicamentos" => $plansForm->medicamentos(),
-        "problemas_digestivos" => $plansForm->problemasDigestivos(),
-        "comidas_diarias" => $plansForm->comidasDiarias(),
-        "alimentos_evitar" => $plansForm->alimentosEvitar(),
-        "horarios_comidas" => $plansForm->horariosComidas(),
-        "consumo_agua" => $plansForm->consumoAgua(),
-        "consumo_alcohol" => $plansForm->consumoAlcohol(),
-        "fecha_registro" => $plansForm->fechaRegistro(),
-        "id_plans_user" => $plansForm->idPlansUser(),
-    ];
+            "nombre" => $plansForm->nombre(),
+            "edad" => $plansForm->edad(),
+            "sexo" => $plansForm->sexo(),
+            "altura" => $plansForm->altura(),
+            "peso_actual" => $plansForm->pesoActual(),
+            "peso_deseado" => $plansForm->pesoDeseado(),
+            "actividad_fisica" => $plansForm->actividadFisica(),
+            "antecedentes_medicos" => $plansForm->antecedentesMedicos(),
+            "alergias" => $plansForm->alergias(),
+            "medicamentos" => $plansForm->medicamentos(),
+            "problemas_digestivos" => $plansForm->problemasDigestivos(),
+            "comidas_diarias" => $plansForm->comidasDiarias(),
+            "alimentos_evitar" => $plansForm->alimentosEvitar(),
+            "horarios_comidas" => $plansForm->horariosComidas(),
+            "consumo_agua" => $plansForm->consumoAgua(),
+            "consumo_alcohol" => $plansForm->consumoAlcohol(),
+            "fecha_registro" => $plansForm->fechaRegistro(),
+            "id_plans_user" => $plansForm->idPlansUser(),
+        ];
 
         $this->execute($query, $parameters);
 
-        // ✅ recuperar el último ID insertado
-        return $this->lastInsertId();
+        // ✅ Obtener el último ID insertado
+        $id = $this->lastInsertId();
+
+        // ✅ Crear y devolver el objeto con el nuevo ID
+        return new PlansForm(
+            $id,
+            $plansForm->nombre(),
+            $plansForm->edad(),
+            $plansForm->sexo(),
+            $plansForm->altura(),
+            $plansForm->pesoActual(),
+            $plansForm->pesoDeseado(),
+            $plansForm->actividadFisica(),
+            $plansForm->antecedentesMedicos(),
+            $plansForm->alergias(),
+            $plansForm->medicamentos(),
+            $plansForm->problemasDigestivos(),
+            $plansForm->comidasDiarias(),
+            $plansForm->alimentosEvitar(),
+            $plansForm->horariosComidas(),
+            $plansForm->consumoAgua(),
+            $plansForm->consumoAlcohol(),
+            $plansForm->fechaRegistro(),
+            $plansForm->idPlansUser()
+        );
     }
 
     public function update(PlansForm $plansForm): void {
         $query = <<<UPDATE_QUERY
             UPDATE plans_forms
-            SET nombre = :nombre, edad = :edad,  sexo = :sexo, altura = :altura, peso_actual = :peso_actual, peso_deseado = :peso_deseado,
+            SET nombre = :nombre, edad = :edad, sexo = :sexo, altura = :altura, peso_actual = :peso_actual, peso_deseado = :peso_deseado,
                 actividad_fisica = :actividad_fisica, antecedentes_medicos = :antecedentes_medicos, alergias = :alergias,
                 medicamentos = :medicamentos, problemas_digestivos = :problemas_digestivos, comidas_diarias = :comidas_diarias,
                 alimentos_evitar = :alimentos_evitar, horarios_comidas = :horarios_comidas,
@@ -126,7 +148,6 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
         $this->execute($query, $parameters);
     }
 
-    // ✅ Solo una versión del método toPlansForm
     private function toPlansForm(array $row): PlansForm {
         return new PlansForm(
             (int) $row['id'],
