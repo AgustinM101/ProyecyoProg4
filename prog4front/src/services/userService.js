@@ -1,25 +1,19 @@
 import { api } from "./api";
 
 export const userService = {
-  getCurrentUser: async () => {
-    const token = localStorage.getItem("token");
-    return await api.get("/user", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  },
+  // Trae el usuario logueado
+  getCurrentUser: async () => api.get("/user"),
 
-  getAllUsers: async () => {
-    const token = localStorage.getItem("token");
-    return await api.get("/api/users", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  },
+  // Trae todos los usuarios (solo admins)
+  getAllUsers: async () => api.get("/api/users"),
 
-  getUserPlans: async (userId) => {
-    const token = localStorage.getItem("token");
-    return await api.get(`/userplans/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  },
+  // Trae los planes de un usuario por su ID
+  getUserPlans: async (userId) => api.get(`/userplans/${userId}`),
+
+  updateProfile: async (formData) =>
+  api.put("/user", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  }),
+
 };
 
