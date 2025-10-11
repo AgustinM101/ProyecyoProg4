@@ -18,6 +18,7 @@ import { userService } from "../../services/userService";
 import "./ProfilePage.css";
 
 export function ProfilePage() {
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -64,6 +65,7 @@ export function ProfilePage() {
   };
 
 
+
   if (loading) return <p>Cargando perfil...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -78,6 +80,7 @@ export function ProfilePage() {
               Mi Perfil
             </Title>
             <Stack spacing="md" mt="lg">
+
               {user.profileImage && (
                 <img
                   src={user.profileImage}
@@ -91,6 +94,7 @@ export function ProfilePage() {
               <Text><strong>Plan contratado:</strong> {user.plan?.name || "-"}</Text>
               <Text>{user.plan?.description}</Text>
               <Text>{user.plan?.price ? `$${user.plan.price}` : ""}</Text>
+
 
               <Group position="center" mt="xl">
                 <Link to="/myplans">
