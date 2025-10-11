@@ -1,80 +1,60 @@
-import { Table, Avatar, Badge, Button, Group, Center } from "@mantine/core";
+import dayjs from "dayjs";
 import "./UserTable.css";
+import { Table, Text, Button, Group } from "@mantine/core";
 
-export function UserTable({ users, onApprovePlan, onRejectPlan }) {
-  const rows = users.map((user) => (
-    <tr key={user.id}>
-      {/* Avatar */}
-      <td className="avatar-col">
-        <Center>
-          <Avatar src={user.image} radius="xl" />
-        </Center>
-      </td>
-
-      <td>{user.name}</td>
-      <td>{user.email}</td>
-      <td>{user.plan?.name || "Sin plan"}</td>
-      <td>{user.plan?.price ? `$${user.plan.price}` : "-"}</td>
-
-      {/* Estado */}
-      <td className="estado-col">
-        <Badge
-          fullWidth
-          color={
-            user.plan?.status === "aprobado"
-              ? "green"
-              : user.plan?.status === "rechazado"
-              ? "red"
-              : "orange"
-          }
-        >
-          {user.plan?.status?.toUpperCase() || "PENDIENTE"}
-        </Badge>
-      </td>
-
-      {/* Acciones */}
-      <td className="acciones-col">
-        {user.plan ? (
-          <Group justify="center" gap="xs">
-            <Button
-              size="xs"
-              color="green"
-              onClick={() => onApprovePlan?.(user.id)}
-            >
-              Aprobar
-            </Button>
-            <Button
-              size="xs"
-              color="red"
-              variant="outline"
-              onClick={() => onRejectPlan?.(user.id)}
-            >
-              Rechazar
-            </Button>
-          </Group>
-        ) : (
-          <Center>-</Center>
-        )}
-      </td>
-    </tr>
-  ));
-
+export function UserTable({ users, onEdit, onDelete }) {
   return (
-    <Table striped highlightOnHover verticalSpacing="sm" withColumnBorders>
+    <Table highlightOnHover className="user-table">
+
       <thead>
         <tr>
-          <th className="avatar-col">Avatar</th>
-          <th>Nombre</th>
+          <th>Usuario</th>
           <th>Email</th>
           <th>Plan</th>
           <th>Precio</th>
-          <th className="estado-col">Estado</th>
-          <th className="acciones-col">Acciones</th>
+          <th>Estado</th>
+          <th>Expira</th>
+          <th>Acciones</th>
         </tr>
       </thead>
-      <tbody>{rows}</tbody>
+
+      <tbody>
+        {users.map((pu) => (
+          <tr key={`${pu.user.id}-${pu.plan.id}`}>
+            <td>{pu.user.name}</td>
+            <td>{pu.user.email}</td>
+            <td>{pu.plan.name}</td>
+            <td>${pu.plan.price}</td>
+            <td>
+              <Text fw={700} color={pu.status === "active" ? "green" : "red"}>
+                {pu.status === "active" ? "Activo" : "Inactivo"}
+              </Text>
+            </td>
+            <td>{pu.expiration_date ? dayjs(pu.expiration_date).format("DD/MM/YYYY") : null}</td>
+            <td>
+              <Group spacing="xs">
+                <Button
+                  size="xs"
+                  color="blue"
+                  variant="light"
+                  onClick={() => onEdit(pu)}
+                >
+                  Editar
+                </Button>
+
+                <Button
+                  size="xs"
+                  color="red"
+                  variant="light"
+                  onClick={() => onDelete(pu)}
+                >
+                  Eliminar
+                </Button>
+              </Group>
+            </td>
+          </tr>
+        ))}
+      </tbody>
     </Table>
   );
 }
-
-

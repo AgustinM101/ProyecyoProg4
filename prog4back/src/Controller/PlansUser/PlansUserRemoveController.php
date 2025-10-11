@@ -1,5 +1,4 @@
 <?php
-namespace Src\Controller\PlansUser;
 
 use Src\Service\PlansUser\PlansUserRemoverService;
 
@@ -13,7 +12,10 @@ final readonly class PlansUserRemoveController {
 
     // id viene por la URL
     public function start(int $id): void {
-        $this->service->remove($id);
+        // Llamamos directamente al método que elimina por id
+        $this->service->removePlanById($id);
+
         echo json_encode(["message" => "Plan removido"]);
     }
 }
+

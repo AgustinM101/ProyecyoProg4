@@ -1,0 +1,120 @@
+
+/* Contenedor principal */
+.admin-page {
+  background-color: #121212;
+  color: #fff;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+/* Modales */
+.admin-page .mantine-Modal-root {
+  background-color: #111;
+  color: #fff;
+}
+
+
+
+
+
+
+/* Encabezado y barra de búsqueda */
+.admin-page .admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-page .admin-header input {
+  background-color: #1e1e1e;
+  color: #fff;
+  border: 1px solid #f5b301;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+/* Tabla */
+.admin-page .user-table {
+  border: 1px solid #f5b301;
+  border-radius: 8px;
+  border-collapse: collapse;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(245, 179, 1, 0.3);
+}
+
+.admin-page .user-table th,
+.admin-page .user-table td {
+  border: 1px solid #f5b301;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  color: #fff;
+}
+
+.admin-page .user-table thead {
+  background-color: #222;
+}
+
+.admin-page .user-table tbody tr:hover {
+  background-color: #333;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Botones */
+.admin-page button {
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+.admin-page button.blue {
+  background-color: #f5b301;
+  color: #121212;
+}
+
+.admin-page button.red {
+  background-color: #e53935;
+  color: #fff;
+}
+
+.admin-page button.gray {
+  background-color: #555;
+  color: #fff;
+}
+
+/* Modales */
+.admin-page .mantine-Modal-modal {
+  background-color: #1e1e1e;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.admin-page .mantine-Modal-title {
+  color: #f5b301;
+}
+
+/* Inputs (Select, TextInput, DateInput) */
+.admin-page input,
+.admin-page select,
+.admin-page .mantine-DateInput-input {
+  background-color: #1e1e1e;
+  color: #fff;
+  border: 1px solid #f5b301;
+  border-radius: 4px;
+}
+
+.admin-page .mantine-DateInput-input:focus {
+  border-color: #f5b301;
+  box-shadow: 0 0 0 2px rgba(245, 179, 1, 0.3);
+}
+.mantine-DatePicker-calendar {
+  z-index: 1000 !important; /* que esté por encima de todo */
+  min-width: 300px;         /* opcional, evita que se vea comprimido */
+}
+.admin-page .mantine-Modal-modal {
+  overflow: visible;
+}
