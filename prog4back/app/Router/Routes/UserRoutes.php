@@ -35,15 +35,16 @@ final readonly class UserRoutes {
       ],
       [
         "name" => "user_update",
-        "url" => "/users",
+        "url" => "/user",
         "controller" => "User/UserPutController.php",
-        "method" => "PUT",
-        "parameters" => [
-          [
-            "name" => "id",
-            "type" => "int"
-          ]
-        ]
+        "method" => "PUT"
+      ],
+      // 🔹 Nueva ruta específica para actualizar perfil (desde el front ProfilePage)
+      [
+        "name" => "user_update_profile",
+        "url" => "/user/profile",
+        "controller" => "User/UserUpdateProfileController.php",
+        "method" => "PUT"
       ],
       [
         "name" => "user_get",
@@ -52,7 +53,7 @@ final readonly class UserRoutes {
         "method" => "GET"
       ],
       [
-        "name" => "user_get",
+        "name" => "user_get_by_id",
         "url" => "/users",
         "controller" => "User/UserGetController.php",
         "method" => "GET",

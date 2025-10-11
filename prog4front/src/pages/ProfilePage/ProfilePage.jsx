@@ -1,12 +1,71 @@
-import { Container, Card, Title, Text, Group, Divider } from "@mantine/core";
-import { IconUser, IconMail, IconPhone, IconCreditCard, IconCalendar, IconClockHour4 } from "@tabler/icons-react";
+import { useState, useEffect } from "react";
+import {
+  Container,
+  Card,
+  Title,
+  Text,
+  Stack,
+  Button,
+  Group,
+  Modal,
+  TextInput,
+  FileInput,
+} from "@mantine/core";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
+import { Link, useNavigate } from "react-router-dom";
+import { userService } from "../../services/userService";
 import "./ProfilePage.css";
 
 export function ProfilePage() {
-  // Recuperamos datos del localStorage
-  const userData = JSON.parse(localStorage.getItem("userProfile"));
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [modalOpened, setModalOpened] = useState(false);
+
+  // Estados del formulario de edición
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    userService.getCurrentUser()
+      .then((res) => {
+        setUser(res.data);
+        setName(res.data.name || "");
+        setPhone(res.data.phone || "");
+      })
+      .catch((err) => {
+        if (err.message.includes("401")) {
+          localStorage.removeItem("token");
+          navigate("/login");
+        } else {
+          setError(err.message);
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [navigate]);
+
+  const handleUpdateProfile = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("phone", phone);
+      if (profileImage) formData.append("profileImage", profileImage);
+
+      const res = await userService.updateProfile(formData);
+      setUser(res.data);
+      setModalOpened(false);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+
+  if (loading) return <p>Cargando perfil...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <>
@@ -18,51 +77,60 @@ export function ProfilePage() {
             <Title order={2} className="profile-title">
               Mi Perfil
             </Title>
+            <Stack spacing="md" mt="lg">
+              {user.profileImage && (
+                <img
+                  src={user.profileImage}
+                  alt="Foto de perfil"
+                  style={{ width: 120, height: 120, borderRadius: "50%" }}
+                />
+              )}
+              <Text><strong>Nombre:</strong> {user.name}</Text>
+              <Text><strong>Email:</strong> {user.email}</Text>
+              <Text><strong>Teléfono:</strong> {user.phone || "-"}</Text>
+              <Text><strong>Plan contratado:</strong> {user.plan?.name || "-"}</Text>
+              <Text>{user.plan?.description}</Text>
+              <Text>{user.plan?.price ? `$${user.plan.price}` : ""}</Text>
 
-            {!userData ? (
-              <Text>No hay datos de usuario. Por favor realiza una compra.</Text>
-            ) : (
-              <div className="profile-info">
-                <Group spacing="md">
-                  <IconUser size={24} className="profile-icon" />
-                  <Text><strong>Nombre:</strong> {userData.nombre}</Text>
-                </Group>
+              <Group position="center" mt="xl">
+                <Link to="/myplans">
+                  <Button variant="outline" radius="md">
+                    Ver mis planes
+                  </Button>
+                </Link>
+                <Button
+                  variant="filled"
+                  radius="md"
+                  color="#FFD60A"
+                  onClick={() => setModalOpened(true)}
+                >
+                  Editar perfil
+                </Button>
+              </Group>
+            </Stack>
 
-                <Group spacing="md">
-                  <IconMail size={24} className="profile-icon" />
-                  <Text><strong>Email:</strong> {userData.email}</Text>
-                </Group>
-
-                <Group spacing="md">
-                  <IconPhone size={24} className="profile-icon" />
-                  <Text><strong>Teléfono:</strong> {userData.telefono}</Text>
-                </Group>
-
-                <Divider my="md" />
-
-                <Group spacing="md">
-                  <IconCreditCard size={24} className="profile-icon" />
-                  <Text><strong>Método de pago:</strong> {userData.paymentMethod}</Text>
-                </Group>
-
-                <Group spacing="md">
-                  <IconCalendar size={24} className="profile-icon" />
-                  <Text><strong>Fecha de compra:</strong> {userData.fechaCompra}</Text>
-                </Group>
-
-                <Group spacing="md">
-                  <IconClockHour4 size={24} className="profile-icon" />
-                  <Text><strong>Duración:</strong> 3 meses</Text>
-                </Group>
-
-                <Group spacing="md">
-                  <Text><strong>Plan adquirido:</strong> {userData.plan}</Text>
-                </Group>
-              </div>
-            )}
           </Card>
         </Container>
       </div>
+
+      {/* Modal de edición */}
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Editar perfil"
+        centered
+      >
+        <Stack>
+          <TextInput label="Nombre" value={name} onChange={(e) => setName(e.target.value)} />
+          <TextInput label="Teléfono" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <FileInput
+            label="Foto de perfil"
+            accept="image/*"
+            onChange={setProfileImage}
+          />
+          <Button onClick={handleUpdateProfile}>Guardar cambios</Button>
+        </Stack>
+      </Modal>
 
       <Footer />
     </>
