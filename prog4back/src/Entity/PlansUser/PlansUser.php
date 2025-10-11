@@ -7,8 +7,14 @@ final class PlansUser {
         private ?int $id,
         private int $id_user,
         private int $id_plan,
-        private string $status
+        private string $status,
+        private ?string $expiration_date = null 
     ) {}
+
+    public function modify(string $status, string $expiration_date): void {
+        $this->status = $status;
+        $this->expiration_date = $expiration_date;
+    }
 
     public function id(): ?int { 
         return $this->id; 
@@ -24,5 +30,9 @@ final class PlansUser {
 
     public function status(): string { 
         return $this->status; 
+    }
+
+    public function expiration_date(): ?string {
+        return $this->expiration_date;
     }
 }

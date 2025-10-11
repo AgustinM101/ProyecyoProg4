@@ -10,11 +10,14 @@ final readonly class PlanEjercicioCreatorService{
     private PlanEjercicioRepository $repository;
 
     public function __construct() {
-        $this->repository = new PlanEjerciciorepository();
+        $this->repository = new PlanEjercicioRepository();
     }
-    public function create( string $name, string $tipo, string $description): void{
-        $planEjercicio = PlanEjercicio::create($name, $tipo, $description);
-        $this->repository->create($planEjercicio);
-    }
+
+    public function create(string $name, string $description, string $tipo): ?PlanEjercicio
+{
+    $plan = new PlanEjercicio(null, $name, $description, $tipo);
+    return $this->repository->create($plan); // debe devolver el objeto con ID
+}
+
     
 }

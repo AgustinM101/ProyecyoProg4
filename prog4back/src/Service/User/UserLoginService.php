@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 
 declare(strict_types = 1);
 
@@ -28,7 +27,13 @@ final readonly class UserLoginService {
             throw new UserInvalidCredentialsException();
         }
 
-        return $this->tokenGenerator->generate($user);
-    }
+        // Generar token en memoria
+        $user = $this->tokenGenerator->generate($user);
 
+        // Guardar token en la base de datos
+        $this->userRepository->update($user);
+
+        return $user;
+    }
 }
+

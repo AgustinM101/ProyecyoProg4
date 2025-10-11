@@ -12,7 +12,7 @@ final readonly class PlansUserRoutes {
             ],
             [
                 "name" => "plans_users_get_by_user",
-                "url" => "/plans_users/{id_user}",
+                "url" => "/plansUsers",
                 "controller" => "PlansUser/PlansUserGetByUserController.php",
                 "method" => "GET",
                 "parameters" => [
@@ -22,17 +22,37 @@ final readonly class PlansUserRoutes {
                     ]
                 ]
             ],
+
             [
                 "name" => "plans_users_create",
-                "url" => "/plans_users",
-                "controller" => "PlansUser/PlansUserCreateController.php",
+                "url" => "/plansUsers",
+                "controller" => "PlansUser/PlansUserPostController.php",
                 "method" => "POST"
             ],
             [
                 "name" => "plans_users_remove",
-                "url" => "/plans_users",
+                "url" => "/plansUsers",
                 "controller" => "PlansUser/PlansUserRemoveController.php",
-                "method" => "DELETE"
+                "method" => "DELETE",
+                "parameters" => [
+                    [
+                        "name" => "id",
+                        "type" => "int"
+                    ]
+                ]
+            ],
+
+            [
+                "name" => "plans_users_update",
+                "url" => "/plansUsers",
+                "controller" => "PlansUser/PlansUserPutController.php",
+                "method" => "PUT",
+                "parameters" => [
+                    [
+                        "name" => "id",
+                        "type" => "int"
+                    ]
+                ]
             ]
         ];
     }

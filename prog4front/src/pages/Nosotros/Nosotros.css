@@ -2,10 +2,8 @@
 .nosotros-section {
   padding: 60px 20px 60px 20px; /* menos espacio arriba */
   width: 100%;
-  background: linear-gradient(
-      rgba(0,0,0,0.85),
-      rgba(0,0,0,0.95)
-    );
+  background: black;
+  filter: drop-shadow(0 0 5px #FFD60A);
   overflow: visible;
 }
 

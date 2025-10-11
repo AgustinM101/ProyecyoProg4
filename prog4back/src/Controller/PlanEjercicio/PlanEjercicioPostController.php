@@ -12,17 +12,36 @@ final readonly class PlanEjercicioPostController
     }
 
     public function start(): void {
-        $name = ControllerUtils::getPost("name");
-        $code = ControllerUtils::getPost("code");
-        $duration_valor = ControllerUtils::getPost("duration_valor");
-        $duration_unidad = ControllerUtils::getPost("duration_unidad");
-        $tipo = ControllerUtils::getPost("tipo");
-        $description = ControllerUtils::getPost("description");
+        // Leer JSON raw
+        $input = json_decode(file_get_contents('php://input'), true);
 
-        $planEjercicio = $this->service->create($name, $code, $duration_valor, $duration_unidad, $tipo, $description);
+        if (is_array($input)) {
+            $name = $input['name'] ?? null;
+            $description = $input['description'] ?? null; // corregido
+            $tipo = $input['tipo'] ?? null;               // corregido
+        } else {
+            // Form-data
+            $name = ControllerUtils::getPost("name");
+            $description = ControllerUtils::getPost("description"); // corregido
+            $tipo = ControllerUtils::getPost("tipo");               // corregido
+        }
 
+        // Validar parámetros obligatorios
+        if (!$name || !$tipo || !$description) {
+            echo json_encode([
+                "status" => 400,
+                "message" => "Missing parameters: name, tipo, and description are required."
+            ]);
+            return;
+        }
+
+        // Crear el plan
+        $planEjercicio = $this->service->create($name, $description, $tipo);
+
+        // Devolver objeto serializado
+        echo json_encode([
+            "status" => "ok",
+            "data" => $planEjercicio->toArray()
+        ]);
     }
-
-
 }
-

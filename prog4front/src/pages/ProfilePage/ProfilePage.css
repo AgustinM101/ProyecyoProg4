@@ -1,45 +1,65 @@
+
 .profile-wrapper {
   min-height: 100vh;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
-              url('https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/5607F484-0890-4227-B154-67B45051E638_llzsrm.jpg') no-repeat center center fixed;
-  background-size: cover;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 2rem;
+  justify-content: center;
+
+  /* Imagen de fondo */
+  background: url("https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80")
+    no-repeat center center / cover;
+
+  padding: 40px 20px;
+  position: relative;
+}
+
+/* Oscurecemos un poco el fondo para que el texto resalte */
+.profile-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 700px;
+  z-index: 1; /* Se asegura que quede sobre el overlay */
 }
 
 .profile-card {
-  background-color: rgba(0,0,0,0.75);
-  border-radius: 20px;
-  padding: 3rem 2.5rem;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  background: rgba(255, 255, 255, 0.08); /* efecto glass */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
+  border-radius: 20px;
+  padding: 40px;
 }
 
 .profile-title {
-  font-size: 2rem;
-  font-weight: 900;
-  color: #FFD60A;
   text-align: center;
-  margin-bottom: 2rem;
-  text-transform: uppercase;
+  color: #FFD60A;
+  margin-bottom: 20px;
+  font-size: 2rem;
 }
 
-.profile-card Text {
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   font-size: 1.1rem;
 }
 
-.profile-card Button {
-  font-weight: 700;
+.profile-icon {
+  color: #FFD60A;
 }
 
 @media (max-width: 768px) {
   .profile-card {
-    padding: 2rem 1.5rem;
+    padding: 20px;
   }
+
   .profile-title {
     font-size: 1.5rem;
   }

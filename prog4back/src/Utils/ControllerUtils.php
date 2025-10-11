@@ -7,6 +7,7 @@ namespace Src\Utils;
 use Exception;
 
 final readonly class ControllerUtils {
+
     public static function getPost(string $name, bool $required = true, mixed $default = null): mixed 
     {
         $postData = self::getPostData();
@@ -20,6 +21,7 @@ final readonly class ControllerUtils {
         return $value ?? $default;
     }
 
+    // ✅ Método seguro que nunca devuelve null
     private static function getPostData(): array
     {
         $json = file_get_contents('php://input');
@@ -29,6 +31,12 @@ final readonly class ControllerUtils {
         }
         
         $postData = json_decode($json, true);
+
+        // Si JSON inválido o no es array, devolvemos array vacío
+        if (!is_array($postData)) {
+            return [];
+        }
+
         return $postData;
     }
 
@@ -48,5 +56,13 @@ final readonly class ControllerUtils {
     private static function getFileData(): array
     {
         return $_FILES;
+    }
+
+    public static function getHeaderToken(): string
+    {
+        $headers = getallheaders();
+        $token = $headers['x-api-key'] ?? null;
+        if ($token === null) throw new Exception("Token not found");
+        return $token;
     }
 }

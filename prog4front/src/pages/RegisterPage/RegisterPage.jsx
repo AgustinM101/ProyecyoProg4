@@ -35,7 +35,7 @@ export function RegisterPage() {
 
 	const navigate = useNavigate();
 
-	const [error, setError] = useState(undefined);
+	const [error, setError] = useState(undefined); 
 
 	async function onSubmit(formData) {
 		try {

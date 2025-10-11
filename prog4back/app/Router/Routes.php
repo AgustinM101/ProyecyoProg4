@@ -6,14 +6,7 @@ include_once "Router.php";
 function startRouter(): Router 
 {
     $routes = [];
-
     
-
-    include_once "Routes/ItemsOrderRoutes.php";
-    $routes = array_merge($routes, ItemsOrderRoutes::getRoutes());
-
-    include_once "Routes/OrderListRoutes.php";
-    $routes = array_merge($routes, OrderListRoutes::getRoutes());
 
     include_once "Routes/PlanAlimentoRoutes.php";
     $routes = array_merge($routes, PlanAlimentoRoutes::getRoutes());
@@ -33,8 +26,10 @@ function startRouter(): Router
     include_once "Routes/FileRoutes.php";
     $routes = array_merge($routes, FileRoutes::getRoutes());
 
-    include_once "Routes/ClientRoutes.php";
-    $routes = array_merge($routes, ClientRoutes::getRoutes());
+    include_once "Routes/PlansFormRoutes.php";
+    $routes = array_merge($routes, PlansFormRoutes::getRoutes());
+
+
 
     $routesClass = [];
     foreach ($routes as $route) {

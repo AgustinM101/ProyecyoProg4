@@ -17,10 +17,8 @@ final readonly class PlanEjercicioGetController {
         echo json_encode([
             "id" => $planEjercicio->id(),
             "name" => $planEjercicio->name(),
-            "duration_valor" => $planEjercicio->durationValor(),
-            "duration_unidad" => $planEjercicio->durationUnidad(),
-            "tipo" => $planEjercicio->tipo(),
             "description" => $planEjercicio->description(),
+            "tipo" => $planEjercicio->tipo(),
         ]);
     }
 }

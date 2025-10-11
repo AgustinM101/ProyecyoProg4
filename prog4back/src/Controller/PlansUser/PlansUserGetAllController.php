@@ -1,7 +1,5 @@
 <?php
 
-namespace Src\Controller\PlansUser;
-
 use Src\Service\PlansUser\PlansUserFinderService;
 
 final readonly class PlansUserGetAllController {
@@ -13,12 +11,8 @@ final readonly class PlansUserGetAllController {
     }
 
     public function start(): void {
-        // Esto te sirve para confirmar que entró al controlador correcto
-        var_dump('entro al controlador de PlansUser'); 
-        exit;
-
-        // Código normal (luego de probar, sacás el var_dump y exit)
-        $plansUsers = $this->service->findAll();
+        // Trae todos los planes de los usuarios con detalles completos
+        $plansUsers = $this->service->findAllWithDetails();
         echo json_encode($this->toResponse($plansUsers));
     }
 
@@ -27,9 +21,14 @@ final readonly class PlansUserGetAllController {
 
         foreach ($plansUsers as $plansUser) {
             $responses[] = [
-                "id_user" => $plansUser->id_user(),
-                "id_plan" => $plansUser->id_plan(),
-                "status" => $plansUser->status()
+                "id"              => $plansUser["id"],
+                "id_user"         => $plansUser["id_user"],
+                "user_name"       => $plansUser["user_name"],
+                "user_email"      => $plansUser["user_email"],
+                "id_plan"         => $plansUser["id_plan"],
+                "plan_name"       => $plansUser["plan_name"],
+                "status"          => $plansUser["status"], // sigue siendo de plans_user
+                "expiration_date" => $plansUser["expiration_date"] ?? null 
             ];
         }
 

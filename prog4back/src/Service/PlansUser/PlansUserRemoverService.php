@@ -12,7 +12,9 @@ final readonly class PlansUserRemoverService {
         $this->repository = new PlansUserRepository();
     }
 
-    public function remove(int $id_user, int $id_plan): void {
-        $this->repository->removePlan($id_user, $id_plan);
+    public function removePlanById(int $id): void {
+        // Llama directamente al repo que elimina por id
+        $this->repository->removePlanById($id);
     }
 }
+

@@ -64,8 +64,10 @@ export function PlansPage() {
                 </Carousel.Slide>
               ))}
             </Carousel>
-
-            <button className="btn-plan">Elegir Plan</button>
+            <Link to="/plans/phav">
+              <button className="btn-plan">Elegir Plan</button>
+            </Link>
+            
           </div>
         ))}
       </div>

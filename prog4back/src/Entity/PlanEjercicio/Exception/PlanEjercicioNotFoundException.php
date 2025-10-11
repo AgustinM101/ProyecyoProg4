@@ -1,6 +1,6 @@
 <?php 
 
-namespace Src\Entity\PlanEjercico\Exception;
+namespace Src\Entity\PlanEjercicio\Exception;
 
 use Exception;
 
