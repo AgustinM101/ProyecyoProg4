@@ -16,13 +16,15 @@ import { AdminPage } from "./pages/AdminPage/AdminPage";
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
-import { FormPage } from "./pages/FormPage/FormPage";
+
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 
 import MyPlansPage from "./pages/MyPlansPage/MyPlansPage";
 
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 import { DatesProvider } from "@mantine/dates";
+import { PlansFormPage } from "./pages/PlansFormPage/PlansFormPage";
+
 
 function App() {
     return (
@@ -55,7 +57,9 @@ function App() {
                             {/* acá van las rutas que requieran login */}
                             <Route path="/admin" element={<AdminPage />} />
                             <Route path="/myplans" element={<MyPlansPage />} />
-                            <Route path="/form" element={<FormPage />} />
+
+                            <Route path="/plansForms" element={<PlansFormPage />} />
+
                         </Route>
 
                         {/* Ruta fallback */}
