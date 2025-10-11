@@ -1,6 +1,10 @@
 import { Container, Title, Text, Card, Button, Group, Divider, Center, Loader } from "@mantine/core";
 import { IconClockHour4, IconCurrencyDollar } from "@tabler/icons-react";
+
+import { useNavigate } from "react-router-dom";
+
 import { Link } from "react-router-dom";
+
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import "./PlanPhavPage.css";
@@ -8,6 +12,13 @@ import { useEffect, useState } from "react";
 import { plansService } from "../../services/plansService";
 
 export function PlanPhavPage() {
+
+  const navigate = useNavigate();
+
+  const handleBuy = () => {
+    navigate("/purchase");
+  };
+
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -42,6 +53,7 @@ export function PlanPhavPage() {
     );
   }
 
+
   return (
     <>
       <HeaderMenu />
@@ -49,8 +61,6 @@ export function PlanPhavPage() {
       <div className="phav-wrapper">
         <Container size="md" className="phav-container">
           <Card shadow="xl" padding="lg" radius="lg" className="phav-card">
-
-            {/* Logo */}
             <div className="phav-logo-container">
               <img
                 src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757462534/logo_nuevo_infinit_sports_nsmg9n.png"
@@ -59,19 +69,16 @@ export function PlanPhavPage() {
               />
             </div>
 
-            {/* Título */}
             <Title order={2} className="phav-title">
               {plan.name.toUpperCase()}
             </Title>
 
-            {/* Descripción */}
             <Text size="lg" className="phav-description">
               {plan.description}
             </Text>
 
             <Divider my="md" />
 
-            {/* Detalles del plan */}
             <Group className="phav-details" direction="column" spacing="md">
               <div className="phav-item">
                 <IconCurrencyDollar size={30} className="phav-icon" />
@@ -99,19 +106,22 @@ export function PlanPhavPage() {
 
             <Divider my="md" />
 
-            {/* Botones */}
             <Group position="center" spacing="md" mt="lg">
-              <Link to="/form">
-                <Button size="lg" radius="md" className="phav-btn">
-                  Comprar plan
-                </Button>
-              </Link>
 
-              <Link to="/plans">
-                <Button size="lg" variant="outline" radius="md" color="gray">
-                  Volver a planes
-                </Button>
-              </Link>
+              <Button size="lg" radius="md" className="phav-btn" onClick={handleBuy}>
+                Comprar plan
+              </Button>
+
+              <Button
+                size="lg"
+                variant="outline"
+                radius="md"
+                color="gray"
+                onClick={() => navigate("/plans")}
+              >
+                Volver a planes
+              </Button>
+
             </Group>
           </Card>
         </Container>
@@ -121,3 +131,4 @@ export function PlanPhavPage() {
     </>
   );
 }
+

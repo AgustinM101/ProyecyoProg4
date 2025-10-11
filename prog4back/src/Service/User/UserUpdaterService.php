@@ -5,27 +5,40 @@ namespace Src\Service\User;
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserUpdaterService{
+final readonly class UserUpdaterService {
 
     private UserRepository $repository;
-
     private UserFinderService $finderService;
 
     public function __construct() {
         $this->repository = new UserRepository();
         $this->finderService = new UserFinderService();
     }
-    public function update(string $name, string $email, int $password,int $id): void{
 
-        $user = $this->finderService->find($id);
+    /**
+     * Actualiza el perfil de un usuario
+     * 
+     * @param int $userId ID del usuario a actualizar
+     * @param string|null $name Nombre nuevo
+     * @param string|null $phone Teléfono nuevo
+     * @param string|null $profileImagePath Ruta de la foto de perfil
+     * @return User Usuario actualizado
+     */
+    public function updateProfile(int $userId, ?string $name, ?string $phone, ?string $profileImagePath): User {
+        $user = $this->finderService->find($userId);
+
         if (!$user) {
-    
-        throw new \Exception("Usuario con ID $id no encontrado.");
-}
+            throw new \Exception("Usuario con ID $userId no encontrado.");
+        }
 
-        $user->modify($name, $email, $password);
+        // Actualizar campos si se envían
+        if ($name !== null) $user->setName($name);
+        if ($phone !== null) $user->setPhone($phone);
+        if ($profileImagePath !== null) $user->setProfileImage($profileImagePath);
 
+        // Guardar cambios en la base de datos
         $this->repository->update($user);
+
+        return $user;
     }
-    
 }
