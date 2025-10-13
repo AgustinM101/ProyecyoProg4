@@ -18,21 +18,24 @@ export function PurchasePage() {
   });
 
   // ✅ Validar si el usuario está logueado
-  useEffect(() => {
+  /*useEffect(() => {
     const user = localStorage.getItem("user"); // acá deberías tener guardado el user o token al loguear
     if (!user) {
       alert("Debes iniciar sesión o registrarte para comprar un plan.");
       navigate("/login");
     }
   }, [navigate]);
+*/
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  // 🔹 Actualizado: integración con Mercado Pago
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const userData = {
       ...formData,
       plan: "Plan PHAV",
@@ -40,10 +43,43 @@ export function PurchasePage() {
       fechaCompra: new Date().toLocaleDateString(),
     };
 
-    // Guardar en localStorage
-    localStorage.setItem("userProfile", JSON.stringify(userData));
+    // 🔹 Si el método de pago es Mercado Pago
+    if (paymentMethod === "mercadopago") {
+      try {
+        const response = await fetch("http://localhost/backend/payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nombre: formData.nombre,
+            email: formData.email,
+            plan: "Plan PHAV",
+            amount: 1000, // Reemplazá con el precio real del plan
+          }),
+        });
 
-    // Simulación de redirección
+        if (!response.ok) {
+          throw new Error("Error al generar el pago con Mercado Pago");
+        }
+
+        const data = await response.json();
+
+        if (data.url) {
+          // 🔹 Redirección externa a Mercado Pago
+          window.location.href = data.url;
+        } else {
+          alert("No se pudo obtener la URL de pago.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Hubo un problema al conectar con Mercado Pago.");
+      }
+      return; // 🚫 No continúa con la simulación local
+    }
+
+    // 🔹 Simulaciones para otros métodos
+    localStorage.setItem("userProfile", JSON.stringify(userData));
     alert("Compra simulada. Redirigiendo a tu perfil...");
     navigate("/profile");
   };
@@ -110,7 +146,7 @@ export function PurchasePage() {
                 )}
 
                 {paymentMethod === "mercadopago" && (
-                  <Text className="card-info-text">Será redirigido a Mercado Pago (simulación)</Text>
+                  <Text className="card-info-text">Será redirigido a Mercado Pago</Text>
                 )}
 
                 {paymentMethod === "efectivo" && (
