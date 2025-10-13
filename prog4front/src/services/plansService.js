@@ -2,7 +2,7 @@ import { api } from "./api";
 
 export const plansService = {
 
-  getPlans: () => api.get("/plans"),
+  getPlans: async () => api.get("/plans"),
   getById: (id) => api.get(`/plans/${id}`),
   createPlan: (data) => api.post("/plans", data),
   updatePlan: (id, data) => api.put(`/plans/${id}`, data),
