@@ -22,19 +22,43 @@ const MyPlansPage = () => {
   const [opened, setOpened] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  // Traer planes del usuario desde backend
+  // Id del usuario logueado (puede venir de localStorage o contexto)
+  const idUser = 1; // ⚡ Cámbialo cuando tengas login
+
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        // 👇 Cambia la URL a tu backend real
-        const res = await fetch("http://localhost:9091/api/plansuser/1");
-        const data = await res.json();
+        // 🔹 Traemos los dos tipos de planes en paralelo
+        const [resEjercicio, resAlimento] = await Promise.all([
+          fetch(`http://localhost:9091/api/planEjercicio/${idUser}`),
+          fetch(`http://localhost:9091/api/planAlimento/${idUser}`),
+        ]);
 
-        // Normalizamos (por si devuelve objeto en vez de array)
-        const userPlans = Array.isArray(data) ? data : data?.plans || [];
-        setPlans(userPlans);
+        const dataEjercicio = resEjercicio.ok ? await resEjercicio.json() : [];
+        const dataAlimento = resAlimento.ok ? await resAlimento.json() : [];
+
+        // 🔹 Normalizamos a array
+        const planesEjercicio = Array.isArray(dataEjercicio)
+          ? dataEjercicio
+          : dataEjercicio
+          ? [dataEjercicio]
+          : [];
+
+        const planesAlimento = Array.isArray(dataAlimento)
+          ? dataAlimento
+          : dataAlimento
+          ? [dataAlimento]
+          : [];
+
+        // 🔹 Unificamos ambos en un solo arreglo
+        const allPlans = [
+          ...planesEjercicio.map((p) => ({ ...p, tipo: "Ejercicio" })),
+          ...planesAlimento.map((p) => ({ ...p, tipo: "Alimentación" })),
+        ];
+
+        setPlans(allPlans);
       } catch (error) {
-        console.error("Error al traer planes:", error);
+        console.error("Error al traer los planes:", error);
         setPlans([]);
       } finally {
         setLoading(false);
@@ -42,7 +66,7 @@ const MyPlansPage = () => {
     };
 
     fetchPlans();
-  }, []);
+  }, [idUser]);
 
   if (loading) {
     return (
@@ -63,40 +87,46 @@ const MyPlansPage = () => {
 
         {plans.length > 0 ? (
           <Grid>
-            {plans.map((plan) => (
-              <Grid.Col span={{ base: 12, sm: 6, md: 4 }} key={plan.id}>
+            {plans.map((plan, index) => (
+              <Grid.Col span={{ base: 12, sm: 6, md: 4 }} key={index}>
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
                   <Group mb="md">
-                    <Avatar color="yellow" radius="xl">
-                      {plan.name.charAt(0).toUpperCase()}
+                    <Avatar color={plan.tipo === "Ejercicio" ? "blue" : "green"} radius="xl">
+                      {plan.tipo.charAt(0)}
                     </Avatar>
                     <div>
-                      <Title order={4}>{plan.name}</Title>
-                      <Badge color="yellow" variant="light">
-                        {plan.type || "N/D"}
+                      <Title order={4}>{plan.nombre || plan.name || "Sin nombre"}</Title>
+                      <Badge color={plan.tipo === "Ejercicio" ? "blue" : "green"} variant="light">
+                        {plan.tipo}
                       </Badge>
                     </div>
                   </Group>
 
                   <Text size="sm" mt="xs" c="dimmed">
-                    {plan.description}
+                    {plan.objetivo || plan.descripcion || plan.description || "Sin descripción"}
                   </Text>
 
                   <Group mt="md" spacing="xs">
                     <IconCalendar size={18} />
-                    <Text size="sm">Inicio: {plan.startDate || "N/D"}</Text>
+                    <Text size="sm">
+                      Duración: {plan.duracion_semana || plan.duracion || "N/D"} semanas
+                    </Text>
                   </Group>
 
                   <Group mt="xs" spacing="xs" color="yellow">
                     <IconCreditCard size={18} />
-                    <Text fw={600}>${plan.price}</Text>
+                    <Text fw={600}>
+                      {plan.frecuencia_semanal
+                        ? `${plan.frecuencia_semanal} días/semana`
+                        : "Frecuencia no especificada"}
+                    </Text>
                   </Group>
 
                   {/* Botón para ver detalles */}
                   <Button
                     fullWidth
                     mt="md"
-                    color="yellow"
+                    color={plan.tipo === "Ejercicio" ? "blue" : "green"}
                     onClick={() => {
                       setSelectedPlan(plan);
                       setOpened(true);
@@ -110,41 +140,46 @@ const MyPlansPage = () => {
           </Grid>
         ) : (
           <Text align="center" mt="xl" size="lg" c="dimmed">
-            Aguarde, todavía su plan no ha sido cargado.
+            Aún no tienes planes asignados.
           </Text>
         )}
       </Container>
+
       <Footer />
 
-      {/* Modal de detalles */}
+      {/* 🔹 Modal de detalles */}
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title={selectedPlan?.name || "Detalles del plan"}
+        title={selectedPlan?.tipo === "Ejercicio" ? "Plan de Ejercicio" : "Plan de Alimentación"}
         size="lg"
       >
-        <Title order={4}>Ejercicios</Title>
-        {selectedPlan?.ejercicios?.length > 0 ? (
-          selectedPlan.ejercicios.map((e, i) => (
-            <Text key={i}>
-              {e.nombre_ejercicio} - {e.series}x{e.repeticiones}
-            </Text>
-          ))
+        {selectedPlan?.tipo === "Ejercicio" ? (
+          <>
+            <Title order={4}>Ejercicios</Title>
+            {selectedPlan?.ejercicios?.length > 0 ? (
+              selectedPlan.ejercicios.map((e, i) => (
+                <Text key={i}>
+                  {e.nombre_ejercicio} - {e.series}x{e.repeticiones}
+                </Text>
+              ))
+            ) : (
+              <Text c="dimmed">No hay ejercicios cargados.</Text>
+            )}
+          </>
         ) : (
-          <Text c="dimmed">No hay ejercicios cargados.</Text>
-        )}
-
-        <Title order={4} mt="md">
-          Alimentos
-        </Title>
-        {selectedPlan?.alimentos?.length > 0 ? (
-          selectedPlan.alimentos.map((a, i) => (
-            <Text key={i}>
-              {a.momento}: {a.cantidad} de {a.alimento}
-            </Text>
-          ))
-        ) : (
-          <Text c="dimmed">No hay alimentos cargados.</Text>
+          <>
+            <Title order={4}>Alimentos</Title>
+            {selectedPlan?.alimentos?.length > 0 ? (
+              selectedPlan.alimentos.map((a, i) => (
+                <Text key={i}>
+                  {a.momento}: {a.cantidad} de {a.alimento}
+                </Text>
+              ))
+            ) : (
+              <Text c="dimmed">No hay alimentos cargados.</Text>
+            )}
+          </>
         )}
       </Modal>
     </>

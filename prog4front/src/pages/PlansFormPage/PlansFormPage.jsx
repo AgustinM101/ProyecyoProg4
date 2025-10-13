@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Container, Card, TextInput, Title, Button, Stack, Select, Textarea, Group } from "@mantine/core";
+import { Container, Card, TextInput, Title, Button, Stack, Select, Textarea, Group, Center, Loader } from "@mantine/core";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-
 import "./PlansFormPage.css";
+import { plansFormService } from "../../services/plansFormService";
 
 export function PlansFormPage() {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const [formData, setFormData] = useState({
     nombre: "",
     edad: "",
@@ -36,11 +37,57 @@ export function PlansFormPage() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos del formulario:", formData);
-    // 🔹 Más adelante acá agregamos el fetch
+    setLoading(true);
+    setSuccess(false);
+
+    try {
+      const data = new FormData();
+      Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+      data.append("fecha_registro", new Date().toISOString().split("T")[0]);
+      data.append("id_plans_user", 1); // ⚡ Cambiar según el usuario logueado
+
+      const response = await plansFormService.create(data);
+
+      if (response?.success || response?.status === 200) {
+        setSuccess(true);
+        setFormData({
+          nombre: "",
+          edad: "",
+          sexo: "",
+          altura: "",
+          peso_actual: "",
+          peso_deseado: "",
+          actividad_fisica: "",
+          antecedentes_medicos: "",
+          alergias: "",
+          medicamentos: "",
+          problemas_digestivos: "",
+          comidas_diarias: "",
+          alimentos_evitar: "",
+          horarios_comidas: "",
+          consumo_agua: "",
+          consumo_alcohol: "",
+        });
+      } else {
+        throw new Error("Error al enviar el formulario");
+      }
+    } catch (error) {
+      console.error("❌ Error al enviar formulario:", error);
+      alert("Ocurrió un error al enviar el formulario ❌");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return (
     <>
@@ -53,12 +100,16 @@ export function PlansFormPage() {
               Formulario de Información Nutricional
             </Title>
 
+            {success && (
+              <div style={{ color: "green", marginBottom: 20 }}>
+                Formulario enviado correctamente ✅
+              </div>
+            )}
+
             <form onSubmit={handleSubmit}>
               <Stack gap="sm">
-
                 <TextInput label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} required />
                 <TextInput label="Edad" name="edad" value={formData.edad} onChange={handleChange} required />
-
                 <Select
                   label="Sexo"
                   name="sexo"
@@ -71,11 +122,9 @@ export function PlansFormPage() {
                   ]}
                   required
                 />
-
                 <TextInput label="Altura (m)" name="altura" value={formData.altura} onChange={handleChange} />
                 <TextInput label="Peso actual (kg)" name="peso_actual" value={formData.peso_actual} onChange={handleChange} />
                 <TextInput label="Peso deseado (kg)" name="peso_deseado" value={formData.peso_deseado} onChange={handleChange} />
-
                 <Textarea label="Actividad física" name="actividad_fisica" value={formData.actividad_fisica} onChange={handleChange} autosize minRows={2} />
                 <Textarea label="Antecedentes médicos" name="antecedentes_medicos" value={formData.antecedentes_medicos} onChange={handleChange} autosize minRows={2} />
                 <Textarea label="Alergias" name="alergias" value={formData.alergias} onChange={handleChange} autosize minRows={2} />
