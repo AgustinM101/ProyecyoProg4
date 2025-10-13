@@ -17,6 +17,8 @@ import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
 
+import { PurchasePage } from "./pages/PurchasePage/PurchasePage";
+
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 
 import MyPlansPage from "./pages/MyPlansPage/MyPlansPage";
@@ -27,6 +29,7 @@ import { PlansFormPage } from "./pages/PlansFormPage/PlansFormPage";
 
 
 function App() {
+
     return (
         <MantineProvider defaultColorScheme="dark">
             <DatesProvider settings={{locale: "es"}} >
@@ -58,7 +61,13 @@ function App() {
                             <Route path="/admin" element={<AdminPage />} />
                             <Route path="/myplans" element={<MyPlansPage />} />
 
+
                             <Route path="/plansForms" element={<PlansFormPage />} />
+
+
+                            <Route path="/form" element={<FormPage />} />
+                            <Route path="/purchase" element={<PurchasePage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
 
                         </Route>
 
@@ -69,6 +78,7 @@ function App() {
             </DatesProvider>
         </MantineProvider>
     );
+
 }
 
 export default App;
