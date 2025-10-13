@@ -29,6 +29,9 @@ function startRouter(): Router
     include_once "Routes/PlansFormRoutes.php";
     $routes = array_merge($routes, PlansFormRoutes::getRoutes());
 
+    include_once "Routes/PaymentRoutes.php";
+    $routes = array_merge($routes, PaymentRoutes::getRoutes());
+
 
 
     $routesClass = [];
