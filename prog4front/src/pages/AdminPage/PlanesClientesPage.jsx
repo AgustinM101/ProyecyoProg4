@@ -17,6 +17,7 @@ import {
 import { plansUserService } from "../../services/plansUserService";
 import { planAlimentosService } from "../../services/planAlimentosService";
 import { planEjerciciosService } from "../../services/planEjerciciosService";
+import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 
 export function PlanesClientesPage() {
   const [clientes, setClientes] = useState([]);
@@ -43,8 +44,8 @@ export function PlanesClientesPage() {
     try {
       const [resClientes, resAlimentos, resEjercicios] = await Promise.all([
         plansUserService.getPlansUsers(),
-        planAlimentosService.getAll(),
-        planEjerciciosService.getAll(),
+        planAlimentosService.getPlans(),
+        planEjerciciosService.getPlans(),
       ]);
 
       const clientesData = resClientes.data;
@@ -168,6 +169,8 @@ export function PlanesClientesPage() {
   const pendientes = clientes.length - activos;
 
   return (
+    <>
+    <AdminNavbar/>
     <Container size="xl" py="md">
       <Group position="apart" mb="lg">
         <Title order={2}>🧍 Planes Personalizados de Clientes</Title>
@@ -283,5 +286,6 @@ export function PlanesClientesPage() {
         </Stack>
       </Modal>
     </Container>
+    </>
   );
 }

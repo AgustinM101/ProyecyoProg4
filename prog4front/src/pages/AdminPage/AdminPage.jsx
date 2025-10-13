@@ -1,224 +1,67 @@
-import { useEffect, useState, useMemo } from "react";
-import {
-  Container,
-  Loader,
-  Center,
-  Text,
-  Pagination,
-  TextInput,
-  Group,
-  Button,
-  Modal,
-  Select,
-  Stack,
-} from "@mantine/core";
-import { plansUserService } from "../../services/plansUserService";
-import { DateInput } from '@mantine/dates';
-import { UserTable } from "../../components/UserTable/UserTable";
-import "./AdminPage.css";
+import { AdminNavbar } from "../../components/Admin/AdminNavbar";
+import { Group, Text, Container, Card, SimpleGrid, Button } from "@mantine/core";
+import { IconClipboardList, IconBell, IconRocket, IconUsers } from "@tabler/icons-react";
 
 export function AdminPage() {
-  const [plansUsers, setPlansUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [editModal, setEditModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const itemsPerPage = 5;
-
-  const fetchPlansUsers = async () => {
-    setLoading(true);
-    try {
-      const response = await plansUserService.getPlansUsers();
-      setPlansUsers(response.data);
-    } catch (error) {
-      console.error("Error al traer usuarios con planes:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlansUsers();
-  }, []);
-
-  const filteredUsers = useMemo(() => {
-    return plansUsers.filter(
-      (pu) =>
-        pu.user_name?.toLowerCase().includes(search.toLowerCase()) ||
-        pu.user_email?.toLowerCase().includes(search.toLowerCase()) ||
-        pu.plan_name?.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [plansUsers, search]);
-
-  const paginatedUsers = useMemo(() => {
-    const start = (page - 1) * itemsPerPage;
-    return filteredUsers.slice(start, start + itemsPerPage);
-  }, [filteredUsers, page]);
-
-  const formattedUsers = useMemo(() => {
-    return paginatedUsers.map((pu) => {
-      return {
-        id: pu.id,
-        user: {
-          id: pu.id_user,
-          name: pu.user_name,
-          email: pu.user_email,
-        },
-        plan: {
-          id: pu.id_plan,
-          name: pu.plan_name,
-          price: pu.plan_price ?? 0,
-        },
-        status: pu.status?.toLowerCase(),
-        expiration_date: pu.expiration_date,
-      };
-    });
-  }, [paginatedUsers]);
-
-
-  const handleEdit = (user) => {
-    setSelectedUser(user);
-    setEditModal(true);
-  };
-
-  const handleDelete = (user) => {
-    setSelectedUser(user);
-    setDeleteModal(true);
-  };
-
-  const handleUpdate = async () => {
-    if (!selectedUser) return;
-    try {
-      await plansUserService.updatePlan(selectedUser.id, {
-      status: selectedUser.status,
-      expiration_date: selectedUser.expiration_date,
-      });
-
-      setEditModal(false);
-      fetchPlansUsers();
-    } catch (error) {
-      console.error("Error al actualizar usuario:", error);
-    }
-  };
-
-  const handleConfirmDelete = async () => {
-  if (!selectedUser) return;
-  try {
-    await plansUserService.deletePlan(selectedUser.id); // <-- usar deletePlan
-    setDeleteModal(false);
-    fetchPlansUsers();
-  } catch (error) {
-    console.error("Error al eliminar usuario:", error);
-  }
-};
-
-
-  if (loading) {
-    return (
-      <Center style={{ height: "100vh" }}>
-        <Loader />
-      </Center>
-    );
-  }
+  const fecha = new Date().toLocaleDateString("es-AR");
 
   return (
-  <div className="admin-page"> {/* <-- Agregás esta clase raíz */}
-    <Container size="lg" py="md">
-      <Group position="apart" mb="md">
-        <Text size="xl" fw={700}>
-          Admin - Usuarios con Planes
-        </Text>
-        <TextInput
-          placeholder="Buscar por usuario o plan"
-          value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
-        />
+    <>
+      {/* Navbar */}
+      <AdminNavbar />
+
+      {/* Bienvenida + Fecha */}
+      <Group justify="space-between" p="md" style={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
+        <Text size="lg">👋 Bienvenido, Admin</Text>
+        <Text>Fecha: {fecha}</Text>
       </Group>
 
-      {filteredUsers.length === 0 ? (
-        <Center>
-          <Text>No hay resultados</Text>
-        </Center>
-      ) : (
-        <>
-          <UserTable
-            users={formattedUsers}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-          <Center mt="md">
-            <Pagination
-              page={page}
-              onChange={setPage}
-              total={Math.ceil(filteredUsers.length / itemsPerPage)}
-            />
-          </Center>
-        </>
-      )}
+      {/* Contenido principal */}
+      <Container fluid style={{ padding: "20px", backgroundColor: "#121212", minHeight: "calc(100vh - 110px)" }}>
+        <SimpleGrid cols={2} spacing="lg" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+        
+          {/* Bloque Inicio */}
+          <Card shadow="sm" p="lg" radius="md" style={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
+            <Group position="apart" mb="md">
+              <Text weight={700} size="lg">Inicio</Text>
+              <IconRocket size={24} color="#FF6600" />
+            </Group>
+            <Text>Resumen de estadísticas y actividad reciente del sistema.</Text>
+            <Button mt="md" variant="filled" color="#FF6600">Ver detalles</Button>
+          </Card>
 
-      {/* Modal de edición */}
-      <Modal
-        opened={editModal}
-        onClose={() => setEditModal(false)}
-        title="Editar Usuario"
-        centered
-      >
-        {selectedUser && (
-          <Stack>
-            <Select
-              label="Estado"
-              value={selectedUser.status}
-              onChange={(value) =>
-                setSelectedUser({ ...selectedUser, status: value })
-              }
-              data={[
-                { value: "active", label: "Activo" },
-                { value: "inactive", label: "Inactivo" },
-              ]}
-            />
+          {/* Bloque Formularios */}
+          <Card shadow="sm" p="lg" radius="md" style={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
+            <Group position="apart" mb="md">
+              <Text weight={700} size="lg">Formularios</Text>
+              <IconClipboardList size={24} color="#FF6600" />
+            </Group>
+            <Text>Accede a todos los formularios enviados por los usuarios.</Text>
+            <Button mt="md" variant="filled" color="#FF6600">Ver Formularios</Button>
+          </Card>
 
-            <DateInput
-              label="Expiración"
-              valueFormat="DD/MM/YYYY"
-              value={selectedUser.expiration_date}
-              onChange={(date) =>
-                setSelectedUser({
-                  ...selectedUser,
-                  expiration_date: date
-                })
-              }
-            />
+          {/* Bloque Alertas */}
+          <Card shadow="sm" p="lg" radius="md" style={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
+            <Group position="apart" mb="md">
+              <Text weight={700} size="lg">Alertas</Text>
+              <IconBell size={24} color="#FF6600" />
+            </Group>
+            <Text>Revisa notificaciones importantes y alertas del sistema.</Text>
+            <Button mt="md" variant="filled" color="#FF6600">Ver Alertas</Button>
+          </Card>
 
-            <Button onClick={handleUpdate} fullWidth color="blue">
-              Guardar Cambios
-            </Button>
-          </Stack>
-        )}
-      </Modal>
+          {/* Bloque Accesos rápidos */}
+          <Card shadow="sm" p="lg" radius="md" style={{ backgroundColor: "#1A1A1A", color: "#fff" }}>
+            <Group position="apart" mb="md">
+              <Text weight={700} size="lg">Accesos rápidos</Text>
+              <IconUsers size={24} color="#FF6600" />
+            </Group>
+            <Text>Navega rápidamente a secciones de clientes, planes y más.</Text>
+            <Button mt="md" variant="filled" color="#FF6600">Ir a Clientes</Button>
+          </Card>
 
-      {/* Modal de confirmación de eliminación */}
-      <Modal
-        opened={deleteModal}
-        onClose={() => setDeleteModal(false)}
-        title="Confirmar Eliminación"
-        centered
-      >
-        <Text mb="md">
-          ¿Estás seguro de que deseas eliminar **permanentemente** este
-          registro? Esta acción no se puede deshacer.
-        </Text>
-        <Group position="apart">
-          <Button color="gray" onClick={() => setDeleteModal(false)}>
-            Cancelar
-          </Button>
-          <Button color="red" onClick={handleConfirmDelete}>
-            Eliminar definitivamente
-          </Button>
-        </Group>
-      </Modal>
-    </Container>
-  </div>
+        </SimpleGrid>
+      </Container>
+    </>
   );
 }

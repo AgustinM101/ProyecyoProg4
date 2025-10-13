@@ -16,6 +16,7 @@ import {
   Stack,
 } from "@mantine/core";
 import { plansService } from "../../services/plansService";
+import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 
 export function PlanesGenericosPage() {
   const [plans, setPlans] = useState([]);
@@ -101,6 +102,8 @@ export function PlanesGenericosPage() {
   const totalEliminados = plans.filter((p) => p.deleted).length;
 
   return (
+    <>
+    <AdminNavbar/>
     <Container size="lg" py="md">
       <Group position="apart" mb="lg">
         <Title order={2}>📦 Planes Genéricos</Title>
@@ -201,5 +204,7 @@ export function PlanesGenericosPage() {
         </Stack>
       </Modal>
     </Container>
+
+    </>
   );
 }

@@ -23,6 +23,11 @@ import MyPlansPage from "./pages/MyPlansPage/MyPlansPage";
 
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 import { DatesProvider } from "@mantine/dates";
+import { FormPage } from "./pages/FormPage/FormPage";
+import { PlanesClientesPage } from "./pages/AdminPage/PlanesClientesPage";
+import { PlanesGenericosPage } from "./pages/AdminPage/PlanesGenericosPage";
+import { FormulariosPage } from "./pages/AdminPage/FormulariosPage";
+import { ClientesPage } from "./pages/AdminPage/ClientesPage";
 
 function App() {
 
@@ -46,6 +51,22 @@ function App() {
 
                         <Route path="/profile" element={<ProfilePage />} />
 
+
+                             <Route path="/admin" element={<AdminPage />} />
+                            <Route path="/myplans" element={<MyPlansPage />} />
+                            <Route path="/form" element={<FormPage />} />
+                            <Route path="/purchase" element={<PurchasePage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/formularios" element={<FormulariosPage />} />
+                            <Route path="/clientes" element={<ClientesPage />} />
+                            <Route path="/userplanes" element={<PlanesClientesPage />} />
+                            <Route path="/genericplanes" element={<PlanesGenericosPage />} />
+
+
+
+
+
+
                         {/* Rutas públicas */}
                         <Route element={<PublicRoute />}>
                             {/* 👇 agregadas aquí */}
@@ -54,11 +75,7 @@ function App() {
                         {/* Rutas privadas */}
                         <Route element={<PrivateRoute />}>
                             {/* acá van las rutas que requieran login */}
-                            <Route path="/admin" element={<AdminPage />} />
-                            <Route path="/myplans" element={<MyPlansPage />} />
-                            <Route path="/form" element={<FormPage />} />
-                            <Route path="/purchase" element={<PurchasePage />} />
-                            <Route path="/profile" element={<ProfilePage />} />
+
                         </Route>
 
                         {/* Ruta fallback */}
