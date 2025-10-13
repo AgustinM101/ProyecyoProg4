@@ -16,8 +16,9 @@ import { plansUserService } from "../../services/plansUserService";
 import { DateInput } from '@mantine/dates';
 import { UserTable } from "../../components/UserTable/UserTable";
 import "./AdminPage.css";
+import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 
-export function AdminPage() {
+export function ClientesPage() {
   const [plansUsers, setPlansUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -124,6 +125,9 @@ export function AdminPage() {
   }
 
   return (
+    <>
+    {/* Navbar */}
+        <AdminNavbar />
   <div className="admin-page"> {/* <-- Agregás esta clase raíz */}
     <Container size="lg" py="md">
       <Group position="apart" mb="md">
@@ -220,5 +224,6 @@ export function AdminPage() {
       </Modal>
     </Container>
   </div>
+  </>
   );
 }
