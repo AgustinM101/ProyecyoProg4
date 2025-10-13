@@ -23,6 +23,7 @@ import MyPlansPage from "./pages/MyPlansPage/MyPlansPage";
 
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 import { DatesProvider } from "@mantine/dates";
+import { FormPage } from "./pages/FormPage/FormPage";
 
 function App() {
 
@@ -72,3 +73,4 @@ function App() {
 }
 
 export default App;
+
