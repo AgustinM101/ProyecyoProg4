@@ -16,18 +16,25 @@ import { AdminPage } from "./pages/AdminPage/AdminPage";
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
+
 import { PurchasePage } from "./pages/PurchasePage/PurchasePage";
+
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 
 import MyPlansPage from "./pages/MyPlansPage/MyPlansPage";
 
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 import { DatesProvider } from "@mantine/dates";
+
 import { FormPage } from "./pages/FormPage/FormPage";
 import { PlanesClientesPage } from "./pages/AdminPage/PlanesClientesPage";
 import { PlanesGenericosPage } from "./pages/AdminPage/PlanesGenericosPage";
 import { FormulariosPage } from "./pages/AdminPage/FormulariosPage";
 import { ClientesPage } from "./pages/AdminPage/ClientesPage";
+
+import { PlansFormPage } from "./pages/PlansFormPage/PlansFormPage";
+
+
 
 function App() {
 
@@ -75,6 +82,18 @@ function App() {
                         {/* Rutas privadas */}
                         <Route element={<PrivateRoute />}>
                             {/* acá van las rutas que requieran login */}
+
+                            <Route path="/admin" element={<AdminPage />} />
+                            <Route path="/myplans" element={<MyPlansPage />} />
+
+
+                            <Route path="/plansForms" element={<PlansFormPage />} />
+
+
+                            <Route path="/form" element={<FormPage />} />
+                            <Route path="/purchase" element={<PurchasePage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
+
 
                         </Route>
 

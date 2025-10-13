@@ -1,0 +1,31 @@
+.plansform-wrapper {
+  background: linear-gradient(135deg, #131313 0%, #0c0c0c 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.plansform-card {
+  background-color: #000000;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(5, 5, 5, 0.1);
+}
+
+.plansform-title {
+  text-align: center;
+  font-weight: 600;
+  color: #FFD60A;
+  margin-bottom: 20px;
+}
+
+.plansform-btn {
+  background-color: #FFD60A;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.plansform-btn:hover {
+  background-color: #FFD60A;
+}
