@@ -25,9 +25,9 @@ import MyPlansPage from "./pages/MyPlansPage/MyPlansPage";
 
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 import { DatesProvider } from "@mantine/dates";
-import { FormPage } from "./pages/FormPage/FormPage";
 
-import { FormPage } from "./pages/FormPage/FormPage";
+
+
 import { PlanesClientesPage } from "./pages/AdminPage/PlanesClientesPage";
 import { PlanesGenericosPage } from "./pages/AdminPage/PlanesGenericosPage";
 import { FormulariosPage } from "./pages/AdminPage/FormulariosPage";
@@ -62,7 +62,7 @@ function App() {
 
                              <Route path="/admin" element={<AdminPage />} />
                             <Route path="/myplans" element={<MyPlansPage />} />
-                            <Route path="/form" element={<FormPage />} />
+                            
                             <Route path="/purchase" element={<PurchasePage />} />
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/formularios" element={<FormulariosPage />} />
@@ -91,7 +91,6 @@ function App() {
                             <Route path="/plansForms" element={<PlansFormPage />} />
 
 
-                            <Route path="/form" element={<FormPage />} />
                             <Route path="/purchase" element={<PurchasePage />} />
                             <Route path="/profile" element={<ProfilePage />} />
 
