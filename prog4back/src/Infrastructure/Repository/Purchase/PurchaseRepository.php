@@ -11,19 +11,24 @@ class PurchaseRepository {
 
     public function save(Purchase $purchase) {
         $stmt = $this->conn->prepare("
-            INSERT INTO purchases (user_id, plan, amount, payment_method, status, created_at)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO purchases (user_id, plan, amount, payment_method, status, created_at, preference_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
         $stmt->bind_param(
-            "isdsss",
+            "isdssss",
             $purchase->userId,
             $purchase->plan,
             $purchase->amount,
             $purchase->paymentMethod,
             $purchase->status,
-            $purchase->createdAt
+            $purchase->createdAt,
+            $purchase->preferenceId
         );
-        $stmt->execute();
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error al guardar la compra: " . $stmt->error);
+        }
+
         return $this->conn->insert_id;
     }
 
@@ -33,3 +38,4 @@ class PurchaseRepository {
         return $stmt->execute();
     }
 }
+

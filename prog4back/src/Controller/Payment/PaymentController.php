@@ -1,12 +1,18 @@
 <?php
-// src/Controller/Payment/PaymentController.php
-require_once __DIR__ . '/../../Service/PaymentService.php';
+// controllers/Payment/PaymentController.php
+require_once __DIR__ . '/../../services/PaymentService.php';
+require_once __DIR__ . '/../../repositories/PurchaseRepository.php';
+require_once __DIR__ . '/../../config/Database.php';
 
 final class PaymentController {
     private PaymentService $paymentService;
 
     public function __construct() {
-        $this->paymentService = new PaymentService();
+        $db = new Database();
+        $conn = $db->getConnection();
+
+        $purchaseRepository = new PurchaseRepository($conn);
+        $this->paymentService = new PaymentService($purchaseRepository);
     }
 
     public function __invoke(): void {

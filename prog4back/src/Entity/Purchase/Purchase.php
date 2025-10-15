@@ -1,4 +1,4 @@
-<?php
+<?php 
 // entities/Purchase.php
 class Purchase {
     public $id;
@@ -8,6 +8,7 @@ class Purchase {
     public $paymentMethod;
     public $status;
     public $createdAt;
+    public $preferenceId; // ✅ agregado para vincular con Mercado Pago
 
     public function __construct($userId, $plan, $amount, $paymentMethod, $status = 'pending') {
         $this->userId = $userId;
@@ -18,3 +19,4 @@ class Purchase {
         $this->createdAt = date('Y-m-d H:i:s');
     }
 }
+
