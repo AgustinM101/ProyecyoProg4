@@ -1,7 +1,7 @@
-
 {
     "require": {
         "vlucas/phpdotenv": "^5.6",
-        "aws/aws-sdk-php": "^3.356"
+        "aws/aws-sdk-php": "^3.356",
+        "mercadopago/dx-php": "^3.7"
     }
 }
