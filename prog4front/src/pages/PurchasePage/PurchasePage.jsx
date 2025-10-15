@@ -46,7 +46,7 @@ export function PurchasePage() {
     // 🔹 Si el método de pago es Mercado Pago
     if (paymentMethod === "mercadopago") {
       try {
-        const response = await fetch("http://localhost/backend/payment", {
+        const response = await fetch("http://localhost:9091/payment", { // ✅ URL correcta con tu puerto
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -60,25 +60,31 @@ export function PurchasePage() {
         });
 
         if (!response.ok) {
-          throw new Error("Error al generar el pago con Mercado Pago");
+          throw new Error("Error al generar la preferencia en Mercado Pago");
         }
 
         const data = await response.json();
 
         if (data.url) {
-          // 🔹 Redirección externa a Mercado Pago
-          window.location.href = data.url;
+          // 🔹 Abrir checkout de Mercado Pago en nueva pestaña
+          const mpWindow = window.open(data.url, "_blank");
+          if (mpWindow) {
+            mpWindow.focus();
+            alert("Se abrió Mercado Pago en una nueva pestaña. Completá el pago allí.");
+          } else {
+            alert("No se pudo abrir la ventana de Mercado Pago. Verificá que no esté bloqueada por el navegador.");
+          }
         } else {
           alert("No se pudo obtener la URL de pago.");
         }
       } catch (error) {
         console.error(error);
-        alert("Hubo un problema al conectar con Mercado Pago.");
+        alert("Hubo un problema al conectar con Mercado Pago. Revisá tu Access Token y la URL del backend.");
       }
       return; // 🚫 No continúa con la simulación local
     }
 
-    // 🔹 Simulaciones para otros métodos
+    // 🔹 Simulación para otros métodos
     localStorage.setItem("userProfile", JSON.stringify(userData));
     alert("Compra simulada. Redirigiendo a tu perfil...");
     navigate("/profile");
@@ -168,3 +174,4 @@ export function PurchasePage() {
     </>
   );
 }
+
