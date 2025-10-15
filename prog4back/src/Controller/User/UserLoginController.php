@@ -33,7 +33,7 @@ final readonly class UserLoginController {
                     "id" => $user->id(),
                     "name" => $user->name(),
                     "email" => $user->email(),
-                    "phone" => $user->phone() ?? null,
+
                     "plan" => $user->plan() ? [
                         "id" => $user->plan()->id(),
                         "name" => $user->plan()->name(),

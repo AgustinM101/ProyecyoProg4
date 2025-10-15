@@ -1,6 +1,5 @@
 <?php 
 
-declare(strict_types = 1);
 
 namespace Src\Infrastructure\Repository\User;
 
@@ -49,20 +48,20 @@ final readonly class UserRepository extends PDOManager implements UserRepository
     {
         $query = <<<SQL
             INSERT INTO users
-            (name, email, password, phone, profile_image, token, token_auth_date, role, plan_id, deleted)
+            (name, email, password, profile_image, token, token_auth_date, admin, deleted)
             VALUES
-            (:name, :email, :password, :phone, :profileImage, :token, :tokenAuthDate, :role, :planId, :deleted)
+            (:name, :email, :password, :profileImage, :token, :tokenAuthDate, :admin, :deleted)
         SQL;
 
         $parameters = [
             "name" => $user->name(),
             "email" => $user->email(),
             "password" => $user->password(),
-            "phone" => $user->phone(),
+            
             "profileImage" => $user->profileImage(),
             "token" => $user->token() ?? "",
             "tokenAuthDate" => $user->tokenAuthDate()?->format("Y-m-d H:i:s") ?? date('Y-m-d H:i:s'),
-            "role" => $user->role(),
+            "admin" => $user->admin(),
             "planId" => $user->plan()?->id() ?? null,
             "deleted" => $user->deleted() ?? 0
         ];
@@ -77,11 +76,11 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             SET name = :name,
                 email = :email,
                 password = :password,
-                phone = :phone,
+                
                 profile_image = :profileImage,
                 token = :token,
                 token_auth_date = :tokenAuthDate,
-                role = :role,
+                admin = :admin,
                 plan_id = :planId,
                 deleted = :deleted
             WHERE id = :id
@@ -91,11 +90,11 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             "name" => $user->name(),
             "email" => $user->email(),
             "password" => $user->password(),
-            "phone" => $user->phone(),
+            
             "profileImage" => $user->profileImage(),
             "token" => $user->token(),
             "tokenAuthDate" => $user->tokenAuthDate()?->format("Y-m-d H:i:s"),
-            "role" => $user->role(),
+            "admin" => $user->admin(),
             "planId" => $user->plan()?->id() ?? null,
             "deleted" => $user->deleted() ?? 0,
             "id" => $user->id()
@@ -108,13 +107,13 @@ final readonly class UserRepository extends PDOManager implements UserRepository
      * ✅ Actualiza solo los datos del perfil (nombre, teléfono e imagen)
      * sin tocar contraseña, token o plan.
      */
-    public function updateProfile(int $id, ?string $name, ?string $phone, ?string $profileImage): void
+    public function updateProfile(int $id, ?string $name, ?string $profileImage): void
     {
         $query = <<<SQL
             UPDATE users
             SET 
                 name = COALESCE(:name, name),
-                phone = COALESCE(:phone, phone),
+                
                 profile_image = COALESCE(:profileImage, profile_image)
             WHERE id = :id
         SQL;
@@ -122,7 +121,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         $parameters = [
             "id" => $id,
             "name" => $name,
-            "phone" => $phone,
+            
             "profileImage" => $profileImage
         ];
 
@@ -156,11 +155,10 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             $primitive["name"],
             $primitive["email"],
             $primitive["password"],
-            $primitive["phone"] ?? null,
             $primitive["profile_image"] ?? null,
             $primitive["token"] ?? null,
             !empty($primitive["token_auth_date"]) ? new DateTime($primitive["token_auth_date"]) : null,
-            $primitive["role"] ?? 'user',
+            $primitive["admin"] ?? 0,
             null // Plan se carga después
         );
 
