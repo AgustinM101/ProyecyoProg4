@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { Container, Group, Text, Button } from "@mantine/core";
+import { Container, Group, Text, Button, Loader } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 import { FormularioList } from "../../components/Admin/FormularioList";
 import { FormularioModal } from "../../components/Admin/FormularioModal";
-// import { formsService } from "../../services/formsService"; // 🔜 activar cuando tengas endpoints
+import { plansFormService } from "../../services/plansFormService";
 
 export function FormulariosPage() {
   const fecha = new Date().toLocaleDateString("es-AR");
   const [formularios, setFormularios] = useState([]);
   const [opened, setOpened] = useState(false);
   const [selectedForm, setSelectedForm] = useState(null);
-
+  
   // 📦 Datos de ejemplo (para test sin backend)
   const fakeForms = [
     {
@@ -35,15 +35,16 @@ export function FormulariosPage() {
   const fetchData = async () => {
     try {
       // 🔹 En producción, usar:
-      // const { data } = await formsService.getForms();
-      // setFormularios(data);
+        const { data } = await plansFormService.getPlansForms();
+        setFormularios(data);
+        
 
-      // 🔸 En desarrollo (mock):
-      setFormularios(fakeForms);
     } catch (error) {
       console.error("Error al obtener formularios:", error);
+      
     }
   };
+  
 
   useEffect(() => {
     fetchData();
@@ -60,6 +61,8 @@ export function FormulariosPage() {
       setFormularios((prev) => prev.filter((f) => f.id !== id));
     }
   };
+
+  
 
   return (
     <>
