@@ -1,45 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Container,
-  Table,
-  Button,
-  Modal,
-  TextInput,
-  Textarea,
-  NumberInput,
-  Group,
-  Title,
-  Text,
   Loader,
   Center,
-  Badge,
-  Stack,
+  Text,
+  Pagination,
+  TextInput,
+  Group,
+  Button,
 } from "@mantine/core";
 import { plansService } from "../../services/plansService";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
+import { PlanGenericoTable } from "../../components/Admin/PlanGenericoTable";
+import { PlanGenericoModal } from "../../components/Admin/PlanGenericoModal";
 
 export function PlanesGenericosPage() {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [opened, setOpened] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [modalOpened, setModalOpened] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const itemsPerPage = 5;
 
-  // Form data
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    price: "",
-  });
-
-  // Obtener planes del backend
+  // 🔹 Obtener planes del backend
   const fetchPlans = async () => {
     setLoading(true);
     try {
       const response = await plansService.getPlans();
       setPlans(response.data);
     } catch (error) {
-      console.error("Error al obtener planes:", error);
+      console.error("Error al traer los planes:", error);
     } finally {
       setLoading(false);
     }
@@ -49,162 +40,117 @@ export function PlanesGenericosPage() {
     fetchPlans();
   }, []);
 
-  const handleOpenNew = () => {
-    setEditMode(false);
-    setFormData({ name: "", description: "", price: "" });
-    setOpened(true);
-  };
+  // 🔍 Filtro de búsqueda
+  const filteredPlans = useMemo(() => {
+    return plans.filter(
+      (p) =>
+        p.name?.toLowerCase().includes(search.toLowerCase()) ||
+        p.description?.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [plans, search]);
 
+  // 📄 Paginación
+  const paginatedPlans = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    return filteredPlans.slice(start, start + itemsPerPage);
+  }, [filteredPlans, page]);
+
+  // ✏️ Crear / editar plan
   const handleEdit = (plan) => {
-    setEditMode(true);
     setSelectedPlan(plan);
-    setFormData({
-      name: plan.name,
-      description: plan.description,
-      price: plan.price,
-    });
-    setOpened(true);
+    setModalOpened(true);
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("¿Seguro que deseas eliminar este plan?")) return;
+  const handleCreate = () => {
+    setSelectedPlan(null);
+    setModalOpened(true);
+  };
+
+  const handleSave = async (formData) => {
     try {
-      await plansService.deletePlan(id);
+      if (selectedPlan) {
+        await plansService.updatePlan(selectedPlan.id, formData);
+      } else {
+        await plansService.createPlan(formData);
+      }
+      setModalOpened(false);
+      fetchPlans();
+    } catch (error) {
+      console.error("Error al guardar el plan:", error);
+    }
+  };
+
+  // ❌ Eliminar plan
+  const handleDelete = async (planId) => {
+    if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
+    try {
+      await plansService.deletePlan(planId);
       fetchPlans();
     } catch (error) {
       console.error("Error al eliminar plan:", error);
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      if (editMode && selectedPlan) {
-        await plansService.updatePlan(selectedPlan.id, formData);
-      } else {
-        await plansService.createPlan(formData);
-      }
-      setOpened(false);
-      fetchPlans();
-    } catch (error) {
-      console.error("Error al guardar plan:", error);
-    }
-  };
-
   if (loading) {
     return (
       <Center style={{ height: "100vh" }}>
-        <Loader />
+        <Loader color="#FF6600" size="xl" />
       </Center>
     );
   }
 
-  const totalActivos = plans.filter((p) => !p.deleted).length;
-  const totalEliminados = plans.filter((p) => p.deleted).length;
-
   return (
     <>
-    <AdminNavbar/>
-    <Container size="lg" py="md">
-      <Group position="apart" mb="lg">
-        <Title order={2}>📦 Planes Genéricos</Title>
-        <Button onClick={handleOpenNew} color="green">
-          + Nuevo Plan
-        </Button>
-      </Group>
+      <AdminNavbar />
 
-      {plans.length === 0 ? (
-        <Text>No hay planes creados.</Text>
-      ) : (
-        <Table striped highlightOnHover withTableBorder>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th>Precio</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {plans.map((plan) => (
-              <tr key={plan.id}>
-                <td>{plan.id}</td>
-                <td>{plan.name}</td>
-                <td>{plan.description}</td>
-                <td>${plan.price}</td>
-                <td>
-                  <Badge color={plan.deleted ? "red" : "green"}>
-                    {plan.deleted ? "Eliminado" : "Activo"}
-                  </Badge>
-                </td>
-                <td>
-                  <Group spacing="xs">
-                    <Button size="xs" color="blue" onClick={() => handleEdit(plan)}>
-                      ✏️ Editar
-                    </Button>
-                    <Button size="xs" color="red" onClick={() => handleDelete(plan.id)}>
-                      🗑️ Eliminar
-                    </Button>
-                  </Group>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-
-      <Stack mt="md">
-        <Text fw={500}>
-          🧮 Total Planes: {totalActivos} activos / {totalEliminados} eliminados
-        </Text>
-      </Stack>
-
-      {/* Modal para crear/editar */}
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title={editMode ? "Editar Plan" : "Nuevo Plan"}
-        centered
-      >
-        <Stack>
-          <TextInput
-            label="Nombre"
-            placeholder="Ej: Plan Avanzado"
-            value={formData.name}
-            onChange={(e) =>
-              setFormData({ ...formData, name: e.currentTarget.value })
-            }
-          />
-
-          <Textarea
-            label="Descripción"
-            placeholder="Ej: Rutina + Nutrición personalizada"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.currentTarget.value })
-            }
-          />
-
-          <NumberInput
-            label="Precio"
-            placeholder="Ej: 20000"
-            value={formData.price}
-            onChange={(val) => setFormData({ ...formData, price: val })}
-          />
-
-          <Group position="right" mt="md">
-            <Button variant="light" onClick={() => setOpened(false)}>
-              Cancelar
-            </Button>
-            <Button onClick={handleSubmit} color="blue">
-              Guardar
-            </Button>
+      <div className="admin-page">
+        <Container size="lg" py="md">
+          <Group position="apart" mb="md">
+            <Text size="xl" fw={700}>
+              Admin - Planes Genéricos
+            </Text>
+            <Group>
+              <TextInput
+                placeholder="Buscar por nombre o descripción"
+                value={search}
+                onChange={(e) => setSearch(e.currentTarget.value)}
+              />
+              <Button color="#FF6600" onClick={handleCreate}>
+                ➕ Nuevo Plan
+              </Button>
+            </Group>
           </Group>
-        </Stack>
-      </Modal>
-    </Container>
 
+          {filteredPlans.length === 0 ? (
+            <Center>
+              <Text>No hay resultados</Text>
+            </Center>
+          ) : (
+            <>
+              <PlanGenericoTable
+                plans={paginatedPlans}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+              <Center mt="md">
+                <Pagination
+                  page={page}
+                  onChange={setPage}
+                  total={Math.ceil(filteredPlans.length / itemsPerPage)}
+                />
+              </Center>
+            </>
+          )}
+
+          {/* Modal de crear/editar plan */}
+          <PlanGenericoModal
+            opened={modalOpened}
+            onClose={() => setModalOpened(false)}
+            plan={selectedPlan}
+            onSave={handleSave}
+          />
+        </Container>
+      </div>
     </>
   );
 }

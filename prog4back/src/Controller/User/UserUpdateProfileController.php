@@ -30,11 +30,11 @@ final readonly class UserUpdateProfileController {
             }
 
             $name = $_POST['name'] ?? null;
-            $phone = $_POST['phone'] ?? null;
+           
             $profileImage = $_FILES['profileImage'] ?? null;
 
             if ($name) $user->setName($name);
-            if ($phone) $user->setPhone($phone);
+            
 
             if ($profileImage && $profileImage['tmp_name']) {
                 $uploadDir = __DIR__ . '/../../uploads/profiles/';
@@ -55,9 +55,9 @@ final readonly class UserUpdateProfileController {
                     "id" => $user->id(),
                     "name" => $user->name(),
                     "email" => $user->email(),
-                    "phone" => $user->phone(),
+                    
                     "profileImage" => $user->profileImage(),
-                    "role" => $user->role()
+                    "admin" => $user->admin()
                 ]
             ]);
 

@@ -20,11 +20,11 @@ final readonly class UserUpdaterService {
      * 
      * @param int $userId ID del usuario a actualizar
      * @param string|null $name Nombre nuevo
-     * @param string|null $phone Teléfono nuevo
+
      * @param string|null $profileImagePath Ruta de la foto de perfil
      * @return User Usuario actualizado
      */
-    public function updateProfile(int $userId, ?string $name, ?string $phone, ?string $profileImagePath): User {
+    public function updateProfile(int $userId, ?string $name, ?string $profileImagePath): User {
         $user = $this->finderService->find($userId);
 
         if (!$user) {
@@ -33,7 +33,7 @@ final readonly class UserUpdaterService {
 
         // Actualizar campos si se envían
         if ($name !== null) $user->setName($name);
-        if ($phone !== null) $user->setPhone($phone);
+
         if ($profileImagePath !== null) $user->setProfileImage($profileImagePath);
 
         // Guardar cambios en la base de datos

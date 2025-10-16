@@ -44,7 +44,7 @@ final readonly class UserGetLoggedController {
             "id" => $user->id(),
             "name" => $user->name(),
             "email" => $user->email(),
-            "role" => $user->role(),
+            "admin" => $user->admin(),
             "planUser" => $planUser ? [
                 "id" => $planUser->id(),
                 "id_user" => $planUser->id_user(),

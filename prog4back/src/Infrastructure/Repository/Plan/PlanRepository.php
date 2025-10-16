@@ -27,7 +27,6 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
     {
         $query = "SELECT id, name, description, price FROM plans WHERE deleted = 0";
         $results = $this->execute($query);
-        var_dump($results); // <- para debug
 
         $plans = [];
         foreach ($results as $result) {

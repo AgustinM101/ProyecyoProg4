@@ -1,6 +1,5 @@
 <?php 
 
-declare(strict_types = 1);
 
 namespace Src\Infrastructure\Repository\User;
 
@@ -45,26 +44,21 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         return $this->primitiveToUser($result[0] ?? null);
     }
 
-    public function insert(User $user): void
+        public function insert(User $user): void
     {
-        $query = <<<SQL
-            INSERT INTO users
-            (name, email, password, phone, profile_image, token, token_auth_date, role, plan_id, deleted)
-            VALUES
-            (:name, :email, :password, :phone, :profileImage, :token, :tokenAuthDate, :role, :planId, :deleted)
-        SQL;
-
+        $query = <<<INSERT_QUERY
+                    INSERT INTO
+                        users
+                    (name, email, password, token)
+                        VALUES
+                    (:name, :email, :password, :token)
+                INSERT_QUERY;
+            
         $parameters = [
             "name" => $user->name(),
             "email" => $user->email(),
             "password" => $user->password(),
-            "phone" => $user->phone(),
-            "profileImage" => $user->profileImage(),
-            "token" => $user->token() ?? "",
-            "tokenAuthDate" => $user->tokenAuthDate()?->format("Y-m-d H:i:s") ?? date('Y-m-d H:i:s'),
-            "role" => $user->role(),
-            "planId" => $user->plan()?->id() ?? null,
-            "deleted" => $user->deleted() ?? 0
+            "token" => "",
         ];
 
         $this->execute($query, $parameters);
@@ -77,12 +71,12 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             SET name = :name,
                 email = :email,
                 password = :password,
-                phone = :phone,
-                profile_image = :profileImage,
+                
+
                 token = :token,
                 token_auth_date = :tokenAuthDate,
-                role = :role,
-                plan_id = :planId,
+                admin = :admin,
+
                 deleted = :deleted
             WHERE id = :id
         SQL;
@@ -91,12 +85,12 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             "name" => $user->name(),
             "email" => $user->email(),
             "password" => $user->password(),
-            "phone" => $user->phone(),
-            "profileImage" => $user->profileImage(),
+            
+
             "token" => $user->token(),
             "tokenAuthDate" => $user->tokenAuthDate()?->format("Y-m-d H:i:s"),
-            "role" => $user->role(),
-            "planId" => $user->plan()?->id() ?? null,
+            "admin" => $user->admin(),
+            
             "deleted" => $user->deleted() ?? 0,
             "id" => $user->id()
         ];
@@ -108,13 +102,13 @@ final readonly class UserRepository extends PDOManager implements UserRepository
      * ✅ Actualiza solo los datos del perfil (nombre, teléfono e imagen)
      * sin tocar contraseña, token o plan.
      */
-    public function updateProfile(int $id, ?string $name, ?string $phone, ?string $profileImage): void
+    public function updateProfile(int $id, ?string $name, ?string $profileImage): void
     {
         $query = <<<SQL
             UPDATE users
             SET 
                 name = COALESCE(:name, name),
-                phone = COALESCE(:phone, phone),
+                
                 profile_image = COALESCE(:profileImage, profile_image)
             WHERE id = :id
         SQL;
@@ -122,7 +116,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         $parameters = [
             "id" => $id,
             "name" => $name,
-            "phone" => $phone,
+            
             "profileImage" => $profileImage
         ];
 
@@ -156,19 +150,19 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             $primitive["name"],
             $primitive["email"],
             $primitive["password"],
-            $primitive["phone"] ?? null,
-            $primitive["profile_image"] ?? null,
+           
             $primitive["token"] ?? null,
             !empty($primitive["token_auth_date"]) ? new DateTime($primitive["token_auth_date"]) : null,
-            $primitive["role"] ?? 'user',
-            null // Plan se carga después
+            $primitive["admin"] ?? 0,
+            $primitive["deleted"] ?? 0,
+            $primitive["profile_image"] ?? null 
         );
 
         // Cargar plan si existe
         if (!empty($primitive["plan_id"])) {
             $planRepository = new \Src\Infrastructure\Repository\Plan\PlanRepository();
             $plan = $planRepository->find($primitive["plan_id"]);
-            $user->setPlan($plan);
+            $user-> setPlan($plan);
         }
 
         // Asignar deleted
