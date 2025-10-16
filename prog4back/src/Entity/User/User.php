@@ -14,13 +14,11 @@ final class User {
         private string $email,
         private string $password,
         
-        private ?string $profileImage = null,
         private ?string $token = null,
         private ?DateTime $tokenAuthDate = null,
         private ?int $admin = 0,
-        private ?Plan $plan = null,
-        private int $deleted = 0 // 0 = no eliminado, 1 = eliminado
-
+        private int $deleted = 0, // 0 = no eliminado, 1 = eliminado
+        private ?string $profileImage = null,
     ) {}
 
     // Factory para crear nuevo usuario
@@ -30,13 +28,12 @@ final class User {
             null,
             $name,
             $email,
-            password_hash($password, PASSWORD_BCRYPT),
-            
-            null,
-            null,
-            null,
+            password_hash($password, PASSWORD_BCRYPT),   
+            null, // Token
+            null, // Token Auth date
             $admin,
-            null
+            0, // Deleted
+            null // Profile image
         );
     }
 

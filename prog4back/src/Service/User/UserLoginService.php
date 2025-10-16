@@ -27,13 +27,8 @@ final readonly class UserLoginService {
             throw new UserInvalidCredentialsException();
         }
 
-        // Generar token en memoria
-        $user = $this->tokenGenerator->generate($user);
-
-        // Guardar token en la base de datos
-        $this->userRepository->update($user);
-
-        return $user;
+        return $this->tokenGenerator->generate($user);
     }
+
 }
 

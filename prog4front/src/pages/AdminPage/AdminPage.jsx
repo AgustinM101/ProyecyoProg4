@@ -22,7 +22,7 @@ import {
 } from "@tabler/icons-react";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 
-// 🧩 Importá tus servicios (ajustá los paths según tu estructura real)
+
 import { userService } from "../../services/userService";
 import { formsService } from "../../services/formsService";
 import { plansService } from "../../services/plansService";
@@ -51,13 +51,21 @@ export function AdminPage() {
           plansService.getPlans(),
         ]);
 
+        console.log("Planes:", planes.data);
+        
+        
+      
+
+        
+
         // Ejemplo de cálculo de métricas simples desde los datos:
-        const formulariosPendientes = formularios.filter(f => f.estado === "pendiente").length;
-        const planesPorVencer = planes.filter(p => p.dias_restantes && p.dias_restantes <= 5).length;
+        const formulariosPendientes = formularios ? formularios.data.filter(f => f.status === "pendiente").length : 0;
+        
+        const planesPorVencer = planes ? planes.data.filter(p => p.dias_restantes && p.dias_restantes <= 5).length : 0;
 
         setStats({
-          usuarios: usuarios.length,
-          planesComprados: planes.length,
+          usuarios: usuarios.data.length,
+          planesComprados: planes.data.length,
           formulariosPendientes,
           planesPorVencer,
         });
