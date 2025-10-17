@@ -11,7 +11,6 @@ export function AdminNavbar() {
     { label: "Inicio", icon: <IconHome size={18} />, path: "/admin" },
     { label: "Formularios", icon: <IconClipboardList size={18} />, path: "/formularios" },
     { label: "Clientes", icon: <IconUsers size={18} />, path: "/clientes" },
-    { label: "Planes", icon: <IconActivity size={18} />, path: "/userplanes" },
     { label: "PlanesGenericos", icon: <IconActivity size={18} />, path: "/genericplanes" }
   ];
 
