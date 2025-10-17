@@ -18,6 +18,8 @@ services:
     volumes:
       - ./:/var/www/html:rw
       - ./data/apache/logs:/var/log/apache2
+      - ./.env:/var/www/html/.env   
+
 
   mysql:
     image: mysql:5
