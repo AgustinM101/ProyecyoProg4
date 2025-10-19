@@ -1,6 +1,6 @@
 <?php
 // controllers/Payment/PaymentController.php
-require_once __DIR__ . '/../../services/PaymentService.php';
+require_once __DIR__ . '/../../service/PaymentService.php';
 require_once __DIR__ . '/../../repositories/PurchaseRepository.php';
 require_once __DIR__ . '/../../config/Database.php';
 
