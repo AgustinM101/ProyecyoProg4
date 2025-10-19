@@ -22,7 +22,7 @@ final readonly class LogGetController {
         $responses[] = [
             "id" => $log->id(),
             "text" => $log->text(),
-            "fecha_creacion" => $log->fecha_creacion(),
+            "created_at" => $log->created_at(),
             "is_alert" => $log->is_alert()
             ];
         }
