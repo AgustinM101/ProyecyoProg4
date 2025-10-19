@@ -4,14 +4,24 @@ namespace Src\Service\PlansForm;
 
 use Src\Entity\PlansForm\PlansForm;
 use Src\Infrastructure\Repository\PlansForm\PlansFormRepository;
+use Src\Infrastructure\Repository\PlansUser\PlansUserRepository;
+use Src\Infrastructure\Repository\User\UserRepository;
+use Src\Infrastructure\Repository\Plan\PlanRepository;
+use Src\Utils\ControllerUtils;
 
 final readonly class PlansFormCreatorService
 {
     private PlansFormRepository $repository;
+    private PlansUserRepository $plansUserRepository;
+    private UserRepository $userRepository;
+    private PlanRepository $planRepository;
 
     public function __construct()
     {
         $this->repository = new PlansFormRepository();
+        $this->plansUserRepository = new PlansUserRepository();
+        $this->userRepository = new UserRepository();
+        $this->planRepository = new PlanRepository();
     }
 
     public function create(
@@ -34,9 +44,9 @@ final readonly class PlansFormCreatorService
         string $fecha_registro,
         int $id_plans_user
     ): void {
-        // Se crea directamente la entidad sin usar un método estático
+        // Crear entidad
         $plansForm = new PlansForm(
-            null, // id autoincremental
+            null,
             $nombre,
             $edad,
             $sexo,
@@ -57,7 +67,28 @@ final readonly class PlansFormCreatorService
             $id_plans_user
         );
 
-        // Se guarda en el repositorio
+        // Guardar en DB
         $this->repository->create($plansForm);
+
+        // Buscar datos relacionados para el log
+        $plansUser = $this->plansUserRepository->findById($id_plans_user);
+
+        if ($plansUser) {
+            $user = $this->userRepository->find($plansUser->userId());
+            $plan = $this->planRepository->find($plansUser->planId());
+
+            $userName = $user ? $user->name() : 'Desconocido';
+            $planName = $plan ? $plan->name() : 'Desconocido';
+
+            ControllerUtils::logAction(
+                "El usuario {$userName} completó el formulario de plan {$planName}.",
+                false
+            );
+        } else {
+            ControllerUtils::logAction(
+                "Se creó un nuevo formulario sin datos de plan/usuario asociados.",
+                true
+            );
+        }
     }
 }

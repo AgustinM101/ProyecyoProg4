@@ -16,7 +16,10 @@ final readonly class PlanAlimentoCreatorService{
         $planAlimento = PlanAlimento::create($name, $description, $tipo);
         $this->repository->create($planAlimento);
 
+        
+
         return $planAlimento;
+        
     }
     
 }
