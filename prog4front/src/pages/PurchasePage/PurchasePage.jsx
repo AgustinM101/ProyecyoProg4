@@ -4,6 +4,7 @@ import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
 import "./PurchasePage.css";
+import { PaymentService } from "../../services/PaymentService";
 
 export function PurchasePage() {
   const navigate = useNavigate();
