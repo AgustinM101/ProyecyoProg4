@@ -25,5 +25,7 @@ final readonly class UserCreatorService {
 
         $user = User::create($name, $email, $password);
         $this->repository->insert($user);
+
+        //logRepository->insertLog("Se registró un nuevo usuario con email: $email", false);
     }
 }

@@ -1,29 +1,31 @@
-/* Solo afecta las tablas dentro de AdminPage */
-.admin-page .user-table {
-  border: 1px solid #f5b301; /* borde amarillo */
-  border-radius: 8px;
-  border-collapse: collapse;
-  width: 100%;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(245, 179, 1, 0.3); /* sombra amarilla suave */
+/* Ajusta el espacio vertical del accordion dentro de la tabla */
+.admin-page .accordion-row td {
+  padding: 0 !important;
+  background-color: #111;
 }
 
-.admin-page .user-table th,
-.admin-page .user-table td {
+/* Accordion más integrado visualmente */
+.admin-page .accordion-inside {
+  margin: 0;
+  border: none;
+  background-color: #111;
+}
+
+/* Quita el padding excesivo del accordion panel */
+.admin-page .accordion-panel {
+  background-color: #1a1a1a;
+  color: #ddd;
+  padding: 8px 16px;
+}
+
+/* Control sin margen adicional */
+.admin-page .accordion-control {
+  padding: 10px 16px;
+  background-color: #222;
+  border-bottom: 1px solid #f5b301;
+}
+
+.admin-page .accordion-item {
   border: 1px solid #f5b301;
-  text-align: center;
-  vertical-align: middle;
-  padding: 10px;
-  color: #fff; /* texto blanco */
-}
-
-/* Colores del header */
-.admin-page .user-table thead {
-  background-color: #222; /* header oscuro */
-}
-
-/* Efecto hover suave */
-.admin-page .user-table tbody tr:hover {
-  background-color: #333; /* fondo ligeramente más claro al pasar el mouse */
-  transition: background-color 0.2s ease-in-out;
+  border-radius: 0;
 }

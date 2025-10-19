@@ -27,9 +27,7 @@ final class UserUpdateProfileService
             $user->setName($data['name']);
         }
 
-        if (isset($data['phone'])) {
-            $user->setPhone($data['phone']);
-        }
+        
 
         if (isset($data['profile_image'])) {
             $file = $data['profile_image'];

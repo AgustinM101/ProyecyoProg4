@@ -1,4 +1,10 @@
-<?php 
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// ✅ Cargar variables de entorno desde .env
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->safeLoad();
 
 include_once "Route.php";
 include_once "Router.php";
@@ -6,7 +12,6 @@ include_once "Router.php";
 function startRouter(): Router 
 {
     $routes = [];
-    
 
     include_once "Routes/PlanAlimentoRoutes.php";
     $routes = array_merge($routes, PlanAlimentoRoutes::getRoutes());
@@ -32,10 +37,9 @@ function startRouter(): Router
     include_once "Routes/PaymentRoutes.php";
     $routes = array_merge($routes, PaymentRoutes::getRoutes());
 
+
     include_once "Routes/LogsRoutes.php";
     $routes = array_merge($routes, LogRoutes::getRoutes());
-
-
 
     $routesClass = [];
     foreach ($routes as $route) {

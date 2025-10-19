@@ -11,6 +11,12 @@ class PaymentService {
 
     public function __construct($purchaseRepository) {
         $this->purchaseRepository = $purchaseRepository;
+
+        // 🔹 Validar que el Access Token esté cargado
+        if (empty($_ENV['MP_ACCESS_TOKEN'])) {
+            throw new Exception("Error: el Access Token de Mercado Pago no está definido en el .env");
+        }
+
         MercadoPagoConfig::setAccessToken($_ENV['MP_ACCESS_TOKEN']); // desde .env
     }
 
@@ -39,14 +45,24 @@ class PaymentService {
                 "auto_return" => "approved"
             ]);
         } catch (Exception $e) {
-            throw new Exception("Error al crear preferencia: " . $e->getMessage());
+            throw new Exception("Error al crear preferencia en Mercado Pago: " . $e->getMessage());
+        }
+
+        // 🔹 Validar que se haya recibido un ID de preferencia
+        if (empty($preference->id)) {
+            throw new Exception("Error: no se recibió ID de preferencia desde Mercado Pago");
         }
 
         // Guardar compra en base
         $purchase = new Purchase($userId, $plan, $amount, 'mercadopago', 'pending');
-        $purchase->preferenceId = $preference->id; // ✅ agregado
+        $purchase->preferenceId = $preference->id; // ✅ vincula la compra con Mercado Pago
 
-        $this->purchaseRepository->save($purchase);
+        $savedId = $this->purchaseRepository->save($purchase);
+
+        // 🔹 Validar que se haya guardado correctamente
+        if (!$savedId) {
+            throw new Exception("Error: no se pudo guardar la compra en la base de datos");
+        }
 
         return $preference->init_point;
     }

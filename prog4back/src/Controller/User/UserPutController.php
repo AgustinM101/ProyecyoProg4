@@ -29,7 +29,7 @@ final readonly class UserPutController {
 
             // Obtener campos enviados
             $name = ControllerUtils::getPost("name", false, $user->name());
-            $phone = ControllerUtils::getPost("phone", false, $user->phone());
+            
 
             // Manejo de imagen de perfil
             $profileImage = $_FILES['profileImage'] ?? null;
@@ -56,7 +56,7 @@ final readonly class UserPutController {
                 "id" => $updatedUser->id(),
                 "name" => $updatedUser->name(),
                 "email" => $updatedUser->email(),
-                "phone" => $updatedUser->phone(),
+
                 "profileImage" => $updatedUser->profileImage(),
                 "plan" => $updatedUser->plan() ? [
                     "id" => $updatedUser->plan()->id(),
