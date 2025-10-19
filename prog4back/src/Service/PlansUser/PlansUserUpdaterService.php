@@ -3,29 +3,44 @@
 namespace Src\Service\PlansUser;
 
 use Src\Infrastructure\Repository\PlansUser\PlansUserRepository;
-use Src\Service\PlansUser\PlansUserFinderService;
+use Src\Infrastructure\Repository\User\UserRepository;
+use Src\Infrastructure\Repository\Plan\PlanRepository;
+use Src\Utils\ControllerUtils;
 
 final readonly class PlansUserUpdaterService {
 
     private PlansUserRepository $repository;
-    private PlansUserFinderService $finderService;
+    private UserRepository $userRepository;
+    private PlanRepository $planRepository;
 
     public function __construct() {
         $this->repository = new PlansUserRepository();
-        $this->finderService = new PlansUserFinderService();
+        $this->userRepository = new UserRepository();
+        $this->planRepository = new PlanRepository();
     }
 
-    public function update(int $id, string $status, string $expiration_date): void {
-        // Obtenemos el plans_user por id
-        $plansUser = $this->finderService->findById($id);
-        if (!$plansUser) {
-            throw new \Exception("No se encontró el plan del usuario con id $id");
+    public function updateStatusAndExpirationById(int $id, string $status, string $expiration_date): void {
+        $plansUser = $this->repository->findById($id);
+
+        if ($plansUser) {
+            $user = $this->userRepository->find($plansUser->userId());
+            $plan = $this->planRepository->find($plansUser->planId());
+
+            $userName = $user ? $user->name() : 'Desconocido';
+            $planName = $plan ? $plan->name() : 'Desconocido';
+
+            $this->repository->updateStatusAndExpirationById($id, $status, $expiration_date);
+
+            ControllerUtils::logAction(
+                "Se actualizó la asignación del plan '{$planName}' para el usuario '{$userName}' a estado '{$status}' con expiración '{$expiration_date}'.",
+                false
+            );
+        } else {
+            ControllerUtils::logAction(
+                "Se intentó actualizar una asignación de plan inexistente con ID {$id}.",
+                true
+            );
         }
-
-        // Modificamos la entidad
-        $plansUser->modify($status, $expiration_date);
-
-        // Actualizamos en la base de datos
-        $this->repository->updateStatusAndExpirationById($id, $status, $expiration_date);
     }
 }
+

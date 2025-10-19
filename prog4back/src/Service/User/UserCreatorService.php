@@ -28,7 +28,7 @@ final readonly class UserCreatorService {
         $this->repository->insert($user);
 
         // Registrar log después de la creación
-        ControllerUtils::logAction("Se creó un nuevo usuario: $name con email: $email", true);
+        ControllerUtils::logAction("Se creó un nuevo usuario: $name con email: $email", false);
         
     }
 }

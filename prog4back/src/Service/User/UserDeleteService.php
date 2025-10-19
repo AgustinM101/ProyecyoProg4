@@ -17,11 +17,10 @@ final readonly class UserDeleteService {
     }
     
     public function delete(int $id): void {
-        // Buscar el usuario antes de borrarlo
+        
         $user = $this->finderService->find($id);
 
         if (!$user) {
-            // Opcional: log si el usuario no existe
             ControllerUtils::logAction("Se intentó eliminar un usuario inexistente con ID $id", true);
             return;
         }
