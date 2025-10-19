@@ -32,6 +32,9 @@ function startRouter(): Router
     include_once "Routes/PaymentRoutes.php";
     $routes = array_merge($routes, PaymentRoutes::getRoutes());
 
+    include_once "Routes/LogsRoutes.php";
+    $routes = array_merge($routes, LogRoutes::getRoutes());
+
 
 
     $routesClass = [];
