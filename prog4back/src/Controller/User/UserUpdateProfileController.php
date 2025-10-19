@@ -46,9 +46,16 @@ final readonly class UserUpdateProfileController {
                 // Guardamos la ruta relativa para usarla en la web
                 $user->setProfileImage('/uploads/profiles/' . basename($profileImage['name']));
             }
+            
 
             $this->userRepository->update($user);
 
+            // Después de actualizar el usuario
+            ControllerUtils::logAction(
+                "Usuario {$updatedUser->id()} ({$updatedUser->name()}) actualizó sus datos",
+                false
+            );
+            
             echo json_encode([
                 "message" => "Perfil actualizado correctamente",
                 "data" => [

@@ -4,11 +4,11 @@ namespace Src\Service\User;
 
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
+use Src\Utils\ControllerUtils;
 
-final readonly class UserDeleteService{
+final readonly class UserDeleteService {
 
     private UserRepository $repository;
-
     private UserFinderService $finderService;
 
     public function __construct() {
@@ -16,13 +16,20 @@ final readonly class UserDeleteService{
         $this->finderService = new UserFinderService();
     }
     
-    public function delete(int $id): void{
-
-
+    public function delete(int $id): void {
+        // Buscar el usuario antes de borrarlo
         $user = $this->finderService->find($id);
+
+        if (!$user) {
+            // Opcional: log si el usuario no existe
+            ControllerUtils::logAction("Se intentó eliminar un usuario inexistente con ID $id", true);
+            return;
+        }
+
+        // Borrar el usuario
         $this->repository->delete($id);
 
-        $this->repository->update($user);
+        // Registrar log usando el nombre del usuario
+        ControllerUtils::logAction("Se eliminó el usuario: {$user->name()}", true);
     }
-    
 }

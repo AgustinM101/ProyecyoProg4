@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Src\Utils;
 
 use Exception;
+use Src\Service\Log\LogCreatorService;
+
 
 final readonly class ControllerUtils {
 
@@ -65,4 +67,15 @@ final readonly class ControllerUtils {
         if ($token === null) throw new Exception("Token not found");
         return $token;
     }
+
+    public static function logAction(string $text, bool $isAlert = false): void
+{
+    try {
+        $logService = new LogCreatorService();
+        $logService->create($text, $isAlert);
+    } catch (\Exception $e) {
+        error_log("Error creando log: " . $e->getMessage());
+    }
+}
+
 }

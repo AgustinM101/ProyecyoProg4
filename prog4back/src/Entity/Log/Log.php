@@ -20,5 +20,6 @@ final class Log
     public function id(): ?int { return $this->id; }
     public function text(): string { return $this->text; }
     public function created_at(): string { return $this->created_at; }
-    public function is_alert(): bool { return $this->is_alert; }
+    public function isAlert(): bool { return $this->is_alert; }
+
 }
