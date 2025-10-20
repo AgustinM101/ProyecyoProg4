@@ -14,6 +14,7 @@ final readonly class UserDeleteController
     public function start(int $id): void {
 
     
+        
 
         $this->service->delete($id);
     }
