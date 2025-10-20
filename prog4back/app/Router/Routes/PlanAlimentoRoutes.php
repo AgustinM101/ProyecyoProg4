@@ -21,6 +21,15 @@ final readonly class PlanAlimentoRoutes {
         "controller" => "PlanAlimento/PlanAlimentosGetController.php",
         "method" => "GET"
       ],
+
+      [
+    "name" => "planAlimento_user_get",
+    "url" => "/planAlimento",
+    "controller" => "PlanAlimento/PlanAlimentoUserController.php",
+    "method" => "GET",
+    "parameters" => ["plans_user_id"] // Se recibe por query string
+],
+
       [
         "name" => "planAlimento_create",
         "url" => "/planAlimentos",
@@ -51,6 +60,7 @@ final readonly class PlanAlimentoRoutes {
           ]
         ]
       ]
+
     ];
   }
 }
