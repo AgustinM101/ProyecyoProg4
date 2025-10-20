@@ -25,6 +25,15 @@ final readonly class PlanEjercicioRoutes {
       ],
 
       [
+    "name" => "planEjercicio_user_get",
+    "url" => "/planEjercicio",
+    "controller" => "PlanEjercicio/PlanEjercicioUserController.php",
+    "method" => "GET",
+    "parameters" => ["plans_user_id"] // Se recibe por query string
+      ],
+
+
+      [
         "name" => "planEjercicios_get",
         "url" => "/planEjercicios",
         "controller" => "PlanEjercicio/PlanEjerciciosGetController.php",
