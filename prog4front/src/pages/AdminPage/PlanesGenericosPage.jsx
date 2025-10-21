@@ -93,9 +93,12 @@ export function PlanesGenericosPage() {
 
   if (loading) {
     return (
-      <Center style={{ height: "100vh" }}>
-        <Loader color="#FF6600" size="xl" />
-      </Center>
+      <>
+        <AdminNavbar />
+        <Center style={{ height: "100vh" }}>
+          <Loader color="#FF6600" size="xl" />
+        </Center>
+      </>
     );
   }
 

@@ -6,10 +6,10 @@ import { MantineProvider } from "@mantine/core";
 import { RegisterPage } from "./pages/RegisterPage/RegisterPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HomePage } from "./pages/HomePage/HomePage";
+
 import { Nosotros } from "./pages/Nosotros/Nosotros";
 import { PrivateRoute, PublicRoute } from "./Routes";
-import { AdminPage } from "./pages/AdminPage/AdminPage";
+
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
@@ -25,6 +25,8 @@ import { ClientesPage } from "./pages/AdminPage/ClientesPage";
 
 import { PlansFormPage } from "./pages/PlansFormPage/PlansFormPage";
 import { PlanesGenericosPage }  from "./pages/AdminPage/PlanesGenericosPage";
+import { AdminHome } from "./pages/AdminPage/AdminHome";
+import { HomePage } from "./pages/HomePage/HomePage";
 
 function App() {
 
@@ -43,7 +45,6 @@ function App() {
                             <Route path="/nosotros" element={<Nosotros />} />
 
                             <Route path="/profile" element={<ProfilePage />} />
-                            <Route path="/admin" element={<AdminPage />} />
                             <Route path="/myplans" element={<MyPlansPage />} />   
                             <Route path="/purchase" element={<PurchasePage />} />
                             <Route path="/profile" element={<ProfilePage />} />
@@ -61,7 +62,7 @@ function App() {
                         <Route element={<PrivateRoute />}>
                             {/* acá van las rutas que requieran login */}
 
-                            <Route path="/admin" element={<AdminPage />} />
+                            <Route path="/admin" element={<AdminHome />} />
                             <Route path="/myplans" element={<MyPlansPage />} />
 
 

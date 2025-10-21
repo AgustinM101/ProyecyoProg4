@@ -23,7 +23,7 @@ final readonly class LogGetController {
             "id" => $log->id(),
             "text" => $log->text(),
             "created_at" => $log->created_at(),
-            "is_alert" => $log->is_alert()
+            "is_alert" => $log->isAlert()
             ];
         }
 
