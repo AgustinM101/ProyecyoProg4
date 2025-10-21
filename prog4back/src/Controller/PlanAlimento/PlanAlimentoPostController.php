@@ -19,6 +19,7 @@ final readonly class PlanAlimentoPostController
             $name = $input['name'] ?? null;
             $description = $input['description'] ?? null;
             $tipo = $input['tipo'] ?? null;
+            
         } else {
             // Si no hay JSON, usar form-data / x-www-form-urlencoded
             $name = ControllerUtils::getPost("name");

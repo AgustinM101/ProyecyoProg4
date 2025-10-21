@@ -12,15 +12,19 @@ import {
   Center,
   Loader,
 } from "@mantine/core";
+import { useNavigate } from "react-router-dom"; // ✅ agregado
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import "./PlansFormPage.css";
 import { plansFormService } from "../../services/plansFormService";
+import { plansUserService } from "../../services/plansUserService"; 
+import { userService } from "../../services/userService"; // ✅ agregado
 
 export function PlansFormPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [forms, setForms] = useState([]); 
+  const [forms, setForms] = useState([]);
+  const navigate = useNavigate(); // ✅ agregado
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -70,14 +74,34 @@ export function PlansFormPage() {
     setSuccess(false);
 
     try {
+      // 🔹 1. Crear el form principal (igual que antes)
       const data = new FormData();
       Object.keys(formData).forEach((key) => data.append(key, formData[key]));
       data.append("fecha_registro", new Date().toISOString().split("T")[0]);
-      data.append("id_plans_user", 1); 
+      data.append("id_plans_user", 1);
 
       const response = await plansFormService.create(data);
 
       if (response?.success || response?.status === 200) {
+        // 🔹 2. Crear el registro en plans_user (solo id_user + id_plan)
+        try {
+          const userResponse = await userService.getCurrentUser(); // ✅ obtener usuario actual
+          const id_user = userResponse?.data?.id;
+
+          // ⚠️ reemplazá este id_plan con el que corresponda (puede venir de props, de localStorage, etc.)
+          const id_plan = 1;
+
+          await plansUserService.createPlan({
+            id_user: id_user,
+            id_plan: id_plan,
+          });
+
+          console.log("✅ PlanUser creado correctamente");
+        } catch (err) {
+          console.error("⚠️ Error al crear plan user:", err);
+        }
+
+        // 🔹 3. Resetear formulario (igual)
         setSuccess(true);
         setFormData({
           nombre: "",
@@ -97,7 +121,14 @@ export function PlansFormPage() {
           consumo_agua: "",
           consumo_alcohol: "",
         });
-        loadForms(); // 🔁 Actualizar lista
+
+        // 🔹 4. Actualizar lista
+        loadForms();
+
+        // 🔹 5. Redirigir al perfil automáticamente ✅
+        setTimeout(() => {
+          navigate("/profile");
+        }, 1200);
       } else {
         throw new Error("Error al enviar el formulario");
       }
@@ -114,7 +145,7 @@ export function PlansFormPage() {
 
     try {
       await plansFormService.deletePlan(id);
-      loadForms(); // 🔁 Actualizar lista
+      loadForms();
     } catch (error) {
       console.error("❌ Error al eliminar formulario:", error);
       alert("Error al eliminar el formulario ❌");
@@ -282,7 +313,6 @@ export function PlansFormPage() {
               </Stack>
             </form>
 
-            {/* 🔹 Listado de formularios enviados */}
             {forms.length > 0 && (
               <div style={{ marginTop: "2rem" }}>
                 <Title order={3}>Formularios enviados</Title>

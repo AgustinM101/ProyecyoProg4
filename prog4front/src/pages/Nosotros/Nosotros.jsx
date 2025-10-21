@@ -1,8 +1,7 @@
-
 import { 
-  Container, Title, Text, Card, Group, Image, Button, Stack, Typography 
+  Container, Title, Text, Card, Group, Image, Button, Stack, ScrollArea, Divider 
 } from "@mantine/core";
-import { Grid, SimpleGrid } from '@mantine/core';
+import { SimpleGrid } from "@mantine/core";
 import { Footer } from "../../components/Footer/Footer";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu"; 
 import "./Nosotros.css";
@@ -10,74 +9,97 @@ import "./Nosotros.css";
 export function Nosotros() {
   return (
     <>
-      {/* Header común */}
       <HeaderMenu />
 
-      {/* Sección Nosotros */}
       <section id="nosotros" className="nosotros-section">
         <Container size="lg" py="xl">
-          <Card className="nosotros-card">
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" align="flex-start">
-
-              {/* Columna Imagen + Botón */}
+          <Card 
+            className="nosotros-card" 
+            shadow="xl" 
+            radius="lg" 
+            style={{
+              backgroundColor: "#000",
+              color: "#fff",
+              border: "2px solid #d4af37",
+              padding: "2rem"
+            }}
+          >
+            <SimpleGrid 
+              cols={{ base: 1, sm: 2 }} 
+              spacing="xl" 
+              align="center" 
+              style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            >
+              
+              {/* COLUMNA IMAGEN */}
               <Stack spacing="md" align="center">
                 <Image
                   radius="md"
                   fit="contain"
                   src="https://res.cloudinary.com/del98x3di/image/upload/v1758065555/ABFDEA6E-476E-4720-9E6E-EC7F16E91A29_wc5q5z.jpg"
                   alt="Adrian Salvatori"
+                  width={450}
+                  height="auto"
+                  style={{
+                    border: "3px solid #d4af37",
+                    borderRadius: "12px",
+                    boxShadow: "0 0 15px #d4af37",
+                  }}
                 />
 
-                <Button 
-                  variant="filled" 
-                  color="#FFD60A" 
-                  radius="md" 
+                <Button
+                  component="a"
+                  href="https://wa.me/5491123456789"
+                  target="_blank"
+                  variant="gradient"
+                  gradient={{ from: "#d4af37", to: "#ffffff" }}
+                  radius="md"
                   size="md"
-                  className="nosotros-button"
+                  style={{
+                    fontWeight: "bold",
+                    color: "#000",
+                    boxShadow: "0 0 10px #d4af37",
+                  }}
                 >
-                  TRABAJA CONMIGO Y EMPIEZA A PROGRESAR DE VERDAD
+                  CONTACTAME POR WHATSAPP
                 </Button>
               </Stack>
 
-              {/* Columna Texto */}
-              <Grid gutter="md">
-                <Grid.Col>
-                  <Group spacing="md" align="flex-start" className="nosotros-header">
-                    <Typography className="nosotros-encabezado">
-                      PREPARADOR FÍSICO, ATLETA PROFESIONAL DE CULTURISMO NATURAL, GRADUADO EN CIENCIAS DE LA ACTIVIDAD FÍSICA Y DEL DEPORTE.
-                    </Typography>
-                    <Title order={2} className="nosotros-title">
-                      <strong>ADRIAN SALVATORI</strong>
-                    </Title>
-                  </Group>
-                </Grid.Col>
+              {/* COLUMNA TEXTO */}
+              <ScrollArea h={600} type="auto" scrollbarSize={8}>
+                <Stack spacing="lg">
+                  <Title order={2} style={{ color: "#d4af37", fontWeight: 700 }}>
+                    PREPARADOR FÍSICO Y ATLETA DE CULTURISMO NATURAL
+                  </Title>
 
-                <Grid.Col>
-                  <Text size="sm" mt="md" className="nosotros-texto">
-                    Soy médico, preparador físico, profesor y atleta de culturismo natural. 
-                    Estudié Medicina en la Universidad del País Vasco (2013–2019) y tras 
-                    finalizar mi residencia en Oviedo, conseguí una plaza en Medicina Interna 
-                    en el Hospital Sant Pau de Barcelona, donde ejercí hasta marzo de 2021.
+                  <Divider color="#d4af37" size="sm" />
+
+                  <Text size="md" style={{ lineHeight: 1.7, textAlign: "justify" }}>
+                    Soy preparador físico, atleta profesional de culturismo natural y especialista en nutrición aplicada al deporte. 
+                    Cuento con diversas formaciones que respaldan mi trabajo: Preparador de culturismo (Federación Argentina de Musculación), 
+                    Entrenamiento aplicado a la salud y la obesidad (JMI), Nutrición aplicada al deporte (JMI), Formación en la Academia de Entrenadores Online 
+                    y Experto en culturismo natural (ECN). 
                     <br /><br />
-                    Mi pasión por el culturismo natural comenzó en 2012 y se consolidó al 
-                    combinar mi formación científica en fisiología, anatomía y bioquímica 
-                    con la práctica del fitness. Esta combinación me llevó a dedicarme 
-                    profesionalmente como preparador físico, ayudando a otros a alcanzar 
-                    su mejor versión.
+                    Mi experiencia como competidor de culturismo natural me permite comprender tanto el proceso físico 
+                    como el mental que atraviesan quienes buscan un cambio o se preparan para competir.
                     <br /><br />
-                    Desde 2020 también formo parte del profesorado del Máster Universitario 
-                    de Culturismo Natural de la Universidad Católica de Murcia, porque 
-                    transmitir conocimientos y guiar a otros siempre ha sido una parte 
-                    esencial de mi trayectoria.
+                    Al iniciarme en el entrenamiento descubrí que mi verdadera pasión es ayudar a las personas a transformar su vida. 
+                    Creo firmemente que los límites están en la mente y que, con disciplina, constancia, compromiso y amor por lo que hacemos, 
+                    todo es posible. Con esta visión, fundé mi gimnasio el 14 de septiembre de 2020, con el objetivo de brindar un espacio donde 
+                    mejorar la salud, cambiar hábitos, transformar el estilo de vida y formar atletas de culturismo natural.
                     <br /><br />
-                    Como atleta, competí en Men’s Physique del Campeonato Vasconavarro: 
-                    en 2017 logré un 1º puesto y en 2018 obtuve la medalla de oro de mi 
-                    categoría. Inspirado por estas experiencias, creé el proyecto que hoy 
-                    representa mi mayor motivación: Team Infinit, un espacio para entrenar, 
-                    aprender y superarse día a día.
+                    Nuestro gimnasio se sostiene en valores como disciplina, superación personal, salud y comunidad. 
+                    Nuestra misión es cambiar la mentalidad de las personas, demostrando que todo objetivo puede cumplirse con constancia y compromiso, 
+                    y nuestra visión es ser un referente en culturismo natural y en la promoción de un estilo de vida saludable y sostenible. 
+                    <br /><br />
+                    Personalmente, me considero atleta todo el año, manteniendo un estilo de vida saludable basado en alimentación consciente, 
+                    entrenamiento constante y actividad física diaria de 10.000 a 12.000 pasos. 
+                    Todo esto lo hago por pasión y elección, con la mirada puesta en seguir compitiendo en culturismo natural. 
+                    Mi mayor orgullo es ver cómo muchas personas que llegaron con dudas o inseguridades hoy transformaron su cuerpo y su vida, 
+                    confirmando que lo que parecía imposible, con disciplina y trabajo, se vuelve realidad.
                   </Text>
-                </Grid.Col>
-              </Grid>
+                </Stack>
+              </ScrollArea>
             </SimpleGrid>
           </Card>
         </Container>
