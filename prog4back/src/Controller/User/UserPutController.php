@@ -1,15 +1,16 @@
 <?php
 
-namespace Src\Controller\User;
 
 use Src\Service\User\UserUpdaterService;
 use Src\Service\User\UserFinderService;
 use Src\Utils\ControllerUtils;
 
+
+
 final readonly class UserPutController {
     private UserUpdaterService $service;
     private UserFinderService $finderService;
-
+    
     public function __construct() {
         $this->service = new UserUpdaterService();
         $this->finderService = new UserFinderService();
@@ -48,8 +49,13 @@ final readonly class UserPutController {
                 $profileImagePath = "/uploads/profiles/" . $filename;
             }
 
+            
+
             // Actualizar usuario en DB
             $updatedUser = $this->service->updateProfile($user->id(), $name, $phone, $profileImagePath);
+
+            
+
 
             // Devolver usuario actualizado
             echo json_encode([
