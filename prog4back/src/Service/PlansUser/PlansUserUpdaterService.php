@@ -23,8 +23,9 @@ final readonly class PlansUserUpdaterService {
         $plansUser = $this->repository->findById($id);
 
         if ($plansUser) {
-            $user = $this->userRepository->find($plansUser->userId());
-            $plan = $this->planRepository->find($plansUser->planId());
+            $user = $this->userRepository->find($plansUser->id_user());
+            $plan = $this->planRepository->find($plansUser->id_plan());
+
 
             $userName = $user ? $user->name() : 'Desconocido';
             $planName = $plan ? $plan->name() : 'Desconocido';

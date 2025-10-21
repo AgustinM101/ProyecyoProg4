@@ -8,7 +8,8 @@ final class PlansUser {
         private int $id_user,
         private int $id_plan,
         private string $status,
-        private ?string $expiration_date = null 
+        private ?string $expiration_date = null,
+        int $deleted = 0,
     ) {}
 
     public function modify(string $status, string $expiration_date): void {
@@ -35,4 +36,11 @@ final class PlansUser {
     public function expiration_date(): ?string {
         return $this->expiration_date;
     }
+    public function deleted(): int {
+    return $this->deleted;
+}
+
+public function markAsDeleted(): void {
+    $this->deleted = 1;
+}
 }
