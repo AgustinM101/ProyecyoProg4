@@ -15,7 +15,7 @@ import {
 import { plansUserService } from "../../services/plansUserService";
 import { DateInput } from '@mantine/dates';
 import { UserTable } from "../../components/UserTable/UserTable";
-import "./AdminPage.css";
+import "./ClientesPage.css";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 
 export function ClientesPage() {

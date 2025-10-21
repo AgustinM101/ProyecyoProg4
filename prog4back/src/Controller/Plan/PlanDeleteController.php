@@ -13,10 +13,10 @@ final readonly class PlanDeleteController
 
     public function start(int $id): void {
 
-    }
+    
 
         $this->service->delete( $id);
     }
-
+}
 
 
