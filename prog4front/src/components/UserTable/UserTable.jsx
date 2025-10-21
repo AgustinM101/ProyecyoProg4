@@ -28,7 +28,8 @@ export function UserTable({ users, onEdit, onDelete }) {
       <tbody>
         {users.map((pu) => (
           <React.Fragment key={`${pu.user.id}-${pu.plan.id}`}>
-            <tr>
+            <tr> 
+              <td>{pu.id}</td>
               <td>{pu.user.name}</td>
               <td>{pu.user.email}</td>
               <td
