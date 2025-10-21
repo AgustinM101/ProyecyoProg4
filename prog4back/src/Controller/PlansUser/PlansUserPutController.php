@@ -16,7 +16,7 @@ final readonly class PlansUserPutController {
         $expiration_date = ControllerUtils::getPost("expiration_date");
 
         try {
-            $this->service->update($id, $status, $expiration_date);
+            $this->service->updateStatusAndExpirationById($id, $status, $expiration_date);
             echo json_encode([
                 "success" => true,
                 "message" => "Plan actualizado correctamente"

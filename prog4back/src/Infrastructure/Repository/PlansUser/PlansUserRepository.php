@@ -55,6 +55,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
             FROM plans_user up
             JOIN users u ON u.id = up.id_user
             JOIN plans p ON p.id = up.id_plan
+            WHERE up.deleted = 0
         SQL;
 
         return $this->execute($query);
@@ -64,7 +65,6 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     public function findByUserIdWithDetails(int $id_user): array {
         $query = <<<SQL
             SELECT 
-                
                 up.id_user,
                 u.name AS user_name,
                 u.email AS user_email,
@@ -76,6 +76,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
             JOIN users u ON u.id = up.id_user
             JOIN plans p ON p.id = up.id_plan
             WHERE up.id_user = :id_user
+            AND up.deleted = 0
         SQL;
 
         $params = ["id_user" => $id_user];
@@ -162,6 +163,13 @@ public function removePlanById(int $id): void {
     $this->execute($query, $params);
 }
 
+public function markAsDeleted(int $id): void {
+    $query = "UPDATE plans_user SET deleted = 1 WHERE id = :id";
+    $params = ["id" => $id];
+    $this->execute($query, $params);
+}
+
+
 
 
 private function toPlansUser(?array $row): ?PlansUser {
@@ -172,7 +180,7 @@ private function toPlansUser(?array $row): ?PlansUser {
         $row["id_user"],
         $row["id_plan"],
         $row["status"],
-        $row["expiration_date"] // <-- agregar
+        $row["expiration_date"] 
     );
 }
 
