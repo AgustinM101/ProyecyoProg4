@@ -55,7 +55,7 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
     {
         $query = "SELECT id, name, description, tipo FROM plan_alimentos WHERE deleted = 0";
         $results = $this->execute($query);
-        var_dump($results);
+        
 
         $planAlimentos = [];
         foreach ($results as $result) {
