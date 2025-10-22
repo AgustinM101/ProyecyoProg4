@@ -22,6 +22,19 @@ final readonly class PlanAlimentoRoutes {
         "method" => "GET"
       ],
 
+      [
+        "name" => "planAlimentos_getByUserPlanId",
+        "url" => "/userPlanAlimentos",
+        "controller" => "PlanAlimento/PlanAlimentosGetController.php",
+        "method" => "GET",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
+      ],
+
 
 
       [
