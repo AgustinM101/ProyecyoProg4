@@ -9,7 +9,7 @@ export const planAlimentosService = {
   deletePlan: (id) => api.delete(`/planAlimentos/${id}`),
 
 
-
+  
 
   getPlanPhavId: () => api.get(`/plans/1`),
   getPlanCompeticionId: () => api.get(`/plans/2`)
