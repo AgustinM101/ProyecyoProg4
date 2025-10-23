@@ -5,7 +5,7 @@ final readonly class AdminRoutes {
     return [
       [
         "name" => "admin_validate",
-        "url" => "/admin/validate",
+        "url" => "/validate",
         "controller" => "Admin/AdminValidateController.php",
         "method" => "GET"
       ],
