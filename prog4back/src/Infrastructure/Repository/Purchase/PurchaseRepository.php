@@ -1,41 +1,49 @@
 <?php
-// repositories/PurchaseRepository.php
-require_once __DIR__ . '/../entities/Purchase.php';
 
-class PurchaseRepository {
-    private $conn;
+namespace Src\Infrastructure\Repository\Purchase;
 
-    public function __construct($conn) {
-        $this->conn = $conn;
-    }
+use Src\Infrastructure\PDO\PDOManager;
+use Src\Entity\Purchase\Purchase;
 
-    public function save(Purchase $purchase) {
-        $stmt = $this->conn->prepare("
-            INSERT INTO purchases (user_id, plan, amount, payment_method, status, created_at, preference_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ");
-        $stmt->bind_param(
-            "isdssss",
-            $purchase->userId,
-            $purchase->plan,
-            $purchase->amount,
-            $purchase->paymentMethod,
-            $purchase->status,
-            $purchase->createdAt,
-            $purchase->preferenceId
-        );
+final readonly class PurchaseRepository extends PDOManager
+{
+    public function create(Purchase $purchase): void
+{
+    $query = <<<SQL
+        INSERT INTO purchase_buy (amount, payment_method, status, preference_id, created_at, plans_user_id)
+        VALUES (:amount, :payment_method, :status, :preference_id, :created_at, :plans_user_id)
+    SQL;
 
-        if (!$stmt->execute()) {
-            throw new Exception("Error al guardar la compra: " . $stmt->error);
-        }
+    $plansUserId = $purchase->plansUserId() ?? null;
 
-        return $this->conn->insert_id;
-    }
+    $parameters = [
+        'amount' => $purchase->amount(),
+        'payment_method' => $purchase->paymentMethod(),
+        'status' => $purchase->status(),
+        'preference_id' => $purchase->preferenceId(),
+        'created_at' => $purchase->createdAt(),
+        'plans_user_id' => $plansUserId, // puede ser null sin romper
+    ];
 
-    public function updateStatus($id, $status) {
-        $stmt = $this->conn->prepare("UPDATE purchases SET status = ? WHERE id = ?");
-        $stmt->bind_param("si", $status, $id);
-        return $stmt->execute();
+    $this->execute($query, $parameters);
+}
+
+
+    public function updateStatus(string $preferenceId, string $status): void
+    {
+        $query = <<<SQL
+            UPDATE purchase_buy
+            SET status = :status
+            WHERE preference_id = :preference_id
+        SQL;
+
+        $parameters = [
+            'status' => $status,
+            'preference_id' => $preferenceId
+        ];
+
+        $this->execute($query, $parameters);
     }
 }
+
 

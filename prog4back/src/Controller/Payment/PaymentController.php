@@ -1,47 +1,40 @@
 <?php
-// controllers/Payment/PaymentController.php
-require_once __DIR__ . '/../../service/PaymentService.php';
-require_once __DIR__ . '/../../repositories/PurchaseRepository.php';
-require_once __DIR__ . '/../../config/Database.php';
 
-final class PaymentController {
-    private PaymentService $paymentService;
+use Src\Utils\ControllerUtils;
+use Src\Service\Payment\PaymentService;
 
-    public function __construct() {
-        $db = new Database();
-        $conn = $db->getConnection();
+final readonly class PaymentController
+{
+    private PaymentService $service;
 
-        $purchaseRepository = new PurchaseRepository($conn);
-        $this->paymentService = new PaymentService($purchaseRepository);
+    public function __construct()
+    {
+        $this->service = new PaymentService();
     }
 
-    public function __invoke(): void {
-        header('Content-Type: application/json');
+    public function start(): void
+    {
+        $plansUserIdRaw = ControllerUtils::getPost("plans_user_id");
+        $plansUserId = !empty($plansUserIdRaw) ? (int) $plansUserIdRaw : null; // ✅ acepta null
 
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        if (!$data) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Datos inválidos']);
-            return;
-        }
+        $title = ControllerUtils::getPost("title");
+        $amount = (float) ControllerUtils::getPost("amount");
 
         try {
-            $initPoint = $this->paymentService->createPreference(
-                $data['userId'] ?? null,
-                $data['nombre'] ?? '',
-                $data['email'] ?? '',
-                $data['plan'] ?? '',
-                $data['amount'] ?? 0
-            );
+            $initPoint = $this->service->createPreference($plansUserId, $title, $amount);
 
             echo json_encode([
-                'status' => 200,
-                'url' => $initPoint
+                "status" => "success",
+                "url" => $initPoint
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             http_response_code(500);
-            echo json_encode(['error' => $e->getMessage()]);
+            echo json_encode([
+                "status" => "error",
+                "message" => $e->getMessage()
+            ]);
         }
     }
 }
+
+
