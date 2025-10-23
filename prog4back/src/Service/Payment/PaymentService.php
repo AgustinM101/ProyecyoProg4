@@ -1,53 +1,51 @@
 <?php
-// services/PaymentService.php
-require_once __DIR__ . '/../repositories/PurchaseRepository.php';
-require_once __DIR__ . '/../vendor/autoload.php';
 
-use MercadoPago\Client\Preference\PreferenceClient;
+namespace Src\Service\Payment;
+
 use MercadoPago\MercadoPagoConfig;
+use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\Exceptions\MPApiException;
 
-class PaymentService {
-    private $purchaseRepository;
-
-    public function __construct($purchaseRepository) {
-        $this->purchaseRepository = $purchaseRepository;
-        MercadoPagoConfig::setAccessToken($_ENV['MP_ACCESS_TOKEN']); // desde .env
-    }
-
-    public function createPreference($userId, $nombre, $email, $plan, $amount) {
-        $client = new PreferenceClient();
-
+class PaymentService
+{
+    public function createPreference($id, $title, $price)
+    {
         try {
+            // Configuramos el Access Token desde las variables de entorno (.env)
+            MercadoPagoConfig::setAccessToken($_ENV['MP_ACCESS_TOKEN']);
+
+            // Creamos un nuevo cliente de preferencias
+            $client = new PreferenceClient();
+
+            // Creamos la preferencia (el "pago")
             $preference = $client->create([
                 "items" => [
                     [
-                        "title" => $plan,
+                        "id" => $id,
+                        "title" => $title,
                         "quantity" => 1,
-                        "currency_id" => "ARS",
-                        "unit_price" => (float) $amount
+                        "unit_price" => (float)$price,
+                        "currency_id" => "ARS"
                     ]
                 ],
-                "payer" => [
-                    "name" => $nombre,
-                    "email" => $email
-                ],
                 "back_urls" => [
-                    "success" => "http://localhost:5173/success",
-                    "failure" => "http://localhost:5173/failure",
-                    "pending" => "http://localhost:5173/pending"
+                    "success" => "https://tuweb.com/success",
+                    "failure" => "https://tuweb.com/failure",
+                    "pending" => "https://tuweb.com/pending"
                 ],
+                "notification_url" => "https://tuweb.com/notifications",
                 "auto_return" => "approved"
             ]);
-        } catch (Exception $e) {
-            throw new Exception("Error al crear preferencia: " . $e->getMessage());
+
+            // Retornamos los datos más importantes
+            return [
+                "id" => $preference->id,
+                "init_point" => $preference->init_point,
+                "sandbox_init_point" => $preference->sandbox_init_point ?? null
+            ];
+
+        } catch (MPApiException $e) {
+            throw new \Exception("Error al crear la preferencia: " . $e->getMessage());
         }
-
-        // Guardar compra en base
-        $purchase = new Purchase($userId, $plan, $amount, 'mercadopago', 'pending');
-        $purchase->preferenceId = $preference->id; // ✅ agregado
-
-        $this->purchaseRepository->save($purchase);
-
-        return $preference->init_point;
     }
 }
