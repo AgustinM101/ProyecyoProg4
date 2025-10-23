@@ -1,0 +1,32 @@
+/* Bordes y espaciado general de la tabla */
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Bordes de filas y columnas */
+.plan-table th,
+.plan-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ff9900; 
+  text-align: left;
+}
+
+/* Encabezado con fondo y texto blanco */
+.plan-table th {
+  background-color: #212020;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Hover en filas */
+.plan-table tbody tr:hover {
+  background-color: #212020;
+}
+
+/* Grupo de botones en acciones */
+.plan-table .actions-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
