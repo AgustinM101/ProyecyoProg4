@@ -33,6 +33,19 @@ final readonly class PlanEjercicioRoutes {
         "method" => "GET"
       ],
 
+          [
+        "name" => "planEjercicios_getByUserPlanId",
+        "url" => "/userPlanEjercicios",
+        "controller" => "PlanEjercicio/PlanEjerciciosGetByUserPlanIdController.php",
+        "method" => "GET",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
+      ],
+
       [
         "name" => "planEjercicio_update",
         "url" => "/planEjercicios",
