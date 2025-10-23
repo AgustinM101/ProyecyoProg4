@@ -128,7 +128,7 @@ export function ClientesPage() {
     <>
     {/* Navbar */}
         <AdminNavbar />
-  <div className="admin-page"> {/* <-- Agregás esta clase raíz */}
+  <div className="admin-page"> 
     <Container size="lg" py="md">
       <Group position="apart" mb="md">
         <Text size="xl" fw={700}>
@@ -179,7 +179,8 @@ export function ClientesPage() {
               }
               data={[
                 { value: "active", label: "Activo" },
-                { value: "inactive", label: "Inactivo" },
+                { value: "pending", label: "Pendiente" },
+                { value: "finished", label: "Finalizado" },
               ]}
             />
 
