@@ -5,6 +5,7 @@ namespace Src\Service\User;
 use Src\Entity\User\Exception\UserAlreadyExistsException;
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
+use Src\Utils\ControllerUtils;
 
 final readonly class UserCreatorService {
     private UserRepository $repository;
@@ -26,6 +27,8 @@ final readonly class UserCreatorService {
         $user = User::create($name, $email, $password);
         $this->repository->insert($user);
 
-        //logRepository->insertLog("Se registró un nuevo usuario con email: $email", false);
+        // Registrar log después de la creación
+        ControllerUtils::logAction("Se creó un nuevo usuario: $name con email: $email", false);
+        
     }
 }

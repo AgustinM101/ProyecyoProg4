@@ -33,6 +33,27 @@ final readonly class PlanEjercicioRepository extends PDOManager implements PlanE
         return $planEjercicios;
     }
 
+        public function findByPlanUser(int $id): array {
+        // Busca todos los ejercicio asociados al plan del usuario con la columna "plans_user_id = $id"
+        $query = <<<HEREDOC
+            SELECT * FROM
+                plan_ejercicios
+            WHERE
+                plans_user_id = :id AND deleted = 0
+        HEREDOC;
+
+        $parameters = [ "id" => $id ];
+        $results = $this->execute($query, $parameters);
+
+        $planEjercicio = [];
+        foreach($results as $result) {
+            $planEjercicio
+            [] = $this->toPlanEjercicio($result);
+        }
+
+        return $planEjercicio;
+    }
+
     public function create(PlanEjercicio $planEjercicio): PlanEjercicio {
         $query = <<<INSERT_QUERY
             INSERT INTO plan_ejercicios (name, description, tipo, deleted)

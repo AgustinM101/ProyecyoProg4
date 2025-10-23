@@ -1,0 +1,44 @@
+/* Fondo general del dashboard */
+.adminhome-background {
+  background-color: #0d0d0d; /* negro sólido */
+  min-height: 100vh;
+  padding-bottom: 20px;
+}
+
+/* Contenedor centrado y con ancho limitado */
+.adminhome-container {
+  max-width: fit-content;
+  margin: 2rem auto 0 auto; /* solo margen superior para separar del header */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;         /* separación vertical entre componentes */
+}
+
+/* Cabecera con saludo y fecha */
+.adminhome-header {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 1rem;
+  border-bottom: 1px solid #060605;
+}
+
+
+/* Loader centrado */
+.adminhome-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0d0d0d;
+  height: 100vh;
+}
+
+/* Ajustes de texto en el header */
+.adminhome-header .mantine-Text-root {
+  font-weight: 500;
+}
+
+/* Transiciones suaves al cargar contenido */
+.adminhome-container,
+.adminhome-header {
+  transition: all 0.3s ease-in-out;
+}

@@ -6,7 +6,7 @@ use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\Exceptions\MPApiException;
 
-class PaymentService
+public function class PaymentService
 {
     public function createPreference($id, $title, $price)
     {

@@ -38,7 +38,9 @@ final readonly class UserUpdaterService {
 
         // Guardar cambios en la base de datos
         $this->repository->update($user);
-
+            // Registrar log
+            ControllerUtils::logAction("Se actualizó el usuario {$user->name()} con email: {$user->email()}", false);
+    
         return $user;
     }
 }

@@ -16,7 +16,9 @@ final readonly class UserPostController {
         $email = ControllerUtils::getPost("email");
         $password = ControllerUtils::getPost("password");
 
-
+       
         $this->service->create($name, $email, $password);
+
+        
     }
 }

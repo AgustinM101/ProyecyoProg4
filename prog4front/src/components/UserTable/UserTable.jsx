@@ -1,11 +1,18 @@
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import "./UserTable.css";
-import { Table, Text, Button, Group } from "@mantine/core";
+import { Table, Text, Button, Group, Accordion, Card } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 
 export function UserTable({ users, onEdit, onDelete }) {
-  return (
-    <Table highlightOnHover className="user-table">
+  const [expanded, setExpanded] = useState(null);
 
+  const handleExpand = (id) => {
+    setExpanded(expanded === id ? null : id);
+  };
+
+  return (
+    <Table highlightOnHover className="user-table admin-page">
       <thead>
         <tr>
           <th>Usuario</th>
@@ -20,39 +27,80 @@ export function UserTable({ users, onEdit, onDelete }) {
 
       <tbody>
         {users.map((pu) => (
-          <tr key={`${pu.user.id}-${pu.plan.id}`}>
-            <td>{pu.user.name}</td>
-            <td>{pu.user.email}</td>
-            <td>{pu.plan.name}</td>
-            <td>${pu.plan.price}</td>
-            <td>
-              <Text fw={700} color={pu.status === "active" ? "green" : "red"}>
-                {pu.status === "active" ? "Activo" : "Inactivo"}
-              </Text>
-            </td>
-            <td>{pu.expiration_date ? dayjs(pu.expiration_date).format("DD/MM/YYYY") : null}</td>
-            <td>
-              <Group spacing="xs">
-                <Button
-                  size="xs"
-                  color="blue"
-                  variant="light"
-                  onClick={() => onEdit(pu)}
-                >
-                  Editar
-                </Button>
+          <React.Fragment key={`${pu.user.id}-${pu.plan.id}`}>
+            <tr> 
 
-                <Button
-                  size="xs"
-                  color="red"
-                  variant="light"
-                  onClick={() => onDelete(pu)}
-                >
-                  Eliminar
-                </Button>
-              </Group>
-            </td>
-          </tr>
+              <td>{pu.user.name}</td>
+              <td>{pu.user.email}</td>
+              <td
+                style={{ cursor: "pointer" }}
+                onClick={() => handleExpand(pu.id_plans_user)}
+              >
+                <Group gap={6} align="center" justify="center">
+                  {pu.plan.name}
+                  <IconPlus
+                    className="icon-plus"
+                    size={18}
+                    style={{
+                      color:
+                        expanded === pu.id_plans_user ? "#f5b301" : "#aaa",
+                    }}
+                  />
+                </Group>
+              </td>
+              <td>${pu.plan.price}</td>
+              <td>
+                <Text fw={700} color={pu.status === "active" ? "green" : "red"}>
+                  {pu.status === "active" ? "Activo" : "Inactivo"}
+                </Text>
+              </td>
+              <td>
+                {pu.expiration_date
+                  ? dayjs(pu.expiration_date).format("DD/MM/YYYY")
+                  : null}
+              </td>
+              <td>
+                <Group spacing="xs" justify="center">
+                  <Button
+                    size="xs"
+                    color="blue"
+                    variant="light"
+                    onClick={() => onEdit(pu)}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    size="xs"
+                    color="red"
+                    variant="light"
+                    onClick={() => onDelete(pu)}
+                  >
+                    Eliminar
+                  </Button>
+                </Group>
+              </td>
+            </tr>
+
+            {expanded === pu.id_plans_user && (
+              <tr className="accordion-row">
+                <td colSpan="7">
+                  <Accordion variant="contained" className="accordion-inside">
+                    <Accordion.Item value="form" className="accordion-item">
+                      <Accordion.Control className="accordion-control">
+                        Plan personalizado de{" "}
+                        <span style={{ color: "#f5b301" }}>{pu.user.name}</span>
+                      </Accordion.Control>
+                      <Accordion.Panel className="accordion-panel">
+                        Aquí podrás cargar los datos del plan de alimentación
+                        y ejercicio personalizados para este usuario.
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  </Accordion>
+                </td>
+              </tr>
+            )}
+
+          </React.Fragment>
         ))}
       </tbody>
     </Table>

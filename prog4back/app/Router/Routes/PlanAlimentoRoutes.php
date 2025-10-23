@@ -21,6 +21,9 @@ final readonly class PlanAlimentoRoutes {
         "controller" => "PlanAlimento/PlanAlimentosGetController.php",
         "method" => "GET"
       ],
+
+
+
       [
         "name" => "planAlimento_create",
         "url" => "/planAlimentos",
@@ -51,6 +54,7 @@ final readonly class PlanAlimentoRoutes {
           ]
         ]
       ]
+
     ];
   }
 }

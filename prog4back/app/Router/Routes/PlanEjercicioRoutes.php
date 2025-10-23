@@ -24,6 +24,8 @@ final readonly class PlanEjercicioRoutes {
         ]
       ],
 
+
+
       [
         "name" => "planEjercicios_get",
         "url" => "/planEjercicios",

@@ -10,5 +10,3 @@ export const paymentService = {
   updatePayment: (id, data) => api.put(`/payment/${id}`, data),
 };
 
-
-

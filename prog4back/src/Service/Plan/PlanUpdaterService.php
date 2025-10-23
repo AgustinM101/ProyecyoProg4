@@ -21,6 +21,8 @@ final readonly class PlanUpdaterService{
         $plan->modify($name, $description, $price);
 
         $this->repository->update($plan);
+        // Registrar log
+        ControllerUtils::logAction("Se actualizó el plan: {$plan->name()}, descripción:{$plan->description()}, precio: {$plan->price()} ", true);
     } 
     
 }
