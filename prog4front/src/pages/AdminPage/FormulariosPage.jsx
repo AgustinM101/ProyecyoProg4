@@ -12,25 +12,7 @@ export function FormulariosPage() {
   const [opened, setOpened] = useState(false);
   const [selectedForm, setSelectedForm] = useState(null);
   
-  // 📦 Datos de ejemplo (para test sin backend)
-  const fakeForms = [
-    {
-      id: 1,
-      nombre: "Agustín Masso",
-      email: "agus@gmail.com",
-      objetivo: "Ganar masa muscular",
-      nivel: "Intermedio",
-      comentarios: "Entreno 3 veces por semana y tomo mate 😎",
-    },
-    {
-      id: 2,
-      nombre: "Lucía Torres",
-      email: "lucia@gmail.com",
-      objetivo: "Perder grasa corporal",
-      nivel: "Principiante",
-      comentarios: "Necesito ayuda con la alimentación.",
-    },
-  ];
+  
 
   const fetchData = async () => {
     try {
@@ -48,7 +30,7 @@ export function FormulariosPage() {
 
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, []);
 
   const handleVer = (form) => {
