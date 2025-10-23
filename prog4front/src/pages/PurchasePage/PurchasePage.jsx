@@ -13,9 +13,10 @@ import {
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
-import { paymentService } from "../../services/paymentService"; // ✅ Servicio de pagos
+
 import "./PurchasePage.css";
-import { PaymentService } from "../../services/PaymentService";
+import { paymentService } from "../../services/paymentService";
+
 
 export function PurchasePage() {
   const navigate = useNavigate();
