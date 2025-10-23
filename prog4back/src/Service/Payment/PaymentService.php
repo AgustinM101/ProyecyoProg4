@@ -33,8 +33,8 @@ use MercadoPago\Exceptions\MPApiException;
                     "failure" => "https://tuweb.com/failure",
                     "pending" => "https://tuweb.com/pending"
                 ],
-                "notification_url" => "https://tuweb.com/notifications",
-                "auto_return" => "approved"
+                //"notification_url" => "https://tuweb.com/notifications",
+                //"auto_return" => "approved"
             ]);
 
             // Retornamos los datos más importantes
