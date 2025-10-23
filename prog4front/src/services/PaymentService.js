@@ -1,15 +1,14 @@
-export async function createPaymentPreference(data) {
-  const response = await fetch("http://localhost/backend/payment", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+// src/services/paymentService.js
+import { api } from "./api";
 
-  if (!response.ok) {
-    throw new Error("Error al crear la preferencia de pago");
-  }
+export const paymentService = {
+  createPaymentPreference: async (payload) => {
+    const res = await api.post("/payment", payload);
+    return res.data; // devuelvo data directo
+  },
+  getPaymentById: (id) => api.get(`/payment/${id}`),
+  updatePayment: (id, data) => api.put(`/payment/${id}`, data),
+};
 
-  return response.json();
-}
+
+
