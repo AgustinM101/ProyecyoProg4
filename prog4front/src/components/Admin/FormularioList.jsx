@@ -13,7 +13,6 @@ export function FormularioList({ formularios, onVer, onEliminar }) {
         No hay formularios cargados.
       </p>
     );
-
   }
 
   return (
