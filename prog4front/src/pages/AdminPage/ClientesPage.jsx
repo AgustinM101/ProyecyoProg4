@@ -14,8 +14,10 @@ import {
   Accordion,
   Textarea,
 } from "@mantine/core";
-import { DateInput } from '@mantine/dates';
+import { DateInput } from "@mantine/dates";
 import { plansUserService } from "../../services/plansUserService";
+import { planAlimentosService } from "../../services/planAlimentosService";
+import { planEjerciciosService } from "../../services/planEjerciciosService";
 import { UserTable } from "../../components/UserTable/UserTable";
 import "./ClientesPage.css";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
@@ -33,6 +35,7 @@ export function ClientesPage() {
 
   const itemsPerPage = 5;
 
+  // 🔹 Obtener usuarios con planes
   const fetchPlansUsers = async () => {
     setLoading(true);
     try {
@@ -49,6 +52,7 @@ export function ClientesPage() {
     fetchPlansUsers();
   }, []);
 
+  // 🔹 Filtro y paginación
   const filteredUsers = useMemo(() => {
     return plansUsers.filter(
       (pu) =>
@@ -70,22 +74,20 @@ export function ClientesPage() {
       plan: { id: pu.id_plan, name: pu.plan_name, price: pu.plan_price ?? 0 },
       status: pu.status?.toLowerCase(),
       expiration_date: pu.expiration_date,
+      plans_user_id: pu.id,
     }));
   }, [paginatedUsers]);
 
+  // 🔹 Editar usuario y cargar sus planes
   const handleEdit = async (user) => {
     setSelectedUser(user);
     setEditModal(true);
-
-    // Cargar planes personalizados
     try {
-      const resAlimento = await fetch(`http://localhost/userPlanAlimentos?id=${user.id}`);
-      const dataAlimento = await resAlimento.json();
-      setPlanAlimento(Array.isArray(dataAlimento) ? dataAlimento : [dataAlimento]);
+      const resAlimento = await planAlimentosService.getByPlansUserId(user.id);
+      setPlanAlimento(resAlimento.data || []);
 
-      const resEjercicio = await fetch(`http://localhost/userPlanEjercicios?id=${user.id}`);
-      const dataEjercicio = await resEjercicio.json();
-      setPlanEjercicio(Array.isArray(dataEjercicio) ? dataEjercicio : [dataEjercicio]);
+      const resEjercicio = await planEjerciciosService.getByPlansUserId(user.id);
+      setPlanEjercicio(resEjercicio.data || []);
     } catch (error) {
       console.error("Error al cargar planes personalizados:", error);
       setPlanAlimento([]);
@@ -98,18 +100,23 @@ export function ClientesPage() {
     setDeleteModal(true);
   };
 
+  // 🔹 Actualizar usuario y sus planes
   const handleUpdate = async () => {
     if (!selectedUser) return;
 
     try {
-      // Actualizar estado y fecha de expiración del usuario
       await plansUserService.updatePlan(selectedUser.id, {
         status: selectedUser.status,
         expiration_date: selectedUser.expiration_date,
       });
 
-      // ✅ Opcional: aquí podrías hacer requests para actualizar los planes de alimentos/ejercicios si tu API lo permite
-      // por ejemplo: actualizarPlanAlimento(planAlimento) y actualizarPlanEjercicio(planEjercicio)
+      // Guardar cambios de planes (opcional)
+      for (const a of planAlimento) {
+        await planAlimentosService.updatePlan(a.id, a);
+      }
+      for (const e of planEjercicio) {
+        await planEjerciciosService.updatePlan(e.id, e);
+      }
 
       setEditModal(false);
       fetchPlansUsers();
@@ -139,64 +146,17 @@ export function ClientesPage() {
 
   return (
     <>
-
-    {/* Navbar */}
-        <AdminNavbar />
-  <div className="admin-page"> 
-    <Container size="lg" py="md">
-      <Group position="apart" mb="md">
-        <Text size="xl" fw={700}>
-          Admin - Usuarios con Planes
-        </Text>
-        <TextInput
-          placeholder="Buscar por usuario o plan"
-          value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
-        />
-      </Group>
-
-      {filteredUsers.length === 0 ? (
-        <Center>
-          <Text>No hay resultados</Text>
-        </Center>
-      ) : (
-        <>
-          <UserTable
-            users={formattedUsers}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-          <Center mt="md">
-            <Pagination
-              page={page}
-              onChange={setPage}
-              total={Math.ceil(filteredUsers.length / itemsPerPage)}
-            />
-          </Center>
-        </>
-      )}
-
-      {/* Modal de edición */}
-      <Modal
-        opened={editModal}
-        onClose={() => setEditModal(false)}
-        title="Editar Usuario"
-        centered
-      >
-        {selectedUser && (
-          <Stack>
-            <Select
-              label="Estado"
-              value={selectedUser.status}
-              onChange={(value) =>
-                setSelectedUser({ ...selectedUser, status: value })
-              }
-              data={[
-                { value: "active", label: "Activo" },
-                { value: "pending", label: "Pendiente" },
-                { value: "finished", label: "Finalizado" },
-              ]}
-
+      <AdminNavbar />
+      <div className="admin-page">
+        <Container size="lg" py="md">
+          <Group position="apart" mb="md">
+            <Text size="xl" fw={700}>
+              Admin - Usuarios con Planes
+            </Text>
+            <TextInput
+              placeholder="Buscar por usuario o plan"
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
             />
           </Group>
 
@@ -206,12 +166,7 @@ export function ClientesPage() {
             </Center>
           ) : (
             <>
-              <UserTable
-                users={formattedUsers}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-
+              <UserTable users={formattedUsers} onEdit={handleEdit} onDelete={handleDelete} />
               <Center mt="md">
                 <Pagination
                   page={page}
@@ -222,11 +177,11 @@ export function ClientesPage() {
             </>
           )}
 
-          {/* Modal de edición con campos editables */}
+          {/* 🔹 Modal de edición */}
           <Modal
             opened={editModal}
             onClose={() => setEditModal(false)}
-            title={`Editar Usuario: ${selectedUser?.user.name}`}
+            title={`Editar Usuario: ${selectedUser?.user.name || ""}`}
             centered
             size="lg"
           >
@@ -330,7 +285,7 @@ export function ClientesPage() {
             )}
           </Modal>
 
-          {/* Modal de eliminación */}
+          {/* 🔹 Modal de eliminación */}
           <Modal
             opened={deleteModal}
             onClose={() => setDeleteModal(false)}
@@ -338,8 +293,8 @@ export function ClientesPage() {
             centered
           >
             <Text mb="md">
-              ¿Estás seguro de que deseas eliminar **permanentemente** este
-              registro? Esta acción no se puede deshacer.
+              ¿Estás seguro de que deseas eliminar **permanentemente** este registro?
+              Esta acción no se puede deshacer.
             </Text>
             <Group position="apart">
               <Button color="gray" onClick={() => setDeleteModal(false)}>
