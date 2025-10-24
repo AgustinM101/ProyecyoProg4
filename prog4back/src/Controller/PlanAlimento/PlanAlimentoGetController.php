@@ -14,11 +14,11 @@ final readonly class PlanAlimentoGetController {
     {
         $planAlimento = $this->service->find($id);
         
-        echo json_encode([
+        echo json_encode([[
             "id" => $planAlimento->id(),
             "name" => $planAlimento->name(),
             "description" => $planAlimento->description(),
             "tipo" => $planAlimento->tipo(),
-        ]);
+        ]]);
     }
 }
