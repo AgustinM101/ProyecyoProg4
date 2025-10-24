@@ -24,8 +24,9 @@ final readonly class PlansUserRemoverService {
         $plansUser = $this->repository->findById($id);
 
         if ($plansUser) {
-            $user = $this->userRepository->find($plansUser->userId());
-            $plan = $this->planRepository->find($plansUser->planId());
+            $user = $this->userRepository->find($plansUser->id_user());
+            $plan = $this->planRepository->find($plansUser->id_plan());
+
 
             $userName = $user ? $user->name() : 'Desconocido';
             $planName = $plan ? $plan->name() : 'Desconocido';
@@ -36,7 +37,7 @@ final readonly class PlansUserRemoverService {
             );
 
             // Eliminar después de loguear
-            $this->repository->removePlanById($id);
+            $this->repository->markAsDeleted($id);
         } else {
             // Log de alerta si el registro no existía
             ControllerUtils::logAction(

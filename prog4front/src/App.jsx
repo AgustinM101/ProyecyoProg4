@@ -8,7 +8,7 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Nosotros } from "./pages/Nosotros/Nosotros";
-import { PrivateRoute, PublicRoute } from "./Routes";
+import { PrivateRoute, PublicRoute, AdminRoute } from "./Routes";
 
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
@@ -62,7 +62,7 @@ function App() {
                         <Route element={<PrivateRoute />}>
                             {/* acá van las rutas que requieran login */}
 
-                            <Route path="/admin" element={<AdminHome />} />
+                            
                             <Route path="/myplans" element={<MyPlansPage />} />
 
 
@@ -71,6 +71,11 @@ function App() {
 
                             <Route path="/purchase" element={<PurchasePage />} />
                             <Route path="/profile" element={<ProfilePage />} />
+
+
+                        </Route>
+                        <Route element={<AdminRoute />}>
+                            <Route path="/admin" element={<AdminHome />} />
 
 
                         </Route>

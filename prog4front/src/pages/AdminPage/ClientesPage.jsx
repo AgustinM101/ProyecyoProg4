@@ -139,17 +139,64 @@ export function ClientesPage() {
 
   return (
     <>
-      <AdminNavbar />
-      <div className="admin-page">
-        <Container size="lg" py="md">
-          <Group position="apart" mb="md">
-            <Text size="xl" fw={700}>
-              Admin - Usuarios con Planes
-            </Text>
-            <TextInput
-              placeholder="Buscar por usuario o plan"
-              value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
+
+    {/* Navbar */}
+        <AdminNavbar />
+  <div className="admin-page"> 
+    <Container size="lg" py="md">
+      <Group position="apart" mb="md">
+        <Text size="xl" fw={700}>
+          Admin - Usuarios con Planes
+        </Text>
+        <TextInput
+          placeholder="Buscar por usuario o plan"
+          value={search}
+          onChange={(e) => setSearch(e.currentTarget.value)}
+        />
+      </Group>
+
+      {filteredUsers.length === 0 ? (
+        <Center>
+          <Text>No hay resultados</Text>
+        </Center>
+      ) : (
+        <>
+          <UserTable
+            users={formattedUsers}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+          <Center mt="md">
+            <Pagination
+              page={page}
+              onChange={setPage}
+              total={Math.ceil(filteredUsers.length / itemsPerPage)}
+            />
+          </Center>
+        </>
+      )}
+
+      {/* Modal de edición */}
+      <Modal
+        opened={editModal}
+        onClose={() => setEditModal(false)}
+        title="Editar Usuario"
+        centered
+      >
+        {selectedUser && (
+          <Stack>
+            <Select
+              label="Estado"
+              value={selectedUser.status}
+              onChange={(value) =>
+                setSelectedUser({ ...selectedUser, status: value })
+              }
+              data={[
+                { value: "active", label: "Activo" },
+                { value: "pending", label: "Pendiente" },
+                { value: "finished", label: "Finalizado" },
+              ]}
+
             />
           </Group>
 

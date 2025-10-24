@@ -17,7 +17,7 @@ final class User {
         private ?string $token = null,
         private ?DateTime $tokenAuthDate = null,
         private ?int $admin = 0,
-        private int $deleted = 0, // 0 = no eliminado, 1 = eliminado
+        private int $deleted = 0, 
         private ?string $profileImage = null,
     ) {}
 
