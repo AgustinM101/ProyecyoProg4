@@ -1,0 +1,71 @@
+.errores-background {
+  background-color: #0c0c0c;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.errores-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #111;
+  border: 1px solid #f5b301;
+  color: #f0f0f0;
+  box-shadow: 0 0 12px rgba(245, 179, 1, 0.15);
+}
+
+.errores-table-container {
+  overflow-x: auto;
+  max-height: 600px;
+  border: 1px solid #f5b301;
+  border-radius: 8px;
+}
+
+.errores-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.errores-table th,
+.errores-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #222;
+}
+
+.errores-table th {
+  background-color: #f5b301;
+  color: #111;
+  font-weight: 700;
+}
+
+.errores-table tr:hover {
+  background-color: #1c1c1c;
+  transition: background-color 0.2s ease;
+}
+
+.errores-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  background-color: #000;
+}
+
+/* Ajustes del badge (severidad) */
+.mantine-Badge-root {
+  font-weight: 600;
+  text-transform: none;
+  font-size: 0.8rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .errores-card {
+    padding: 1rem;
+  }
+
+  .errores-table th,
+  .errores-table td {
+    font-size: 0.85rem;
+  }
+}
