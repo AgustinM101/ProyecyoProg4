@@ -27,6 +27,7 @@ import { PlansFormPage } from "./pages/PlansFormPage/PlansFormPage";
 import { PlanesGenericosPage }  from "./pages/AdminPage/PlanesGenericosPage";
 import { AdminHome } from "./pages/AdminPage/AdminHome";
 import { HomePage } from "./pages/HomePage/HomePage";
+import { ErroresPage } from "./pages/AdminPage/ErroresPage";
 
 function App() {
 
@@ -76,7 +77,7 @@ function App() {
                         </Route>
                         <Route element={<AdminRoute />}>
                             <Route path="/admin" element={<AdminHome />} />
-
+                            <Route path="/erroresregistro" element={<ErroresPage />} />
 
                         </Route>
 

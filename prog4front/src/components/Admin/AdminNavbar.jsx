@@ -1,7 +1,6 @@
 import { Group, Button, Text, Container } from "@mantine/core";
 import { useNavigate, useLocation } from "react-router-dom";
-import { IconHome, IconUsers, IconClipboardList, IconActivity, IconLogout } from "@tabler/icons-react";
-
+import { IconHome, IconUsers, IconActivity, IconAlertCircle, IconLogout } from "@tabler/icons-react";
 
 export function AdminNavbar() {
   const navigate = useNavigate();
@@ -9,9 +8,9 @@ export function AdminNavbar() {
 
   const links = [
     { label: "Inicio", icon: <IconHome size={18} />, path: "/admin" },
-    { label: "Formularios", icon: <IconClipboardList size={18} />, path: "/formularios" },
     { label: "Clientes", icon: <IconUsers size={18} />, path: "/clientes" },
-    { label: "PlanesGenericos", icon: <IconActivity size={18} />, path: "/genericplanes" }
+    { label: "PlanesGenericos", icon: <IconActivity size={18} />, path: "/genericplanes" },
+    { label: "Registro de Errores", icon: <IconAlertCircle size={18} />, path: "/erroresregistro" }, 
   ];
 
   return (
