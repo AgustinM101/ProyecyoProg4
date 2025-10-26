@@ -1,5 +1,5 @@
 import "./LoginPage.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Button,
   Container,
@@ -29,7 +29,7 @@ export function LoginPage() {
   const form = useForm({
     resolver: zodResolver(UserSchema),
   });
-
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState(undefined);
 
@@ -47,7 +47,11 @@ export function LoginPage() {
 
       // Guardar token y navegar al inicio
       localStorage.setItem("token", token);
-      navigate("/");
+
+      const redirectParam = searchParams.get("redirect")
+      const redirectUrl = redirectParam ? "/" + redirectParam  : "/";
+      navigate(redirectUrl);
+      
     } catch (err) {
       console.error(err); // Para ver detalle en consola
       setError(err.response?.data?.message || err.message);
