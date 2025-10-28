@@ -11,16 +11,14 @@ import {
   Modal,
   Select,
   Stack,
-  Accordion,
-  Textarea,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { plansUserService } from "../../services/plansUserService";
-import { planAlimentosService } from "../../services/planAlimentosService";
-import { planEjerciciosService } from "../../services/planEjerciciosService";
 import { UserTable } from "../../components/UserTable/UserTable";
 import "./ClientesPage.css";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
+import { plansFormService } from "../../services/plansFormService";
+import { FormularioModal } from "../../components/Admin/FormularioModal";
 
 export function ClientesPage() {
   const [plansUsers, setPlansUsers] = useState([]);
@@ -30,12 +28,21 @@ export function ClientesPage() {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [planAlimento, setPlanAlimento] = useState([]);
-  const [planEjercicio, setPlanEjercicio] = useState([]);
+
+  // ✅ nuevo modal y datos para ver formulario
+  const [viewModal, setViewModal] = useState(false);
+  const [formDetails, setFormDetails] = useState(null);
+  const [loadingForm, setLoadingForm] = useState(false);
 
   const itemsPerPage = 5;
 
-  // 🔹 Obtener usuarios con planes
+  const STATUS_OPTIONS = [
+    { value: "chargePending", label: "Pendiente de carga" },
+    { value: "active", label: "Activo" },
+    { value: "confirmPayment", label: "Confirmar pago" },
+    { value: "finished", label: "Finalizado" },
+  ];
+
   const fetchPlansUsers = async () => {
     setLoading(true);
     try {
@@ -52,7 +59,6 @@ export function ClientesPage() {
     fetchPlansUsers();
   }, []);
 
-  // 🔹 Filtro y paginación
   const filteredUsers = useMemo(() => {
     return plansUsers.filter(
       (pu) =>
@@ -72,57 +78,20 @@ export function ClientesPage() {
       id: pu.id,
       user: { id: pu.id_user, name: pu.user_name, email: pu.user_email },
       plan: { id: pu.id_plan, name: pu.plan_name, price: pu.plan_price ?? 0 },
-      status: pu.status?.toLowerCase(),
+      status: pu.status,
       expiration_date: pu.expiration_date,
       plans_user_id: pu.id,
     }));
   }, [paginatedUsers]);
 
-  // 🔹 Editar usuario y cargar sus planes
-  const handleEdit = async (user) => {
+  const handleEdit = (user) => {
     setSelectedUser(user);
     setEditModal(true);
-    try {
-      const resAlimento = await planAlimentosService.getByPlansUserId(user.id);
-      setPlanAlimento(resAlimento.data || []);
-
-      const resEjercicio = await planEjerciciosService.getByPlansUserId(user.id);
-      setPlanEjercicio(resEjercicio.data || []);
-    } catch (error) {
-      console.error("Error al cargar planes personalizados:", error);
-      setPlanAlimento([]);
-      setPlanEjercicio([]);
-    }
   };
 
   const handleDelete = (user) => {
     setSelectedUser(user);
     setDeleteModal(true);
-  };
-
-  // 🔹 Actualizar usuario y sus planes
-  const handleUpdate = async () => {
-    if (!selectedUser) return;
-
-    try {
-      await plansUserService.updatePlan(selectedUser.id, {
-        status: selectedUser.status,
-        expiration_date: selectedUser.expiration_date,
-      });
-
-      // Guardar cambios de planes (opcional)
-      for (const a of planAlimento) {
-        await planAlimentosService.updatePlan(a.id, a);
-      }
-      for (const e of planEjercicio) {
-        await planEjerciciosService.updatePlan(e.id, e);
-      }
-
-      setEditModal(false);
-      fetchPlansUsers();
-    } catch (error) {
-      console.error("Error al actualizar usuario:", error);
-    }
   };
 
   const handleConfirmDelete = async () => {
@@ -133,6 +102,41 @@ export function ClientesPage() {
       fetchPlansUsers();
     } catch (error) {
       console.error("Error al eliminar usuario:", error);
+    }
+  };
+
+  const handleConfirmPayment = async (pu, newStatus) => {
+    if (!pu) return;
+
+    try {
+      await plansUserService.updatePlan(pu.id, {
+        status: newStatus,
+        expiration_date: pu.expiration_date,
+      });
+
+      fetchPlansUsers();
+    } catch (error) {
+      console.error("Error al actualizar estado:", error);
+      alert("❌ No se pudo actualizar el estado");
+    }
+  };
+
+  // ✅ NUEVO: ver formulario
+  const handleView = async (pu) => {
+    if (!pu?.id) return;
+
+    setViewModal(true);
+    setLoadingForm(true);
+    setFormDetails(null);
+
+    try {
+      const response = await plansFormService.getFormByPlansUserId(pu.id);
+      setFormDetails(response.data);
+    } catch (error) {
+      console.error("Error al obtener formulario:", error);
+      alert("❌ Este usuario aún no cargó el formulario.");
+    } finally {
+      setLoadingForm(false);
     }
   };
 
@@ -166,7 +170,15 @@ export function ClientesPage() {
             </Center>
           ) : (
             <>
-              <UserTable users={formattedUsers} onEdit={handleEdit} onDelete={handleDelete} />
+              <UserTable
+                users={formattedUsers}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onConfirmPayment={handleConfirmPayment}
+                onView={handleView}
+                fetchPlansUsers={fetchPlansUsers}
+              />
+
               <Center mt="md">
                 <Pagination
                   page={page}
@@ -177,7 +189,7 @@ export function ClientesPage() {
             </>
           )}
 
-          {/* 🔹 Modal de edición */}
+          {/* ✅ Modal editar */}
           <Modal
             opened={editModal}
             onClose={() => setEditModal(false)}
@@ -187,88 +199,16 @@ export function ClientesPage() {
           >
             {selectedUser && (
               <Stack spacing="md">
-                <Accordion variant="contained" multiple>
-                  {/* Plan de alimentos */}
-                  <Accordion.Item value="alimentos">
-                    <Accordion.Control>🍗 Plan de Alimentos</Accordion.Control>
-                    <Accordion.Panel>
-                      {planAlimento.length > 0 ? (
-                        planAlimento.map((a, index) => (
-                          <Stack key={a.id} spacing={4} mb={8}>
-                            <TextInput
-                              label="Nombre"
-                              value={a.name}
-                              onChange={(e) => {
-                                const updated = [...planAlimento];
-                                updated[index].name = e.target.value;
-                                setPlanAlimento(updated);
-                              }}
-                            />
-                            <Textarea
-                              label="Descripción"
-                              value={a.description}
-                              onChange={(e) => {
-                                const updated = [...planAlimento];
-                                updated[index].description = e.target.value;
-                                setPlanAlimento(updated);
-                              }}
-                            />
-                          </Stack>
-                        ))
-                      ) : (
-                        <Text color="dimmed">No hay plan de alimentos</Text>
-                      )}
-                    </Accordion.Panel>
-                  </Accordion.Item>
-
-                  {/* Plan de ejercicios */}
-                  <Accordion.Item value="ejercicios">
-                    <Accordion.Control>🏋️ Plan de Ejercicios</Accordion.Control>
-                    <Accordion.Panel>
-                      {planEjercicio.length > 0 ? (
-                        planEjercicio.map((e, index) => (
-                          <Stack key={e.id} spacing={4} mb={8}>
-                            <TextInput
-                              label="Nombre"
-                              value={e.name}
-                              onChange={(ev) => {
-                                const updated = [...planEjercicio];
-                                updated[index].name = ev.target.value;
-                                setPlanEjercicio(updated);
-                              }}
-                            />
-                            <Textarea
-                              label="Descripción"
-                              value={e.description}
-                              onChange={(ev) => {
-                                const updated = [...planEjercicio];
-                                updated[index].description = ev.target.value;
-                                setPlanEjercicio(updated);
-                              }}
-                            />
-                          </Stack>
-                        ))
-                      ) : (
-                        <Text color="dimmed">No hay plan de ejercicios</Text>
-                      )}
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                </Accordion>
-
-                {/* Estado del usuario */}
                 <Select
                   label="Estado"
+                  placeholder="Seleccionar estado"
                   value={selectedUser.status}
                   onChange={(value) =>
                     setSelectedUser({ ...selectedUser, status: value })
                   }
-                  data={[
-                    { value: "active", label: "Activo" },
-                    { value: "inactive", label: "Inactivo" },
-                  ]}
+                  data={STATUS_OPTIONS}
                 />
 
-                {/* Fecha de expiración */}
                 <DateInput
                   label="Expiración"
                   valueFormat="DD/MM/YYYY"
@@ -278,14 +218,34 @@ export function ClientesPage() {
                   }
                 />
 
-                <Button onClick={handleUpdate} fullWidth color="blue">
+                <Button
+                  onClick={async () => {
+                    if (!selectedUser) return;
+
+                    const payload = { status: selectedUser.status };
+                    if (selectedUser.expiration_date) {
+                      payload.expiration_date = selectedUser.expiration_date;
+                    }
+
+                    try {
+                      await plansUserService.updatePlan(selectedUser.id, payload);
+                      setEditModal(false);
+                      fetchPlansUsers();
+                    } catch (error) {
+                      console.error("Error al actualizar usuario:", error);
+                      alert("❌ No se pudo actualizar el usuario");
+                    }
+                  }}
+                  fullWidth
+                  color="blue"
+                >
                   Guardar Cambios
                 </Button>
               </Stack>
             )}
           </Modal>
 
-          {/* 🔹 Modal de eliminación */}
+          {/* ✅ Modal eliminar */}
           <Modal
             opened={deleteModal}
             onClose={() => setDeleteModal(false)}
@@ -293,8 +253,7 @@ export function ClientesPage() {
             centered
           >
             <Text mb="md">
-              ¿Estás seguro de que deseas eliminar **permanentemente** este registro?
-              Esta acción no se puede deshacer.
+              ¿Estás seguro de que deseas eliminar este registro?
             </Text>
             <Group position="apart">
               <Button color="gray" onClick={() => setDeleteModal(false)}>
@@ -305,6 +264,14 @@ export function ClientesPage() {
               </Button>
             </Group>
           </Modal>
+
+          {/* ✅ Modal ver formulario */}
+          <FormularioModal
+            opened={viewModal}
+            onClose={() => setViewModal(false)}
+            form={formDetails}
+          />
+
         </Container>
       </div>
     </>
