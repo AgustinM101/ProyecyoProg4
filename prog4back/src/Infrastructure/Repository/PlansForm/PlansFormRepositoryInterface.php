@@ -8,6 +8,7 @@ interface PlansFormRepositoryInterface
 {
     public function find(int $id): ?PlansForm;
 
+    public function findByUserId(int $id_user): array;
     public function search(): array;
     public function create(PlansForm $plansForm): PlansForm;
     public function update(PlansForm $plansForm): void;
