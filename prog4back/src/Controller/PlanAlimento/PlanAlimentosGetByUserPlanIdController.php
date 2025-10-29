@@ -1,54 +1,30 @@
 <?php
-namespace Src\Controller\PlanAlimento;
 
-use Src\Core\Controller;
-use Src\Core\Request;
-use Src\Core\Response;
-use Src\Service\PlanAlimento\PlanAlimentoUserFinderService;
+use Src\Service\PlanAlimento\PlanAlimentoFinderService;
 
-class PlanAlimentosGetByUserPlanIdController extends Controller
-{
-    private PlanAlimentoUserFinderService $finderService;
+final readonly class PlanAlimentosGetByUserPlanIdController {
 
-    public function __construct(PlanAlimentoUserFinderService $finderService)
-    {
-        $this->finderService = $finderService;
+    private PlanAlimentoFinderService $service;
+
+    public function __construct() {
+        $this->service = new PlanAlimentoFinderService();
     }
 
-    public function handle(Request $request, Response $response): Response
+    public function start(int $plansUserId): void
     {
-        try {
-            $id = $request->getQueryParam('id');
+        $planAlimentos = $this->service->findByPlansUserId($plansUserId);
 
-            if (!$id) {
-                return $response->json([
-                    'success' => false,
-                    'message' => "Falta el parámetro 'id'."
-                ], 400);
-            }
-
-            $planAlimentos = $this->finderService->findByPlanUser((int)$id);
-
-            if (empty($planAlimentos)) {
-                return $response->json([
-                    'success' => false,
-                    'message' => "No se encontraron alimentos asociados al plan del usuario."
-                ], 404);
-            }
-
-            // 🔹 Forzar array indexado 0..n para que JSON siempre sea un array
-            $planAlimentos = array_values($planAlimentos);
-
-            return $response->json([
-                'success' => true,
-                'data' => $planAlimentos
-            ], 200);
-
-        } catch (\Throwable $e) {
-            return $response->json([
-                'success' => false,
-                'error' => $e->getMessage()
-            ], 500);
+        $response = [];
+        foreach($planAlimentos as $pa) {
+            $response[] = [
+                "id" => $pa->id(),
+                "description" => $pa->description(),
+                "tipo" => $pa->tipo(),
+                "dias" => $pa->dias(),
+                "id_plans_user" => $pa->idPlansUser()
+            ];
         }
+
+        echo json_encode($response);
     }
 }
