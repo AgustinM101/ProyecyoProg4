@@ -10,6 +10,11 @@ interface PlanAlimentoRepositoryInterface {
     public function create(PlanAlimento $planAlimento): void;
     public function update(PlanAlimento $planAlimento): void;
 
+    public function createForUser(PlanAlimento $planAlimento): void;
+    public function updateForUser(PlanAlimento $planAlimento): void;
+
+    public function delete(int $id): void;
+
     /** @return PlanAlimento[] */
 
 }

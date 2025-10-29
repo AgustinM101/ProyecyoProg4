@@ -49,7 +49,7 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
           </Group>
         </td>
       </tr>
-
+      
       {showAccordion && (
         <tr>
           <td colSpan="8">

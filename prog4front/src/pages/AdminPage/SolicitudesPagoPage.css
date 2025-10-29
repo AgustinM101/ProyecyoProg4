@@ -1,0 +1,18 @@
+.solicitudes-background {
+  padding: 2rem;
+}
+
+.solicitudes-table-container {
+  overflow-x: auto;
+}
+
+.solicitudes-card {
+  background: #1e1e1e;
+  color: white;
+}
+
+.solicitudes-loader {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}
