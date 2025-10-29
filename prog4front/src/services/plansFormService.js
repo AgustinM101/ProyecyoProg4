@@ -1,10 +1,11 @@
 import { api } from "./api";
 
 export const plansFormService = {
-  // Obtener todos los formularios
-
+  // 🔹 Obtener todos los formularios (opcional)
   getPlansForms: () => api.get("/plansForms"),
 
+  // 🔹 Obtener formularios del usuario logueado
+  getPlansFormsByUser: () => api.get("/plansFormbyuser"),
 
   // Obtener un formulario por ID
   getById: (id) => api.get(`/plansForm/${id}`),

@@ -24,6 +24,50 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
         return isset($results[0]) ? $this->toPlansForm($results[0]) : null;
     }
 
+    // NO ME DEVUELVE ESTOS DATOS, tengo que hacer que al menos un registro en plans_forms con un id_plans_user sea válido
+   public function findByUserId(int $id_user): array {
+    $query = <<<SQL
+        SELECT 
+            pf.id,
+             pf.nombre, 
+            pf.edad, 
+            pf.sexo, 
+            pf.altura, 
+            pf.peso_actual, 
+            pf.peso_deseado,
+            pf.actividad_fisica, 
+            pf.antecedentes_medicos, 
+            pf.alergias, 
+            pf.medicamentos,
+            pf.problemas_digestivos, 
+            pf.comidas_diarias, 
+            pf.alimentos_evitar, 
+            pf.horarios_comidas,
+            pf.consumo_agua, 
+            pf.consumo_alcohol, 
+            pf.fecha_registro, 
+            pf.id_plans_user
+        FROM plans_forms pf
+        INNER JOIN plans_user pu 
+            ON pf.id_plans_user = pu.id
+        WHERE pu.id_user = :id_user
+          AND pf.deleted = 0
+    SQL;
+
+    $parameters = [ 
+        "id_user" => $id_user 
+    ];
+
+    $results = $this->execute($query, $parameters);
+
+ 
+    $plansForms = [];
+    foreach ($results as $result) {
+        $plansForms[] = $this->toPlansForm($result);
+    }
+
+    return $plansForms;
+}
     public function search(): array {
         $query = <<<HEREDOC
             SELECT id, nombre, edad, sexo, altura, peso_actual, peso_deseado,
@@ -78,11 +122,8 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
         ];
 
         $this->execute($query, $parameters);
-
-        // ✅ Obtener el último ID insertado
         $id = $this->lastInsertId();
 
-        // ✅ Crear y devolver el objeto con el nuevo ID
         return new PlansForm(
             $id,
             $plansForm->nombre(),

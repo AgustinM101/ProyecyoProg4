@@ -40,10 +40,25 @@ final readonly class PlansFormCreatorService
         string $alimentos_evitar,
         string $horarios_comidas,
         float $consumo_agua,
-        float $consumo_alcohol,
+        string $consumo_alcohol,
         string $fecha_registro,
-        int $id_plans_user
+        ?int $id_plans_user = null // ✅ ahora puede ser null
     ): void {
+        // 🔹 Si no viene id_plans_user, intentar asignar el plan activo del usuario logueado
+        if ($id_plans_user === null) {
+            $token = ControllerUtils::getHeaderToken();
+            if ($token) {
+                $user = $this->userRepository->findByToken($token);
+                if ($user) {
+                    $plansUserList = $this->plansUserRepository->findByUserId($user->id());
+                    if (!empty($plansUserList)) {
+                        // Tomamos el primer plan activo como ejemplo
+                        $id_plans_user = $plansUserList[0]->id();
+                    }
+                }
+            }
+        }
+
         // Crear entidad
         $plansForm = new PlansForm(
             null,
