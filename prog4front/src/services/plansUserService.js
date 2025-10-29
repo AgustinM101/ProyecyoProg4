@@ -7,7 +7,8 @@ export const plansUserService = {
   createPlan: (data) => api.post("/plansUsers", data),
   updatePlan: (id, data) => api.put(`/plansUsers/${id}`, data),
   deletePlan: (id) => api.delete(`/plansUsers/${id}`), 
- 
+  
+
 
 
   getMyPLans: () => api.get("/users/me/plans"),
