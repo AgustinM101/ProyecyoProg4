@@ -1,5 +1,8 @@
 <?php
 
+use Src\Service\PlanAlimento\PlanAlimentoUserService;
+
+
 final class PlanAlimentoUpdateByUserPlanController {
 
     private PlanAlimentoUserService $service;

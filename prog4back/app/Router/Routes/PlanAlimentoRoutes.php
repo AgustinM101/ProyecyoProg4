@@ -3,7 +3,7 @@
 final readonly class PlanAlimentoRoutes {
   public static function getRoutes(): array {
     return [
-  [
+      [
         "name" => "planAlimento_get",
         "url" => "/planAlimentos",
         "controller" => "PlanAlimento/PlanAlimentoGetController.php",
@@ -15,6 +15,7 @@ final readonly class PlanAlimentoRoutes {
           ]
         ]
       ],
+
       [
         "name" => "planAlimentos_get",
         "url" => "/planAlimentos",
@@ -35,7 +36,27 @@ final readonly class PlanAlimentoRoutes {
         ]
       ],
 
+      // ✅ NUEVO: crear plan alimento vinculado a id_plans_user
+      [
+        "name" => "userPlanAlimento_create",
+        "url" => "/userPlanAlimentos",
+        "controller" => "PlanAlimento/PlanAlimentoCreateByUserPlanController.php",
+        "method" => "POST"
+      ],
 
+      // ✅ NUEVO: actualizar alimento vinculado al plan del usuario
+      [
+        "name" => "userPlanAlimento_update",
+        "url" => "/userPlanAlimentos",
+        "controller" => "PlanAlimento/PlanAlimentoUpdateByUserPlanController.php",
+        "method" => "PUT",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
+      ],
 
       [
         "name" => "planAlimento_create",
