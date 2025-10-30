@@ -13,7 +13,7 @@ final readonly class PlansUserPutController {
 
     public function start(int $id): void {
         $status = ControllerUtils::getPost("status");
-        $expiration_date = ControllerUtils::getPost("expiration_date");
+        $expiration_date = ControllerUtils::getPost("expiration_date", false);
 
         try {
             $this->service->updateStatusAndExpirationById($id, $status, $expiration_date);
