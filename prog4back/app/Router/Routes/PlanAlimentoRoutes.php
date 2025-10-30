@@ -3,26 +3,8 @@
 final readonly class PlanAlimentoRoutes {
   public static function getRoutes(): array {
     return [
-      [
-        "name" => "planAlimento_get",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoGetController.php",
-        "method" => "GET",
-        "parameters" => [
-          [
-            "name" => "id",
-            "type" => "int"
-          ]
-        ]
-      ],
 
-      [
-        "name" => "planAlimentos_get",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentosGetController.php",
-        "method" => "GET"
-      ],
-
+      
       [
         "name" => "planAlimentos_getByUserPlanId",
         "url" => "/userPlanAlimentos",
@@ -30,64 +12,39 @@ final readonly class PlanAlimentoRoutes {
         "method" => "GET",
         "parameters" => [
           [
-            "name" => "id",
+            "name" => "id",    // id_plans_user
             "type" => "int"
           ]
         ]
       ],
 
-      // ✅ NUEVO: crear plan alimento vinculado a id_plans_user
+      
       [
-        "name" => "userPlanAlimento_create",
-        "url" => "/userPlanAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoCreateByUserPlanController.php",
-        "method" => "POST"
+          "name" => "userPlanAlimento_massive_create",
+          "url" => "/userPlanAlimentos",
+          "controller" => "PlanAlimento/PlanAlimentoMassivePostController.php",
+          "method" => "POST",
+          "parameters" => [
+              [
+                  "name" => "id",      // id_plans_user
+                  "type" => "int"
+              ]
+          ]
       ],
 
-      // ✅ NUEVO: actualizar alimento vinculado al plan del usuario
+     
       [
-        "name" => "userPlanAlimento_update",
-        "url" => "/userPlanAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoUpdateByUserPlanController.php",
-        "method" => "PUT",
-        "parameters" => [
-          [
-            "name" => "id",
-            "type" => "int"
+          "name" => "userPlanAlimento_massive_update",
+          "url" => "/userPlanAlimentos",
+          "controller" => "PlanAlimento/PlanAlimentoMassivePutController.php",
+          "method" => "PUT",
+          "parameters" => [
+              [
+                  "name" => "id",      // id_plans_user
+                  "type" => "int"
+              ]
           ]
-        ]
       ],
-
-      [
-        "name" => "planAlimento_create",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
-        "method" => "POST"
-      ],
-      [
-        "name" => "planAlimento_update",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPutController.php",
-        "method" => "PUT",
-        "parameters" => [
-          [
-            "name" => "id",
-            "type" => "int"
-          ]
-        ]
-      ],
-      [
-        "name" => "planAlimento_delete",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoDeleteController.php",
-        "method" => "DELETE",
-        "parameters" => [
-          [
-            "name" => "id",
-            "type" => "int"
-          ]
-        ]
-      ]
 
     ];
   }

@@ -24,6 +24,31 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
         return $planAlimentos;
     }
 
+
+    public function findForUser(int $id_plans_user, int $id): ?PlanAlimento
+{
+    $query = <<<SQL
+        SELECT * FROM plan_alimentos
+        WHERE id = :id
+        AND id_plans_user = :id_plans_user
+        AND deleted = 0
+    SQL;
+
+    $params = [
+        "id" => $id,
+        "id_plans_user" => $id_plans_user
+    ];
+
+    $results = $this->execute($query, $params);
+
+    if (count($results) === 0) {
+        return null;
+    }
+
+    return $this->toPlanAlimento($results[0]);
+}
+
+
     public function find(int $id): ?PlanAlimento
     {
         $query = <<<SQL
@@ -71,15 +96,13 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
 
         $this->execute($query, $parameters);
     }
-
     public function update(PlanAlimento $planAlimento): void
     {
         $query = <<<SQL
             UPDATE plan_alimentos
             SET description = :description,
                 tipo = :tipo,
-                dias = :dias,
-                id_plans_user = :id_plans_user
+                dias = :dias
             WHERE id = :id AND deleted = 0
         SQL;
 
@@ -87,12 +110,12 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
             "id"             => $planAlimento->id(),
             "description"    => $planAlimento->description(),
             "tipo"           => $planAlimento->tipo(),
-            "dias"           => $planAlimento->dias(),
-            "id_plans_user"  => $planAlimento->idPlansUser()
+            "dias"           => $planAlimento->dias()
         ];
 
         $this->execute($query, $parameters);
     }
+
 
     // borrado lógico
     public function delete(int $id): void
