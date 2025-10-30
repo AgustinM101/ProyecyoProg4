@@ -10,6 +10,8 @@ interface PlanAlimentoRepositoryInterface {
     public function create(PlanAlimento $planAlimento): void;
     public function update(PlanAlimento $planAlimento): void;
 
+    public function findForUser(int $id_plans_user, int $id): ?PlanAlimento;
+
     public function createForUser(PlanAlimento $planAlimento): void;
     public function updateForUser(PlanAlimento $planAlimento): void;
 

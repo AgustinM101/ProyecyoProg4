@@ -130,7 +130,7 @@ export function ClientesPage() {
     setFormDetails(null);
 
     try {
-      const response = await plansFormService.getFormByPlansUserId(pu.id);
+      const response = await plansFormService.getPlansFormsByUser();
       setFormDetails(response.data);
     } catch (error) {
       console.error("Error al obtener formulario:", error);
@@ -222,7 +222,7 @@ export function ClientesPage() {
                   onClick={async () => {
                     if (!selectedUser) return;
 
-                    const payload = { status: selectedUser.status };
+                    const payload = { status: selectedUser.status, expiration_date: null };
                     if (selectedUser.expiration_date) {
                       payload.expiration_date = selectedUser.expiration_date;
                     }

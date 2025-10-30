@@ -22,12 +22,12 @@ final class PlanAlimento {
     ): self
     {
         return new self(
-            null,              // id autogenerado
+            null,              
             $description,
             $tipo,
             $dias,
             $id_plans_user,
-            0                  // deleted por defecto
+            0                  // deleted 
         );
     }
 

@@ -139,7 +139,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     }
 
 
-    public function updateStatusAndExpirationById(int $id, string $status, string $expiration_date): void {
+    public function updateStatusAndExpirationById(int $id, string $status, ?string $expiration_date): void {
     $query = <<<SQL
         UPDATE plans_user
         SET status = :status,
@@ -180,7 +180,7 @@ private function toPlansUser(?array $row): ?PlansUser {
         $row["id_user"],
         $row["id_plan"],
         $row["status"],
-        $row["expiration_date"] 
+        $row["expiration_date"] ?? null
     );
 }
 
