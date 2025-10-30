@@ -1,22 +1,20 @@
 import { api } from "./api";
 
 export const plansFormService = {
-  // 🔹 Obtener todos los formularios (opcional)
+ 
   getPlansForms: () => api.get("/plansForms"),
 
-  // 🔹 Obtener formularios del usuario logueado
   getPlansFormsByUser: () => api.get("/plansFormbyuser"),
 
-  // Obtener un formulario por ID
+   getPlansFormsByUser: (userId) => api.get(`/plansForms/user/${userId}`),
+ 
+  getPlansFormsByUser: () => api.get("/plansForms/user"),
+
   getById: (id) => api.get(`/plansForm/${id}`),
 
-  // Crear un nuevo formulario
-  create: (data) =>
-    api.post("/plansForm", data, {
-      headers: { "Content-Type": "application/json" },
-    }),
 
-  // Alias opcional
+
+
   createPlanForms: (data) =>
     api.post("/plansForm", data, {
       headers: { "Content-Type": "application/json" },
@@ -30,4 +28,7 @@ export const plansFormService = {
 
   // Eliminar un formulario
   deletePlan: (id) => api.delete(`/plansForm/${id}`),
+
+   // Traer definición de campos de un formulario por ID (opcional)
+  getFormFieldsById: (id) => api.get(`/plansForms/${id}`),
 };

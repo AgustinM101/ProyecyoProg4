@@ -1,323 +1,214 @@
-// src/pages/MyPlansPage/MyPlansPage.jsx
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
+  SimpleGrid,
   Card,
-  Stack,
-  Title,
   Text,
+  Title,
+  Badge,
+  Group,
+  Button,
+  Stack,
   Center,
   Loader,
-  Badge,
-  Button,
-  Group,
-  Modal,
-  TextInput,
-  Textarea,
-  Notification,
 } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
-import { IconPlus, IconTrash, IconEye, IconCheck, IconRefresh } from "@tabler/icons-react";
+import { IconEye } from "@tabler/icons-react";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { plansFormService } from "../../services/plansFormService";
-import { userService } from "../../services/userService";
+import {planAlimentosService } from "../../services/planAlimentosService";
 import { plansUserService } from "../../services/plansUserService";
-import { planAlimentosService } from "../../services/planAlimentosService";
+import { userService } from "../../services/userService";
 import { planEjerciciosService } from "../../services/planEjerciciosService";
-import dayjs from "dayjs";
-import "./MyPlansPage.css";
 
-
-export default function MyPlansPage() {
-  const [forms, setForms] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(undefined);
+export function MyPlansPage() {
   const [user, setUser] = useState(null);
-
- 
-  const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [selectedForm, setSelectedForm] = useState(null);
-
-  const [addPlanModalOpen, setAddPlanModalOpen] = useState(false);
-  const [addPlanType, setAddPlanType] = useState("alimento"); 
-  const [newPlanName, setNewPlanName] = useState("");
-  const [newPlanDesc, setNewPlanDesc] = useState("");
-  const [addPlanLoading, setAddPlanLoading] = useState(false);
-
-  const [confirmPaymentLoading, setConfirmPaymentLoading] = useState(false);
-  const [notification, setNotification] = useState(null);
+  const [plansUsers, setPlansUsers] = useState([]);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState(null);
+  const [planAlimento, setPlanAlimento] = useState([]);
 
   useEffect(() => {
-    fetchAll();
-  //HOOKS
+    fetchPlans();
   }, []);
 
-  async function fetchAll() {
+  // 🔹 Traer usuario y sus planes
+  const fetchPlans = async () => {
     setLoading(true);
-    setError(undefined);
     try {
       const userResp = await userService.getCurrentUser();
       const currentUser = userResp?.data;
       if (!currentUser) throw new Error("No hay usuario logueado");
       setUser(currentUser);
 
-      // 🔹 TRAIGO TODOS LOS PLANES Y FILTRO EN FRONTEND
-  // 🔹 TRAIGO SOLO LOS PLANES DEL USUARIO LOGUEADO
-const formsResp = await plansFormService.getPlansFormsByUser();
-const userForms = Array.isArray(formsResp.data) ? formsResp.data : [];
-
-
-      // 🔹 Agrego estado calculado
-      const augmented = userForms.map((form) => ({ ...form, estado: calcularEstado(form) }));
-      setForms(augmented);
-
-    } catch (err) {
-      console.error("Error al cargar datos MyPlans:", err);
-      setError("Error al cargar tus planes. Revisá tu conexión o volvé a intentarlo.");
+      const resp = await plansUserService.getByUserId(currentUser.id);
+      setPlansUsers(resp.data || []);
+    } catch (error) {
+      console.error("Error al cargar los planes del usuario:", error);
     } finally {
       setLoading(false);
     }
-  }
-
-  
-  // Estado calculado por reglas
-  
-  function calcularEstado(form) {
-    const hoy = dayjs();
-    const fechaExpiracion = form.fecha_fin ? dayjs(form.fecha_fin) : null;
-
-    if (fechaExpiracion && hoy.isAfter(fechaExpiracion)) return "finalizado";
-    if (!form.pago_realizado && !form.confirmado) return "confirmar pago";
-    if (form.pago_realizado && !form.activo) return "pendiente de carga";
-    if (form.pago_realizado && form.activo) return "activo";
-    return "pendiente de carga";
-  }
-
-  const EstadoBadge = ({ estado }) => {
-    const colorMap = {
-      "confirmar pago": "blue",
-      "pendiente de carga": "orange",
-      activo: "green",
-      finalizado: "gray",
-    };
-    const labelMap = {
-      "confirmar pago": "CONFIRMAR PAGO",
-      "pendiente de carga": "PENDIENTE DE CARGA",
-      activo: "ACTIVO",
-      finalizado: "FINALIZADO",
-    };
-    return (
-      <Badge color={colorMap[estado] || "gray"} size="lg" radius="md" variant="filled">
-        {labelMap[estado] || estado.toUpperCase()}
-      </Badge>
-    );
   };
 
-  
-  // Handlers: ver, agregar, confirmar, eliminar, renovar
-
-  function handleOpenView(form) {
-    setSelectedForm(form);
-    setViewModalOpen(true);
-  }
-  function handleCloseView() {
-    setSelectedForm(null);
-    setViewModalOpen(false);
-  }
-  function handleOpenAddPlan(form, type = "alimento") {
-    setSelectedForm(form);
-    setAddPlanType(type);
-    setNewPlanName("");
-    setNewPlanDesc("");
-    setAddPlanModalOpen(true);
-  }
-  function handleCloseAddPlan() {
-    setSelectedForm(null);
-    setAddPlanModalOpen(false);
-    setAddPlanLoading(false);
-  }
-
-  async function handleAddPlanSubmit() {
-    if (!selectedForm) return;
-    if (!newPlanName.trim()) {
-      setNotification({ type: "error", message: "El nombre del plan es obligatorio." });
-      return;
-    }
-    setAddPlanLoading(true);
+  // 🔹 Mostrar detalle del plan usando token del usuario logueado
+  const handleView = async (plansUserId) => {
     try {
-      const payload = { name: newPlanName, description: newPlanDesc, plans_user_id: selectedForm.id };
-      if (addPlanType === "alimento") await planAlimentosService.createPlan(payload);
-      else await planEjerciciosService.createPlan(payload);
+      setSelectedPlan(plansUserId);
+      setLoading(true);
 
-      await plansUserService.updatePlan(selectedForm.id, { pago_realizado: true, activo: true });
-      setNotification({ type: "success", message: "Plan creado y marcado como activo." });
-      handleCloseAddPlan();
-      await fetchAll();
-    } catch (err) {
-      console.error("Error al agregar plan:", err);
-      setNotification({ type: "error", message: "No se pudo crear el plan. Intentá de nuevo." });
+      // Solo traer el formulario del usuario logueado vía token
+      //PREGUNTAR A AGUS COMO LEER POR USUARIO LOGUEADO
+    const formResp = await plansFormService.getPlansForms();
+    setFormData(formResp.data?.[0] || null);
+
+      // ✅ Obtener plan alimento PREGUNTAR
+      const planAliResp = await planAlimentosService.getByUserPlan(plansUserId);
+      setPlanAlimento(planAliResp.data || []);
+    } catch (error) {
+      console.error("Error al ver detalles del plan:", error);
     } finally {
-      setAddPlanLoading(false);
+      setLoading(false);
     }
+
+   // const planEjerciciosResp = await planEjerciciosService.getByUserPlanId(plansUserId);
+  //  setPlanEjercicios(planEjerciciosResp.data || []);
+//  } catch (error) {
+  //  console.error("Error al ver detalles del plan:", error);
+ // } finally {
+//    setLoading(false);
+//  } 
+
+
+  if (loading) {
+    return (
+      <Center h="100vh">
+        <Loader size="lg" />
+      </Center>
+    );
   }
-
-  async function handleConfirmPayment(form) {
-    if (!form) return;
-    setConfirmPaymentLoading(true);
-    try {
-      await plansUserService.updatePlan(form.id, { confirmado: true, pago_realizado: true });
-      setNotification({ type: "success", message: "Pago confirmado. Podés cargar tu plan." });
-      await fetchAll();
-    } catch (err) {
-      console.error("Error al confirmar pago:", err);
-      setNotification({ type: "error", message: "No se pudo confirmar el pago." });
-    } finally {
-      setConfirmPaymentLoading(false);
-    }
-  }
-
-  async function handleDelete(form) {
-    if (!form) return;
-    try {
-      await plansFormService.deletePlanForm(form.id);
-      setNotification({ type: "success", message: "Formulario eliminado." });
-      await fetchAll();
-    } catch (err) {
-      console.error("Error al eliminar formulario:", err);
-      setNotification({ type: "error", message: "No se pudo eliminar el formulario." });
-    }
-  }
-
-  async function handleRenew(form) {
-    if (!form) return;
-    try {
-      const nuevaFechaFin = dayjs().add(30, "day").format("YYYY-MM-DD");
-      await plansUserService.updatePlan(form.id, { fecha_fin: nuevaFechaFin, pago_realizado: true, activo: true });
-      setNotification({ type: "success", message: "Plan renovado." });
-      await fetchAll();
-    } catch (err) {
-      console.error("Error al renovar:", err);
-      setNotification({ type: "error", message: "No se pudo renovar el plan." });
-    }
-  }
-
-
-  // Render helpers por estado
-  
-  function renderCardByEstado(form) {
-    switch (form.estado) {
-      case "pendiente de carga":
-        return (
-          <Stack spacing="xs">
-            <Text><strong>Nombre:</strong> {form.nombre}</Text>
-            <Text><strong>Actividad:</strong> {form.actividad_fisica}</Text>
-            <Text><strong>Fecha inicio:</strong> {form.fecha_inicio || "No definida"}</Text>
-            <Text><strong>Fecha fin:</strong> {form.fecha_fin || "A definir"}</Text>
-            <EstadoBadge estado={form.estado} />
-            <Group mt="sm">
-              <Button leftIcon={<IconEye size={16} />} onClick={() => handleOpenView(form)}>Ver Formulario</Button>
-              <Button leftIcon={<IconPlus size={16} />} color="green" onClick={() => handleOpenAddPlan(form, "alimento")}>Subir Plan de Alimentos</Button>
-              <Button leftIcon={<IconPlus size={16} />} color="teal" onClick={() => handleOpenAddPlan(form, "ejercicio")}>Subir Plan de Ejercicios</Button>
-              <Button leftIcon={<IconTrash size={16} />} color="red" variant="subtle" onClick={() => handleDelete(form)}>Eliminar</Button>
-            </Group>
-          </Stack>
-        );
-      case "activo":
-        return (
-          <Stack spacing="xs">
-            <Text><strong>Nombre:</strong> {form.nombre}</Text>
-            <Text><strong>Actividad:</strong> {form.actividad_fisica}</Text>
-            <Text><strong>Fecha fin:</strong> {form.fecha_fin || "No definida"}</Text>
-            <EstadoBadge estado={form.estado} />
-            <Group mt="sm">
-              <Button leftIcon={<IconEye size={16} />} onClick={() => handleOpenView(form)}>Ver Planes Activos</Button>
-              <Button leftIcon={<IconTrash size={16} />} color="red" variant="outline" onClick={() => handleDelete(form)}>Eliminar</Button>
-            </Group>
-          </Stack>
-        );
-      case "confirmar pago":
-        return (
-          <Stack spacing="xs">
-            <Text><strong>Nombre:</strong> {form.nombre}</Text>
-            <Text><strong>Edad:</strong> {form.edad} años</Text>
-            <EstadoBadge estado={form.estado} />
-            <Group mt="sm">
-              <Button leftIcon={<IconEye size={16} />} onClick={() => handleOpenView(form)}>Ver Detalles</Button>
-              <Button leftIcon={<IconCheck size={16} />} color="green" loading={confirmPaymentLoading} onClick={() => handleConfirmPayment(form)}>Confirmar Pago</Button>
-              <Button leftIcon={<IconTrash size={16} />} color="red" variant="subtle" onClick={() => handleDelete(form)}>Eliminar</Button>
-            </Group>
-          </Stack>
-        );
-      case "finalizado":
-        return (
-          <Stack spacing="xs">
-            <Text><strong>Nombre:</strong> {form.nombre}</Text>
-            <Text><strong>Fecha fin:</strong> {form.fecha_fin}</Text>
-            <EstadoBadge estado={form.estado} />
-            <Group mt="sm">
-              <Button leftIcon={<IconEye size={16} />} onClick={() => handleOpenView(form)}>Ver</Button>
-              <Button leftIcon={<IconRefresh size={16} />} variant="outline" onClick={() => handleRenew(form)}>Renovar Plan</Button>
-            </Group>
-          </Stack>
-        );
-      default:
-        return (
-          <Stack>
-            <Text>Estado desconocido</Text>
-            <Button onClick={() => handleOpenView(form)}>Ver</Button>
-          </Stack>
-        );
-    }
-  }
-
-  if (loading) return <Center style={{ height: "100vh" }}><Loader size="lg" /></Center>;
-  if (error) return <Center style={{ height: "100vh" }}><Text color="red">{error}</Text></Center>;
+}
 
   return (
     <>
       <HeaderMenu />
-      <Container size="md" className="myplans-container" py="md">
-        <Title order={2} mb="md">Mis Planes</Title>
+      <Container size="md" py="xl">
+        <Title order={2} ta="center" mb="xl">
+          Mis Planes
+        </Title>
 
-        {notification && <Notification onClose={() => setNotification(null)} color={notification.type === "error" ? "red" : "green"} mb="sm">{notification.message}</Notification>}
+        {plansUsers.length === 0 ? (
+          <Text ta="center">No tenés planes activos actualmente.</Text>
+        ) : (
+          <Stack spacing="md">
+            {plansUsers.map((plan) => (
+              <Card
+                key={plan.id}
+                shadow="md"
+                p="lg"
+                radius="md"
+                withBorder
+                style={{ backgroundColor: "#141413ff", color: "white", border: "1px solid #eeff05ff" }}
+              >
+                <Group justify="space-between">
+                  <div>
+                    <Title order={4}>{plan.plan_name}</Title>
+                    <Text size="sm" c="dimmed">
+                      Expira: {plan.expiration_date ? new Date(plan.expiration_date).toLocaleDateString() : "Sin fecha"}
+                    </Text>
+                  </div>
+                  <Badge
+                    color={
+                      plan.status === "active" ? "green" :
+                      plan.status === "chargePending" ? "yellow" : "red"
+                    }
+                    variant="filled"
+                  >
+                    {plan.status}
+                  </Badge>
+                </Group>
 
-        {forms.length === 0 ? <Text>No tenés formularios cargados.</Text> :
-          <Stack spacing="md">{forms.map((form) => <Card key={form.id} shadow="sm" p="lg" radius="md">{renderCardByEstado(form)}</Card>)}</Stack>
-        }
+                <Group mt="md" justify="end">
+                  <Button size="sm" color="teal" onClick={() => handleView(plan.id)}>
+                    Ver detalles
+                  </Button>
+                </Group>
+
+                {selectedPlan === plan.id && (
+                  <Stack mt="md" spacing="md">
+                    {/* Formulario */}
+                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                      <Title order={5}>Formulario</Title>
+                      {formData ? (
+                        <Stack mt="xs" spacing={4}>
+                          <Text size="sm"><strong>Nombre:</strong> {formData.nombre || "-"}</Text>
+                          <Text size="sm"><strong>Edad:</strong> {formData.edad || "-"}</Text>
+                          <Text size="sm"><strong>Peso:</strong> {formData.peso || "-"} kg</Text>
+                          <Text size="sm"><strong>Altura:</strong> {formData.altura || "-"} cm</Text>
+                          <Text size="sm"><strong>Peso_actual:</strong> {formData.peso_actual || "-"}</Text>
+                          <Text size="sm"><strong>Peso_deseado:</strong> {formData.peso_deseado || "-"}</Text>
+                          <Text size="sm"><strong>Actividad_fisica:</strong> {formData.actividad_fisica || "-"}</Text>
+                          <Text size="sm"><strong>Antecedentes_medicos:</strong> {formData.antecedentes_medicos || "-"}</Text>
+                          <Text size="sm"><strong>Alergias:</strong> {formData.alergias || "-"}</Text>
+                          <Text size="sm"><strong> Medicamentos:</strong> {formData.medicamentos || "-"}</Text>
+                          <Text size="sm"><strong>Problemas_digestivos:</strong> {formData.problemas_digestivos || "-"}</Text>
+                          <Text size="sm"><strong>Comidas_diarias:</strong> {formData.comidas_diarias || "-"}</Text>
+                          <Text size="sm"><strong>horarios_de_comidas:</strong> {formData.horarios_de_comidas || "-"}</Text>
+                          <Text size="sm"><strong>Consumo_de_agua:</strong> {formData.consumo_de_agua || "-"}</Text>
+                          <Text size="sm"><strong>Consumo_de_alcohol:</strong> {formData.consumo_de_alcohol || "-"}</Text>
+
+                        </Stack>
+                      ) : (
+                        <Text size="sm" c="dimmed">No hay información del formulario.</Text>
+                      )}
+                      
+                    </Card>
+                    {/* Plan Ejercicio */}
+                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                      <Title order={5}>Plan de Ejercicio</Title>
+                      {planEjerciciosService.length > 0 ? (
+                        planEjerciciosService.map((pe) => (
+                          <Card key={pe.id} mt="xs" p="sm" radius="md" style={{ backgroundColor: "#090909ff" }}>
+                            <Stack spacing={2}>
+                              <Text size="sm"><strong>Tipo:</strong> {pe.tipo}</Text>
+                              <Text size="sm"><strong>Descripción:</strong> {pe.description}</Text>
+                              <Text size="sm"><strong>Días:</strong> {pe.dias}</Text>
+                            </Stack>
+                          </Card>
+                        ))
+                      ) : (
+                        <Text size="sm" c="dimmed">Aún no hay plan de ejercicio asignado.</Text>
+                      )}
+                    </Card>
+
+                    {/* Plan Alimento */}
+                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                      <Title order={5}>Plan Alimentario</Title>
+                      {planAlimento.length > 0 ? (
+                        planAlimento.map((pa) => (
+                          <Card key={pa.id} mt="xs" p="sm" radius="md" style={{ backgroundColor: "#3A3B3E" }}>
+                            <Stack spacing={2}>
+                              <Text size="sm"><strong>Tipo:</strong> {pa.tipo}</Text>
+                              <Text size="sm"><strong>Descripción:</strong> {pa.description}</Text>
+                              <Text size="sm"><strong>Días:</strong> {pa.dias}</Text>
+                            </Stack>
+                          </Card>
+                        ))
+                      ) : (
+                        <Text size="sm" c="dimmed">Aún no hay plan alimentario asignado.</Text>
+                      )}
+                    </Card>
+                  </Stack>
+
+                  
+                )}
+              </Card>
+            ))}
+          </Stack>
+        )}
+      
       </Container>
       <Footer />
-
-      {/* Modal Ver detalle */}
-      <Modal opened={viewModalOpen} onClose={handleCloseView} title="Detalle del formulario" size="lg" centered>
-        {selectedForm ? (
-          <Stack>
-            <Text><strong>Nombre:</strong> {selectedForm.nombre}</Text>
-            <Text><strong>Edad:</strong> {selectedForm.edad}</Text>
-            <Text><strong>Actividad:</strong> {selectedForm.actividad_fisica}</Text>
-            <Text><strong>Inicio:</strong> {selectedForm.fecha_inicio || "No definida"}</Text>
-            <Text><strong>Fin:</strong> {selectedForm.fecha_fin || "No definida"}</Text>
-            <Text><strong>Pago realizado:</strong> {selectedForm.pago_realizado ? "Sí" : "No"}</Text>
-            <Text><strong>Activo:</strong> {selectedForm.activo ? "Sí" : "No"}</Text>
-          </Stack>
-        ) : <Center><Loader /></Center>}
-      </Modal>
-
-      {/* Modal Agregar plan */}
-      <Modal opened={addPlanModalOpen} onClose={handleCloseAddPlan} title={`Agregar plan (${addPlanType})`} centered>
-        <Stack>
-          <Text><strong>Usuario:</strong> {selectedForm?.nombre}</Text>
-          <TextInput label="Nombre del plan" value={newPlanName} onChange={(e) => setNewPlanName(e.currentTarget.value)} />
-          <Textarea label="Descripción" value={newPlanDesc} onChange={(e) => setNewPlanDesc(e.currentTarget.value)} minRows={4} />
-          <Group position="apart" mt="sm">
-            <Button variant="default" onClick={handleCloseAddPlan}>Cancelar</Button>
-            <Button loading={addPlanLoading} onClick={handleAddPlanSubmit} leftIcon={<IconPlus size={14} />}>
-              Subir {addPlanType === "alimento" ? "Plan de Alimentos" : "Plan de Ejercicios"}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
     </>
   );
 }
-

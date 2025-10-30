@@ -1,7 +1,8 @@
 import { Card, Stack, Text, Button, Group, Badge } from "@mantine/core";
-import { Eye, Edit, Trash } from "lucide-react";
+import { IconPlus } from "@tabler/icons-react";
 
-export default function PlanPendiente({ form }) {
+
+export  function MyPlansPendiente({ form }) {
   return (
     <Card shadow="sm" p="lg" radius="md">
       <Stack spacing="xs">
@@ -12,15 +13,15 @@ export default function PlanPendiente({ form }) {
         <Badge color="orange">Pendiente de carga</Badge>
 
         <Group mt="sm">
-          <Button leftIcon={<Eye size={16} />} variant="outline" color="blue">
-            Ver Formulario
-          </Button>
-          <Button leftIcon={<Edit size={16} />} variant="outline" color="yellow">
-            Editar
-          </Button>
-          <Button leftIcon={<Trash size={16} />} variant="outline" color="red">
-            Eliminar
-          </Button>
+           <Button leftIcon={<IconPlus size={18} />} variant="light" color="green" mt="sm">
+          Ver formulario
+        </Button>
+           <Button leftIcon={<IconPlus size={18} />} variant="light" color="green" mt="sm">
+          Editar formulario
+        </Button>
+         <Button leftIcon={<IconPlus size={18} />} variant="light" color="green" mt="sm">
+          Eliminar 
+        </Button>
         </Group>
       </Stack>
     </Card>

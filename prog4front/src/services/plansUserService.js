@@ -7,9 +7,6 @@ export const plansUserService = {
   createPlan: (data) => api.post("/plansUsers", data),
   updatePlan: (id, data) => api.put(`/plansUsers/${id}`, data),
   deletePlan: (id) => api.delete(`/plansUsers/${id}`), 
-  
-
-
-
-  getMyPLans: () => api.get("/users/me/plans"),
+  getByUserId: (id_user) => api.get(`/plansUsers/${id_user}`), // 👉 usa PlansUserGetByUserController.php
+  getMyPlans: () => api.get("/users/me/plans"),
 };
