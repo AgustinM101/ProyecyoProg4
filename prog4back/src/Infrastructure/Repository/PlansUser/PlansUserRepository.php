@@ -104,7 +104,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     /** @return PlansUser[] */
     public function findByUserId(int $id_user): array {
         $query = <<<SQL
-            SELECT id_user, id_plan, status, expiration_date
+            SELECT id, id_user, id_plan, status, expiration_date
             FROM plans_user
             WHERE id_user = :id_user
         SQL;
