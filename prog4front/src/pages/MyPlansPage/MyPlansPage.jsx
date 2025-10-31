@@ -63,8 +63,8 @@ export function MyPlansPage() {
     setFormData(formResp.data?.[0] || null);
 
       // ✅ Obtener plan alimento PREGUNTAR
-      const planAliResp = await planAlimentosService.getByUserPlan(plansUserId);
-      setPlanAlimento(planAliResp.data || []);
+      const planAlimentosResp = await planAlimentosService.getByUserPlan(plansUserId);
+      setPlanAlimento(planAlimentosResp.data || []);
     } catch (error) {
       console.error("Error al ver detalles del plan:", error);
     } finally {
