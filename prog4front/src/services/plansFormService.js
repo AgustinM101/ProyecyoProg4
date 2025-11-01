@@ -6,9 +6,7 @@ export const plansFormService = {
 
   getPlansFormsByUser: () => api.get("/plansFormbyuser"),
 
-   getPlansFormsByUser: (userId) => api.get(`/plansForms/user/${userId}`),
- 
-  getPlansFormsByUser: () => api.get("/plansForms/user"),
+  
 
   getById: (id) => api.get(`/plansForm/${id}`),
 

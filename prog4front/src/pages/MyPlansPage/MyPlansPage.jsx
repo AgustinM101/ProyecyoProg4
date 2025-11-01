@@ -59,26 +59,28 @@ export function MyPlansPage() {
 
       // Solo traer el formulario del usuario logueado vía token
       //PREGUNTAR A AGUS COMO LEER POR USUARIO LOGUEADO
-    const formResp = await plansFormService.getPlansForms();
+    const formResp = await plansFormService.getPlansFormsByUser();
     setFormData(formResp.data?.[0] || null);
 
-      // ✅ Obtener plan alimento PREGUNTAR
-      const planAlimentosResp = await planAlimentosService.getByUserPlan(plansUserId);
-      setPlanAlimento(planAlimentosResp.data || []);
+
+    const userPlanId = formData?.plansUserId; // 👈 ajustá esto según cómo venga tu dato (por ejemplo formData?.user_plan_id)
+
+  if (!userPlanId) {
+    console.warn("⚠️ No se encontró userPlanId en el formulario");
+    return;
+  }
+
+     const alimentosResp = await planAlimentosService.getPlanAlimentosByUser(userPlanId);
+    setPlanAlimento(alimentosResp.data?.[0] || null);
+
+
+    const ejerciciosResp = await planEjerciciosService.getPlanEjerciciosByUser(userPlanId);
+    setPlanEjercicios(ejerciciosResp.data?.[0] || null);
+
+
     } catch (error) {
-      console.error("Error al ver detalles del plan:", error);
-    } finally {
-      setLoading(false);
-    }
-
-   // const planEjerciciosResp = await planEjerciciosService.getByUserPlanId(plansUserId);
-  //  setPlanEjercicios(planEjerciciosResp.data || []);
-//  } catch (error) {
-  //  console.error("Error al ver detalles del plan:", error);
- // } finally {
-//    setLoading(false);
-//  } 
-
+  console.error("Error al cargar los datos del plan:", error);
+}
 
   if (loading) {
     return (
@@ -162,7 +164,10 @@ export function MyPlansPage() {
                         <Text size="sm" c="dimmed">No hay información del formulario.</Text>
                       )}
                       
-                    </Card>
+
+                  
+                    
+                        </Card>
                     {/* Plan Ejercicio */}
                     <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
                       <Title order={5}>Plan de Ejercicio</Title>
