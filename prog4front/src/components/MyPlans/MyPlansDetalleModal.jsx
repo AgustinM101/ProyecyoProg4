@@ -65,10 +65,19 @@ export function MyPlansDetalleModal({ opened, onClose, plan }) {
                 <Stack key={f.id} spacing={4}>
                   <Text><strong>Nombre:</strong> {f.nombre}</Text>
                   <Text><strong>Edad:</strong> {f.edad}</Text>
-                  <Text><strong>Altura:</strong> {f.altura} cm</Text>
                   <Text><strong>Peso:</strong> {f.peso} kg</Text>
-                  <Text><strong>Objetivo:</strong> {f.objetivo}</Text>
+                  <Text><strong>Altura:</strong> {f.altura} cm</Text>
+                  <Text><strong>Peso_actual:</strong> {f.peso_actual} kg</Text>
+                  <Text><strong>peso_deseado:</strong> {f.peso_deseado} kg</Text>
                   <Text><strong>Actividad física:</strong> {f.actividad_fisica}</Text>
+                  <Text><strong>Antecedentes_medicos:</strong> {f.antecedentes_medicos}</Text>
+                  <Text><strong>Alergias:</strong> {f.alergias}</Text>
+                  <Text><strong>Medicamentos:</strong> {f.medicamentos}</Text>
+                  <Text><strong>Problemas_digestivos:</strong> {f.problemas_digestivos}</Text>
+                  <Text><strong>Comidas_diarias:</strong> {f.comidas_diarias}</Text>
+                  <Text><strong>Horarios_de_comidas:</strong> {f.horarios_de_comidas}</Text>
+                  <Text><strong>consumo_de_agua:</strong> {f.consumo_de_agua}</Text>
+                  <Text><strong>Consumo_de_alcohol:</strong> {f.consumo_de_alcohol}</Text>
                   <Divider my="xs" />
                 </Stack>
               ))
