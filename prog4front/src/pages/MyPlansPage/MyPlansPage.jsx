@@ -63,19 +63,20 @@ export function MyPlansPage() {
     setSelectedPlan(pu.id); // Selecciona el plan actual
     setLoading(true);
 
-    const plansUserId = pu.plans_user_id ?? pu.id;
+    const plansUserId = pu.id;
     console.log("Fetching planAlimento with plansUserId:", plansUserId);
 
-
-    const formResp = await plansFormService.getPlansFormsByUser(pu.id_user);
-    setFormData(formResp.data?.[0] || null);
+    // Formulario asociado usando id_user
+    
+    
 
     
-    const [alimentoResp, ejercicioResp] = await Promise.all([
+    const [formResp, alimentoResp, ejercicioResp] = await Promise.all([
+      plansFormService.getPlansFormsByUser(),
       planAlimentosService.getPlanAlimentosByUser(plansUserId),
-      planEjerciciosService.getPlanEjerciciosByUser(plansUserId),
+      planEjerciciosService.getPlanEjerciciosByUser(plansUserId)
     ]);
-
+    setFormData(formResp.data?.[0] || null);
     setPlanAlimento(alimentoResp.data || []);
     setPlanEjercicio(ejercicioResp.data || []);
   } catch (error) {

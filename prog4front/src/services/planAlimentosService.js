@@ -7,6 +7,6 @@ export const planAlimentosService = {
   createPlan: (data) => api.post("/planAlimentos", data),
   updatePlan: (id, data) => api.put(`/planAlimentos/${id}`, data),
   deletePlan: (id) => api.delete(`/planAlimentos/${id}`),
-  getPlanAlimentosByUser: (id) => api.get(`/planAlimentos/${id}`),
+  getPlanAlimentosByUser: (id) => api.get(`/userPlanAlimentos/${id}`),
 
 };
