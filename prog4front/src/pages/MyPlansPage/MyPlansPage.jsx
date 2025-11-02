@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import {
   Container,
-  SimpleGrid,
+  Stack,
   Card,
   Text,
   Title,
   Badge,
   Group,
   Button,
-  Stack,
+  TextInput,
   Center,
   Loader,
 } from "@mantine/core";
@@ -16,71 +16,76 @@ import { IconEye } from "@tabler/icons-react";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { plansFormService } from "../../services/plansFormService";
-import {planAlimentosService } from "../../services/planAlimentosService";
+import { planAlimentosService } from "../../services/planAlimentosService";
+import { planEjerciciosService } from "../../services/planEjerciciosService";
 import { plansUserService } from "../../services/plansUserService";
 import { userService } from "../../services/userService";
-import { planEjerciciosService } from "../../services/planEjerciciosService";
 
 export function MyPlansPage() {
   const [user, setUser] = useState(null);
   const [plansUsers, setPlansUsers] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(null);
   const [planAlimento, setPlanAlimento] = useState([]);
+  const [planEjercicio, setPlanEjercicio] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // 🔹 Al montar, traer usuario y sus planes
   useEffect(() => {
     fetchPlans();
   }, []);
 
-  // 🔹 Traer usuario y sus planes
   const fetchPlans = async () => {
     setLoading(true);
     try {
       const userResp = await userService.getCurrentUser();
       const currentUser = userResp?.data;
       if (!currentUser) throw new Error("No hay usuario logueado");
+
       setUser(currentUser);
 
+      // Traer los planes del usuario logueado
       const resp = await plansUserService.getByUserId(currentUser.id);
       setPlansUsers(resp.data || []);
+      
+      const plansUserId = resp.data.map((pu) => pu.id);
     } catch (error) {
-      console.error("Error al cargar los planes del usuario:", error);
+      console.error("Error al cargar los planes:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔹 Mostrar detalle del plan usando token del usuario logueado
-  const handleView = async (plansUserId) => {
-    try {
-      setSelectedPlan(plansUserId);
-      setLoading(true);
+ const handleView = async (pu) => {
+  if (!pu) return;
 
-      // Solo traer el formulario del usuario logueado vía token
-      //PREGUNTAR A AGUS COMO LEER POR USUARIO LOGUEADO
-    const formResp = await plansFormService.getPlansFormsByUser();
+  try {
+    setSelectedPlan(pu.id); // Selecciona el plan actual
+    setLoading(true);
+
+    const plansUserId = pu.plans_user_id ?? pu.id;
+    console.log("Fetching planAlimento with plansUserId:", plansUserId);
+
+
+    const formResp = await plansFormService.getPlansFormsByUser(pu.id_user);
     setFormData(formResp.data?.[0] || null);
 
+    
+    const [alimentoResp, ejercicioResp] = await Promise.all([
+      planAlimentosService.getPlanAlimentosByUser(plansUserId),
+      planEjerciciosService.getPlanEjerciciosByUser(plansUserId),
+    ]);
 
-    const userPlanId = formData?.plansUserId; // 👈 ajustá esto según cómo venga tu dato (por ejemplo formData?.user_plan_id)
-
-  if (!userPlanId) {
-    console.warn("⚠️ No se encontró userPlanId en el formulario");
-    return;
+    setPlanAlimento(alimentoResp.data || []);
+    setPlanEjercicio(ejercicioResp.data || []);
+  } catch (error) {
+    console.error("Error al ver detalles del plan:", error);
+    setPlanAlimento([]);
+    setPlanEjercicio([]);
+  } finally {
+    setLoading(false);
   }
-
-     const alimentosResp = await planAlimentosService.getPlanAlimentosByUser(userPlanId);
-    setPlanAlimento(alimentosResp.data?.[0] || null);
-
-
-    const ejerciciosResp = await planEjerciciosService.getPlanEjerciciosByUser(userPlanId);
-    setPlanEjercicios(ejerciciosResp.data?.[0] || null);
-
-
-    } catch (error) {
-  console.error("Error al cargar los datos del plan:", error);
-}
+};
 
   if (loading) {
     return (
@@ -89,13 +94,12 @@ export function MyPlansPage() {
       </Center>
     );
   }
-}
 
   return (
     <>
       <HeaderMenu />
       <Container size="md" py="xl">
-        <Title order={2} ta="center" mb="xl">
+        <Title order={1} ta="center" mb="xl">
           Mis Planes
         </Title>
 
@@ -110,19 +114,29 @@ export function MyPlansPage() {
                 p="lg"
                 radius="md"
                 withBorder
-                style={{ backgroundColor: "#141413ff", color: "white", border: "1px solid #eeff05ff" }}
+                style={{
+                  backgroundColor: "#141413ff",
+                  color: "white",
+                  border: "1px solid #eeff05ff",
+                }}
               >
                 <Group justify="space-between">
                   <div>
                     <Title order={4}>{plan.plan_name}</Title>
                     <Text size="sm" c="dimmed">
-                      Expira: {plan.expiration_date ? new Date(plan.expiration_date).toLocaleDateString() : "Sin fecha"}
+                      Expira:{" "}
+                      {plan.expiration_date
+                        ? new Date(plan.expiration_date).toLocaleDateString()
+                        : "Sin fecha"}
                     </Text>
                   </div>
                   <Badge
                     color={
-                      plan.status === "active" ? "green" :
-                      plan.status === "chargePending" ? "yellow" : "red"
+                      plan.status === "active"
+                        ? "green"
+                        : plan.status === "chargePending"
+                        ? "yellow"
+                        : "red"
                     }
                     variant="filled"
                   >
@@ -131,7 +145,12 @@ export function MyPlansPage() {
                 </Group>
 
                 <Group mt="md" justify="end">
-                  <Button size="sm" color="teal" onClick={() => handleView(plan.id)}>
+                  <Button
+                    size="sm"
+                    color="teal"
+                    leftSection={<IconEye size={16} />}
+                    onClick={() => handleView(plan)}
+                  >
                     Ver detalles
                   </Button>
                 </Group>
@@ -140,78 +159,138 @@ export function MyPlansPage() {
                   <Stack mt="md" spacing="md">
                     {/* Formulario */}
                     <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Title order={5}>Formulario</Title>
+                      <Title order={5}>FORMULARIO</Title>
                       {formData ? (
                         <Stack mt="xs" spacing={4}>
-                          <Text size="sm"><strong>Nombre:</strong> {formData.nombre || "-"}</Text>
-                          <Text size="sm"><strong>Edad:</strong> {formData.edad || "-"}</Text>
-                          <Text size="sm"><strong>Peso:</strong> {formData.peso || "-"} kg</Text>
-                          <Text size="sm"><strong>Altura:</strong> {formData.altura || "-"} cm</Text>
-                          <Text size="sm"><strong>Peso_actual:</strong> {formData.peso_actual || "-"}</Text>
-                          <Text size="sm"><strong>Peso_deseado:</strong> {formData.peso_deseado || "-"}</Text>
-                          <Text size="sm"><strong>Actividad_fisica:</strong> {formData.actividad_fisica || "-"}</Text>
-                          <Text size="sm"><strong>Antecedentes_medicos:</strong> {formData.antecedentes_medicos || "-"}</Text>
-                          <Text size="sm"><strong>Alergias:</strong> {formData.alergias || "-"}</Text>
-                          <Text size="sm"><strong> Medicamentos:</strong> {formData.medicamentos || "-"}</Text>
-                          <Text size="sm"><strong>Problemas_digestivos:</strong> {formData.problemas_digestivos || "-"}</Text>
-                          <Text size="sm"><strong>Comidas_diarias:</strong> {formData.comidas_diarias || "-"}</Text>
-                          <Text size="sm"><strong>horarios_de_comidas:</strong> {formData.horarios_de_comidas || "-"}</Text>
-                          <Text size="sm"><strong>Consumo_de_agua:</strong> {formData.consumo_de_agua || "-"}</Text>
-                          <Text size="sm"><strong>Consumo_de_alcohol:</strong> {formData.consumo_de_alcohol || "-"}</Text>
+                          <Text size="sm">
+                            <strong>Nombre:</strong> {formData.nombre || "-"}
+                          </Text>
+                          <Text size="sm">
+                            <strong>Edad:</strong> {formData.edad || "-"}
+                          </Text>
 
+                           <Text size="sm">
+                            <strong>Sexo:</strong> {formData.sexo || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Altura:</strong> {formData.altura || "-"}
+                          </Text>
+                          <Text size="sm">
+                            <strong>Peso actual:</strong> {formData.peso_actual || "-"}
+                          </Text>
+                          <Text size="sm">
+                            <strong>Peso deseado:</strong> {formData.peso_deseado || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Actividad física:</strong> {formData.actividad_fisica || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Antecedentes médicos:</strong> {formData.antecedentes_medicos || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Alergias:</strong> {formData.alergias || "-"}
+                          </Text>
+                          <Text size="sm">
+                            <strong>Medicamentos:</strong> {formData.medicamentos || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Problemas digestivos:</strong> {formData.problemas_digestivos || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Comidas diarias:</strong> {formData.comidas_diarias || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Alimentos evitar:</strong> {formData.alimentos_evitar || "-"}
+                          </Text>
+                          <Text size="sm">
+                            <strong>Horarios de comida:</strong> {formData.horarios_comida || "-"}
+                          </Text>
+                          <Text size="sm">
+                            <strong>Consumo agua:</strong> {formData.consumo_agua || "-"}
+                          </Text>
+                           <Text size="sm">
+                            <strong>Consumo alcohol:</strong> {formData.consumo_alcohol || "-"}
+                          </Text>
                         </Stack>
                       ) : (
-                        <Text size="sm" c="dimmed">No hay información del formulario.</Text>
-                      )}
-                      
-
-                  
-                    
-                        </Card>
-                    {/* Plan Ejercicio */}
-                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Title order={5}>Plan de Ejercicio</Title>
-                      {planEjerciciosService.length > 0 ? (
-                        planEjerciciosService.map((pe) => (
-                          <Card key={pe.id} mt="xs" p="sm" radius="md" style={{ backgroundColor: "#090909ff" }}>
-                            <Stack spacing={2}>
-                              <Text size="sm"><strong>Tipo:</strong> {pe.tipo}</Text>
-                              <Text size="sm"><strong>Descripción:</strong> {pe.description}</Text>
-                              <Text size="sm"><strong>Días:</strong> {pe.dias}</Text>
-                            </Stack>
-                          </Card>
-                        ))
-                      ) : (
-                        <Text size="sm" c="dimmed">Aún no hay plan de ejercicio asignado.</Text>
+                        <Text size="sm" c="dimmed">
+                          No hay información del formulario.
+                        </Text>
                       )}
                     </Card>
 
-                    {/* Plan Alimento */}
+                    {/* Plan Alimentario */}
                     <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
                       <Title order={5}>Plan Alimentario</Title>
                       {planAlimento.length > 0 ? (
                         planAlimento.map((pa) => (
-                          <Card key={pa.id} mt="xs" p="sm" radius="md" style={{ backgroundColor: "#3A3B3E" }}>
+                          <Card
+                            key={pa.id}
+                            mt="xs"
+                            p="sm"
+                            radius="md"
+                            style={{ backgroundColor: "#3A3B3E" }}
+                          >
                             <Stack spacing={2}>
-                              <Text size="sm"><strong>Tipo:</strong> {pa.tipo}</Text>
-                              <Text size="sm"><strong>Descripción:</strong> {pa.description}</Text>
-                              <Text size="sm"><strong>Días:</strong> {pa.dias}</Text>
+                              <Text size="sm">
+                                <strong>Día:</strong> {pa.dia}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Comida:</strong> {pa.comida}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Descripción:</strong> {pa.descripcion}
+                              </Text>
                             </Stack>
                           </Card>
                         ))
                       ) : (
-                        <Text size="sm" c="dimmed">Aún no hay plan alimentario asignado.</Text>
+                        <Text size="sm" c="dimmed">
+                          Aún no hay plan alimentario asignado.
+                        </Text>
+                      )}
+                    </Card>
+
+                    {/* Plan de Ejercicio */}
+                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                      <Title order={5}>Plan de Ejercicio</Title>
+                      {planEjercicio.length > 0 ? (
+                        planEjercicio.map((pe) => (
+                          <Card
+                            key={pe.id}
+                            mt="xs"
+                            p="sm"
+                            radius="md"
+                            style={{ backgroundColor: "#090909ff" }}
+                          >
+                            <Stack spacing={2}>
+                              <Text size="sm">
+                                <strong>Día:</strong> {pe.dia}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Ejercicio:</strong> {pe.ejercicio}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Series:</strong> {pe.series}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Repeticiones:</strong> {pe.repeticiones}
+                              </Text>
+                            </Stack>
+                          </Card>
+                        ))
+                      ) : (
+                        <Text size="sm" c="dimmed">
+                          Aún no hay plan de ejercicios asignado.
+                        </Text>
                       )}
                     </Card>
                   </Stack>
-
-                  
                 )}
               </Card>
             ))}
           </Stack>
         )}
-      
       </Container>
       <Footer />
     </>
