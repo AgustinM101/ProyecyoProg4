@@ -3,7 +3,6 @@ import { api } from "./api";
 export const plansFormService = {
  
   getPlansForms: () => api.get("/plansForms"),
-
   getPlansFormsByUser: () => api.get("/plansFormbyuser"),
   getById: (id) => api.get(`/plansForm/${id}`),
   createPlanForms: (data) => api.post("/plansForm", data),
