@@ -22,14 +22,14 @@ final readonly class PlansUserCreatorService
 
     public function create(int $id_user, int $id_plan): PlansUser {
         $plansUser = new PlansUser(
-            null,
+            null, // ⚠️ Se asignará ID al guardar en DB
             $id_user,
             $id_plan,
             "Pendiente",
             null
         );
 
-        $this->repository->assignPlan($plansUser);
+        $this->repository->assignPlan($plansUser); // 🔹 Debe asignar el ID generado al objeto
 
         // Obtener nombres para log
         $user = $this->userRepository->find($id_user);
@@ -46,3 +46,4 @@ final readonly class PlansUserCreatorService
         return $plansUser;
     }
 }
+

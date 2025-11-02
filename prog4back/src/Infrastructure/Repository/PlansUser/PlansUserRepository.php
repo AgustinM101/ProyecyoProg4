@@ -31,14 +31,12 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     }
 
     public function findById(int $id): ?PlansUser {
-    $query = "SELECT id, id_user, id_plan, status, expiration_date 
-              FROM plans_user 
-              WHERE id = :id";
-    $result = $this->execute($query, ["id" => $id]);
-    return !empty($result) ? $this->toPlansUser($result[0]) : null;
-}
-
-
+        $query = "SELECT id, id_user, id_plan, status, expiration_date 
+                  FROM plans_user 
+                  WHERE id = :id";
+        $result = $this->execute($query, ["id" => $id]);
+        return !empty($result) ? $this->toPlansUser($result[0]) : null;
+    }
 
     /** @return array[] */
     public function searchPlansWithDetails(): array {
@@ -93,13 +91,10 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     }
 
     public function delete(int $id): void {
-        $query = "DELETE FROM plans_users WHERE id = :id";
+        $query = "DELETE FROM plans_user WHERE id = :id";
         $parameters = ["id" => $id];
-
-        $this->execute($query, $parameters); // usa el método execute que ya maneja la conexión
+        $this->execute($query, $parameters);
     }
-
-
 
     /** @return PlansUser[] */
     public function findByUserId(int $id_user): array {
@@ -120,8 +115,9 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
         return $plansUsers;
     }
 
-
-
+    /**
+     * 🔹 Método adaptado: asigna plan y guarda el id generado en el objeto.
+     */
     public function assignPlan(PlansUser $plan): void {
         $query = <<<SQL
             INSERT INTO plans_user (id_user, id_plan, status, expiration_date)
@@ -136,25 +132,52 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
         ];
 
         $this->execute($query, $parameters);
+
+        // 🔹 Asignar el id generado al objeto para que ya no sea null
+        $lastId = $this->lastInsertId();
+        $plan->setId((int)$lastId);
     }
 
-
     public function updateStatusAndExpirationById(int $id, string $status, string $expiration_date): void {
-    $query = <<<SQL
-        UPDATE plans_user
-        SET status = :status,
-            expiration_date = :expiration_date
-        WHERE id = :id
-    SQL;
+        $query = <<<SQL
+            UPDATE plans_user
+            SET status = :status,
+                expiration_date = :expiration_date
+            WHERE id = :id
+        SQL;
 
-    $params = [
-        "id" => $id,
-        "status" => $status,
-        "expiration_date" => $expiration_date
-    ];
+        $params = [
+            "id" => $id,
+            "status" => $status,
+            "expiration_date" => $expiration_date
+        ];
 
-    $this->execute($query, $params);
-}
+        $this->execute($query, $params);
+    }
+
+    public function removePlanById(int $id): void {
+        $query = "DELETE FROM plans_user WHERE id = :id";
+        $params = ["id" => $id];
+        $this->execute($query, $params);
+    }
+
+    public function markAsDeleted(int $id): void {
+        $query = "UPDATE plans_user SET deleted = 1 WHERE id = :id";
+        $params = ["id" => $id];
+        $this->execute($query, $params);
+    }
+
+    private function toPlansUser(?array $row): ?PlansUser {
+        if ($row === null) return null;
+
+        return new PlansUser(
+            $row["id"] ?? null,
+            $row["id_user"],
+            $row["id_plan"],
+            $row["status"],
+            $row["expiration_date"] 
+        );
+    }
 
 
 public function removePlanById(int $id): void {
@@ -170,19 +193,5 @@ public function markAsDeleted(int $id): void {
 }
 
 
-
-
-private function toPlansUser(?array $row): ?PlansUser {
-    if ($row === null) return null;
-
-    return new PlansUser(
-        $row["id"] ?? null,
-        $row["id_user"],
-        $row["id_plan"],
-        $row["status"],
-        $row["expiration_date"] 
-    );
 }
 
-
-}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Card,
@@ -10,15 +10,17 @@ import {
   Group,
   Text,
 } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
-import { useNavigate } from "react-router-dom";
-import { paymentService } from "../../services/paymentService"; // ✅ Servicio de pagos
+import { paymentService } from "../../services/paymentService";
+import { plansUserService } from "../../services/plansUserService";
 import "./PurchasePage.css";
 import { PaymentService } from "../../services/PaymentService";
 
 export function PurchasePage() {
   const navigate = useNavigate();
+
   const [paymentMethod, setPaymentMethod] = useState("");
   const [formData, setFormData] = useState({
     nombre: "",
@@ -26,64 +28,85 @@ export function PurchasePage() {
     telefono: "",
   });
 
+  // 🔹 Maneja el regreso desde Mercado Pago y redirige según el estado
+  useEffect(() => {
+    const status = new URLSearchParams(window.location.search).get("status");
+    if (!status) return;
+
+    if (status === "success" || status === "approved") navigate("/plansForms");
+    else if (status === "pending") navigate("/plansForms");
+    else if (status === "failure") navigate("/purchase");
+  }, [navigate]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const userData = {
-    ...formData,
-    plan: "Plan PHAV",
-    paymentMethod,
-    fechaCompra: new Date().toLocaleDateString(),
-  };
-
-  if (paymentMethod === "mercadopago") {
-  // 🔹 Abrimos la ventana ANTES del await
-  const mpWindow = window.open("", "_blank");
-
-  try {
-    const data = await paymentService.createPaymentPreference({
-      nombre: formData.nombre,
-      email: formData.email,
+    const userData = {
+      ...formData,
       plan: "Plan PHAV",
-      title: "Plan PHAV",
-      amount: 1000,
-      plans_user_id: 1,
-    });
+      paymentMethod,
+      fechaCompra: new Date().toLocaleDateString(),
+    };
 
-    console.log("Respuesta backend:", data);
+    const planStatus = paymentMethod === "mercadopago" ? "Pendiente" : "Payment Request";
 
-    const paymentUrl = data?.url?.init_point || null;
+    try {
+      // 1️⃣ Crear plan en tu sistema
+      const planResponse = await plansUserService.createUserPlan({
+        id_user: 11,
+        id_plan: 1,
+        status: planStatus,
+        amount: 19000,
+      });
 
-    if (paymentUrl && mpWindow) {
-      mpWindow.location.href = paymentUrl; // redirigimos la ventana abierta
-      mpWindow.focus();
-      alert("Se abrió Mercado Pago en una nueva pestaña. Completá el pago allí.");
-    } else {
-      if (mpWindow) mpWindow.close();
-      alert("No se obtuvo la URL de pago. Mirá la consola (F12) para más detalles.");
-      console.log("Respuesta inesperada del backend:", data);
+      const plansUserId =
+        planResponse?.data?.id ||
+        planResponse?.data?.data?.id ||
+        planResponse?.data?.plans_user_id;
+
+      if (!plansUserId) throw new Error("No se recibió el ID del plan asignado");
+
+      // 2️⃣ Si el usuario elige Mercado Pago
+      if (paymentMethod === "mercadopago") {
+        const paymentData = await paymentService.createPaymentPreference({
+          plans_user_id: plansUserId,
+          id_user: 11,
+          id_plan: 1,
+          title: "Plan PHAV",
+          amount: 19000,
+        });
+
+        // ✅ Extraemos la URL correcta
+        const paymentUrl =
+          paymentData?.preference?.data?.preference?.sandbox_init_point ||
+          paymentData?.preference?.data?.preference?.init_point ||
+          null;
+
+        if (paymentUrl) {
+          // 🔹 Redirigimos en la misma pestaña
+          window.location.href = paymentUrl;
+          return;
+        } else {
+          console.log("Respuesta completa de MP:", paymentData);
+          alert("No se obtuvo la URL de pago. Revisá la consola (F12).");
+          return;
+        }
+      }
+
+      // 3️⃣ Para transferencia o efectivo
+      localStorage.setItem("userProfile", JSON.stringify(userData));
+      alert("Compra registrada correctamente. Redirigiendo al formulario...");
+      navigate("/plansForms");
+    } catch (error) {
+      console.error("Error al procesar la compra:", error);
+      alert("Hubo un error al registrar tu compra. Revisá la consola (F12).");
     }
-  } catch (error) {
-    if (mpWindow) mpWindow.close();
-    console.error("Axios error object:", error);
-    alert("Error al conectar con Mercado Pago. Verificá la ruta o el Access Token.");
-  }
-
-  return;
-}
-
-
-  // 🔹 Otros métodos (simulación)
-  localStorage.setItem("userProfile", JSON.stringify(userData));
-  alert("Compra simulada. Redirigiendo a tu perfil...");
-  navigate("/profile");
-};
-
+  };
 
   return (
     <>
@@ -94,7 +117,6 @@ export function PurchasePage() {
             <Title order={2} className="purch-title">
               Formulario de Compra
             </Title>
-
             <form onSubmit={handleSubmit}>
               <Stack className="purch-stack">
                 <TextInput
@@ -118,7 +140,6 @@ export function PurchasePage() {
                   onChange={handleChange}
                   required
                 />
-
                 <Select
                   label="Forma de pago"
                   placeholder="Selecciona una opción"
@@ -131,22 +152,18 @@ export function PurchasePage() {
                   ]}
                   required
                 />
-
                 {paymentMethod === "transferencia" && (
                   <>
                     <Text>Alias: InfinitSport12</Text>
                     <Text>CBU: 123-4567890123456789012-3</Text>
                   </>
                 )}
-
                 {paymentMethod === "mercadopago" && (
                   <Text>Será redirigido a Mercado Pago</Text>
                 )}
-
                 {paymentMethod === "efectivo" && (
                   <Text>Pague en efectivo en nuestras instalaciones</Text>
                 )}
-
                 <Group position="center" mt="md">
                   <Button type="submit" size="lg" radius="md">
                     Finalizar compra
@@ -157,11 +174,13 @@ export function PurchasePage() {
           </Card>
         </Container>
       </div>
-
       <Footer />
     </>
   );
 }
+
+
+
 
 
 

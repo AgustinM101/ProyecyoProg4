@@ -15,7 +15,11 @@ final readonly class Router
      * Permite obtener la ruta a partir del URL, el método y los parámetros enviados por el usuario.
      */
     public function resolve(string $url, string $method): void
+          
     {
+
+          error_log("🔍 URL recibida: " . $url);
+          error_log("🔍 Método: " . $method);
         // Buscamos la ruta
         $route = $this->filterRoute($url, $method);
 
@@ -42,9 +46,15 @@ final readonly class Router
      */
     private function filterRoute(string $url, string $method): ?Route
     {
+        // 🔹 NUEVO: Normalizamos la URL para evitar errores con index.php o querystrings
+        // (Esto no rompe las demás rutas)
+        $originalUrl = $url; // guardamos la original por si querés depurar
+        $url = parse_url($url, PHP_URL_PATH);
+        $url = str_replace('/index.php', '', $url);
+
+        // 🔹 Código original (mantenido)
         foreach ($this->routes as $route) {
             $parameters = $this->getParameters($route, $url);
-
             $baseUrl = $this->getBaseUrl($url);
 
             if (
@@ -55,6 +65,9 @@ final readonly class Router
                 return $route;
             }
         }
+
+        // 🔹 OPCIONAL: Log para depurar rutas no encontradas
+        // file_put_contents('router_log.txt', "Ruta no encontrada: $originalUrl ($method)\n", FILE_APPEND);
 
         return null;
     }
@@ -102,3 +115,4 @@ final readonly class Router
     }
 
 }
+

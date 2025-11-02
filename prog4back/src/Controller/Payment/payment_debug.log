@@ -1,0 +1,464 @@
+2025-10-30 11:35:47 Preferencia creada:
+Array
+(
+    [plans_user_id] => 1
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 1000
+    [preference] => Array
+        (
+            [id] => 2954697699-bb3b7cad-65d9-4f0a-8259-7ecd23d0f277
+            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-bb3b7cad-65d9-4f0a-8259-7ecd23d0f277
+            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-bb3b7cad-65d9-4f0a-8259-7ecd23d0f277
+        )
+
+)
+
+
+2025-10-30 13:40:16 Preferencia creada:
+Array
+(
+    [plans_user_id] => 1
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 1000
+    [preference] => Array
+        (
+            [id] => 2954697699-e98a31f8-3c55-4033-8829-58bd466d6518
+            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-e98a31f8-3c55-4033-8829-58bd466d6518
+            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-e98a31f8-3c55-4033-8829-58bd466d6518
+        )
+
+)
+
+
+2025-10-30 15:54:52 Preferencia creada:
+Array
+(
+    [plans_user_id] => 11
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [id] => 2954697699-95b17de2-7464-4c24-b991-5b428039678e
+            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-95b17de2-7464-4c24-b991-5b428039678e
+            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-95b17de2-7464-4c24-b991-5b428039678e
+        )
+
+)
+
+
+2025-10-30 16:04:57 Preferencia creada:
+Array
+(
+    [plans_user_id] => 12
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [id] => 2954697699-d7f2b810-7566-4857-a1db-f45deab1aa3d
+            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-d7f2b810-7566-4857-a1db-f45deab1aa3d
+            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-d7f2b810-7566-4857-a1db-f45deab1aa3d
+        )
+
+)
+
+
+2025-10-30 16:25:00 Preferencia creada:
+Array
+(
+    [plans_user_id] => 13
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [id] => 2954697699-084b0e30-999a-4760-ab3d-c1463cba7a4a
+            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-084b0e30-999a-4760-ab3d-c1463cba7a4a
+            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-084b0e30-999a-4760-ab3d-c1463cba7a4a
+        )
+
+)
+
+
+2025-10-30 16:26:13 Preferencia creada:
+Array
+(
+    [plans_user_id] => 14
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [id] => 2954697699-ee3bfa47-2d04-41a3-8573-6ad6e18d2d4b
+            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-ee3bfa47-2d04-41a3-8573-6ad6e18d2d4b
+            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2954697699-ee3bfa47-2d04-41a3-8573-6ad6e18d2d4b
+        )
+
+)
+
+
+2025-10-30 21:59:49 Preferencia creada:
+Array
+(
+    [plans_user_id] => 15
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [status] => success
+            [message] => Preferencia creada correctamente
+            [preference] => Array
+                (
+                    [id] => 2926162049-e99aafd4-3f4b-4501-8d4e-a1519386b523
+                    [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-e99aafd4-3f4b-4501-8d4e-a1519386b523
+                    [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-e99aafd4-3f4b-4501-8d4e-a1519386b523
+                )
+
+        )
+
+)
+
+
+2025-10-30 22:01:23 Preferencia creada:
+Array
+(
+    [plans_user_id] => 16
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [status] => success
+            [message] => Preferencia creada correctamente
+            [preference] => Array
+                (
+                    [id] => 2926162049-f362ee1e-2908-401a-97ff-bde05c4cc460
+                    [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-f362ee1e-2908-401a-97ff-bde05c4cc460
+                    [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-f362ee1e-2908-401a-97ff-bde05c4cc460
+                )
+
+        )
+
+)
+
+
+2025-10-30 22:09:18 Preferencia creada:
+Array
+(
+    [plans_user_id] => 17
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [status] => success
+            [message] => Preferencia creada correctamente
+            [preference] => Array
+                (
+                    [id] => 2926162049-0a059b64-4f87-4c82-a59c-6921bcbc3680
+                    [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-0a059b64-4f87-4c82-a59c-6921bcbc3680
+                    [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-0a059b64-4f87-4c82-a59c-6921bcbc3680
+                )
+
+        )
+
+)
+
+
+2025-10-30 22:24:30 Preferencia creada:
+Array
+(
+    [plans_user_id] => 18
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [status] => success
+            [message] => Preferencia creada correctamente
+            [preference] => Array
+                (
+                    [id] => 2926162049-a56bb02f-31b7-49a0-883c-801abe3bedaf
+                    [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-a56bb02f-31b7-49a0-883c-801abe3bedaf
+                    [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-a56bb02f-31b7-49a0-883c-801abe3bedaf
+                )
+
+        )
+
+)
+
+
+2025-10-30 22:33:22 Preferencia creada:
+Array
+(
+    [plans_user_id] => 19
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-418c2f32-9bbd-4034-88a2-52eb5f9889b8
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-418c2f32-9bbd-4034-88a2-52eb5f9889b8
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-418c2f32-9bbd-4034-88a2-52eb5f9889b8
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-10-30 22:41:46 Preferencia creada:
+Array
+(
+    [plans_user_id] => 20
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-087e82f5-d2e5-4dae-a90c-263d2f61f720
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-087e82f5-d2e5-4dae-a90c-263d2f61f720
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-087e82f5-d2e5-4dae-a90c-263d2f61f720
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-10-30 22:50:57 Preferencia creada:
+Array
+(
+    [plans_user_id] => 21
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-085dd82d-00fb-4add-8829-5299db389677
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-085dd82d-00fb-4add-8829-5299db389677
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-085dd82d-00fb-4add-8829-5299db389677
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-10-30 23:08:21 Preferencia creada:
+Array
+(
+    [plans_user_id] => 22
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-f3303688-0181-4e4a-96fa-d273424a0a1f
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-f3303688-0181-4e4a-96fa-d273424a0a1f
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-f3303688-0181-4e4a-96fa-d273424a0a1f
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-10-31 18:37:53 Preferencia creada:
+Array
+(
+    [plans_user_id] => 1
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 1000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-f86f5fcb-a8e2-4c4e-947a-43898a4f547b
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-f86f5fcb-a8e2-4c4e-947a-43898a4f547b
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-f86f5fcb-a8e2-4c4e-947a-43898a4f547b
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-11-02 08:20:09 Preferencia creada:
+Array
+(
+    [plans_user_id] => 14
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-25e31708-3883-435b-9a9b-bfa2a7020302
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-25e31708-3883-435b-9a9b-bfa2a7020302
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-25e31708-3883-435b-9a9b-bfa2a7020302
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-11-02 09:02:28 Preferencia creada:
+Array
+(
+    [plans_user_id] => 23
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-1c3fa17b-6e98-4351-8bd0-e4096718e35d
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-1c3fa17b-6e98-4351-8bd0-e4096718e35d
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-1c3fa17b-6e98-4351-8bd0-e4096718e35d
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-11-02 09:44:26 Preferencia creada:
+Array
+(
+    [plans_user_id] => 24
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-43e01ca5-d518-497a-8728-4eb411f6b40d
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-43e01ca5-d518-497a-8728-4eb411f6b40d
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-43e01ca5-d518-497a-8728-4eb411f6b40d
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-11-02 10:21:21 Preferencia creada:
+Array
+(
+    [plans_user_id] => 25
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-6ea5965c-b9f0-4a14-aff4-07d545b7a54f
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-6ea5965c-b9f0-4a14-aff4-07d545b7a54f
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-6ea5965c-b9f0-4a14-aff4-07d545b7a54f
+                        )
+
+                )
+
+        )
+
+)
+
+
+2025-11-02 10:39:13 Preferencia creada:
+Array
+(
+    [plans_user_id] => 26
+    [id_user] => 11
+    [id_plan] => 1
+    [title] => Plan PHAV
+    [amount] => 19000
+    [preference] => Array
+        (
+            [data] => Array
+                (
+                    [preference] => Array
+                        (
+                            [id] => 2926162049-885be465-d97d-4217-9632-286765033936
+                            [init_point] => https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-885be465-d97d-4217-9632-286765033936
+                            [sandbox_init_point] => https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=2926162049-885be465-d97d-4217-9632-286765033936
+                        )
+
+                )
+
+        )
+
+)
+
+
