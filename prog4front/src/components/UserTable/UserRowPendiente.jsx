@@ -1,8 +1,7 @@
-// UserRowPendiente.jsx
 import { useState } from "react";
 import { Button, Group } from "@mantine/core";
 import { IconPencil, IconPlus, IconTrash, IconEye } from "@tabler/icons-react";
-import { UserPlansAccordion } from "./UserPlansAccordion";
+import { UserPlansAccordionCreate } from "./UserPlansAccordionCreate";
 
 export function UserRowPendiente({ pu, onEdit, onDelete, onView }) {
   const [showAccordion, setShowAccordion] = useState(false);
@@ -41,7 +40,7 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView }) {
             <Button
               variant="subtle"
               color="red"
-              onClick={() => onDelete(pu)} // pasa todo el objeto
+              onClick={() => onDelete(pu)}
               title="Eliminar registro"
             >
               <IconTrash size={18} />
@@ -53,7 +52,7 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView }) {
       {showAccordion && (
         <tr>
           <td colSpan="8">
-            <UserPlansAccordion pu={pu} />
+            <UserPlansAccordionCreate pu={pu} onPlanCreated={() => setShowAccordion(false)} />
           </td>
         </tr>
       )}

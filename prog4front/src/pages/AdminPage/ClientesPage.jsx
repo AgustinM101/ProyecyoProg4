@@ -130,7 +130,7 @@ export function ClientesPage() {
     setFormDetails(null);
 
     try {
-      const response = await plansFormService.getPlansFormsByUser();
+      const response = await plansFormService.getPlansFormsByUser(pu.id);
       setFormDetails(response.data);
     } catch (error) {
       console.error("Error al obtener formulario:", error);
@@ -139,6 +139,7 @@ export function ClientesPage() {
       setLoadingForm(false);
     }
   };
+
 
   if (loading) {
     return (

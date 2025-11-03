@@ -1,8 +1,7 @@
-// UserRowActivo.jsx
 import { useState } from "react";
 import { Button, Group } from "@mantine/core";
-import { IconPencil, IconPlus, IconTrash, IconEye } from "@tabler/icons-react";
-import { UserPlansAccordion } from "./UserPlansAccordion";
+import { IconPlus, IconEye, IconPencil, IconTrash } from "@tabler/icons-react";
+import { UserPlansAccordionUpdate } from "./UserPlansAccordionUpdate";
 
 export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
   const [showAccordion, setShowAccordion] = useState(false);
@@ -21,11 +20,21 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
         <td>{pu.expiration_date || "A definir"}</td>
         <td>
           <Group spacing="xs">
-            <Button variant="subtle" color="blue" onClick={() => onView(pu)} title="Ver formulario">
+            <Button
+              variant="subtle"
+              color="blue"
+              onClick={() => onView(pu)}
+              title="Ver formulario"
+            >
               <IconEye size={18} />
             </Button>
 
-            <Button variant="subtle" color="yellow" onClick={() => onEdit(pu)} title="Editar plan">
+            <Button
+              variant="subtle"
+              color="yellow"
+              onClick={() => onEdit(pu)}
+              title="Editar plan"
+            >
               <IconPencil size={18} />
             </Button>
 
@@ -41,7 +50,7 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
             <Button
               variant="subtle"
               color="red"
-              onClick={() => onDelete(pu)} // pasa todo el objeto
+              onClick={() => onDelete(pu)}
               title="Eliminar registro"
             >
               <IconTrash size={18} />
@@ -49,11 +58,14 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
           </Group>
         </td>
       </tr>
-      
+
       {showAccordion && (
         <tr>
           <td colSpan="8">
-            <UserPlansAccordion pu={pu} />
+            <UserPlansAccordionUpdate
+              pu={pu}
+              onPlanUpdated={() => setShowAccordion(false)}
+            />
           </td>
         </tr>
       )}
