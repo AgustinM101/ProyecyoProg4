@@ -58,10 +58,17 @@ export function UserTable({
                   pu={pu}
                   onEdit={onEdit}
                   onDelete={onDelete}
-                  onAddPlan={onAddPlan}
                   onView={onView}
+                  onActivate={async (id) => {
+                    await plansUserService.updatePlan(id, {
+                      status: "active",
+                      expiration_date: pu.expiration_date
+                    });
+                    fetchPlansUsers?.();
+                  }}
                 />
               );
+
 
             case "active":
               return (
@@ -104,8 +111,14 @@ export function UserTable({
                   pu={pu}
                   onEdit={onEdit}
                   onDelete={onDelete}
-                  onAddPlan={onAddPlan}
                   onView={onView}
+                  onActivate={async (id) => {
+                    await plansUserService.updatePlan(id, {
+                      status: "active",
+                      expiration_date: pu.expiration_date
+                    });
+                    fetchPlansUsers?.();
+                  }}
                 />
               );
           }
