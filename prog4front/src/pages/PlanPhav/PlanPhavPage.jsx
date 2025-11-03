@@ -14,9 +14,11 @@ import { plansService } from "../../services/plansService";
 export function PlanPhavPage() {
 
   const navigate = useNavigate();
-
+  
   const handleBuy = () => {
-    navigate("/purchase");
+    const token = localStorage.getItem("token");
+    if (token) navigate("/purchase");
+    else navigate("/login?redirect=purchase");
   };
 
   const [plan, setPlan] = useState(null);

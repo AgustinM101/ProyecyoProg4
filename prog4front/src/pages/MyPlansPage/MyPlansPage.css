@@ -1,0 +1,18 @@
+.plan-card {
+  transition: all 0.3s ease;
+  background-color: #fffaf5;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(255, 102, 0, 0.2);
+}
+
+.myplans-table {
+  background-color: rgb(6, 6, 6);
+  border-radius: 10px;
+}
+
+body {
+  background-color: #070707;
+}

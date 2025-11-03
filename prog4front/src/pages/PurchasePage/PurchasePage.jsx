@@ -13,10 +13,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
+
 import { paymentService } from "../../services/paymentService";
 import { plansUserService } from "../../services/plansUserService";
+
 import "./PurchasePage.css";
-import { PaymentService } from "../../services/PaymentService";
+
+
 
 export function PurchasePage() {
   const navigate = useNavigate();

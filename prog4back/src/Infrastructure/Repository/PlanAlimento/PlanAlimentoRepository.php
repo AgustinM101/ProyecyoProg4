@@ -8,13 +8,10 @@ use Src\Entity\PlanAlimento\PlanAlimento;
 final readonly class PlanAlimentoRepository extends PDOManager implements PlanAlimentoRepositoryInterface 
 {
     public function findByPlanUser(int $id): array {
-        // Busca todos los alimentos asociados al plan del usuario con la columna "plans_user_id = $id"
-        $query = <<<HEREDOC
-            SELECT * FROM
-                plan_alimentos
-            WHERE
-                plans_user_id = :id AND deleted = 0
-        HEREDOC;
+        $query = <<<SQL
+            SELECT * FROM plan_alimentos
+            WHERE id_plans_user = :id AND deleted = 0
+        SQL;
 
         $parameters = [ "id" => $id ];
         $results = $this->execute($query, $parameters);
@@ -27,35 +24,52 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
         return $planAlimentos;
     }
 
-    // Buscar un PlanAlimento por ID
+
+    public function findForUser(int $id_plans_user, int $id): ?PlanAlimento
+{
+    $query = <<<SQL
+        SELECT * FROM plan_alimentos
+        WHERE id = :id
+        AND id_plans_user = :id_plans_user
+        AND deleted = 0
+    SQL;
+
+    $params = [
+        "id" => $id,
+        "id_plans_user" => $id_plans_user
+    ];
+
+    $results = $this->execute($query, $params);
+
+    if (count($results) === 0) {
+        return null;
+    }
+
+    return $this->toPlanAlimento($results[0]);
+}
+
+
     public function find(int $id): ?PlanAlimento
     {
-        $query = <<<HEREDOC
-            SELECT 
-                id, name, description, tipo
-            FROM
-                plan_alimentos A
-            WHERE
-                A.id = :id AND deleted = 0
-        HEREDOC;
+        $query = <<<SQL
+            SELECT * FROM plan_alimentos
+            WHERE id = :id AND deleted = 0
+        SQL;
 
         $parameters = [ "id" => $id ];
         $results = $this->execute($query, $parameters);
 
-        $planAlimentos = [];
-        foreach($results as $result) {
-            $planAlimentos[] = $this->toPlanAlimento($result);
+        if (count($results) === 0) {
+            return null;
         }
 
-        return $planAlimentos[0] ?? null;
+        return $this->toPlanAlimento($results[0]);
     }
 
-    // Buscar todos los PlanAlimentos
     public function search(): array
     {
-        $query = "SELECT id, name, description, tipo FROM plan_alimentos WHERE deleted = 0";
+        $query = "SELECT * FROM plan_alimentos WHERE deleted = 0";
         $results = $this->execute($query);
-        var_dump($results);
 
         $planAlimentos = [];
         foreach ($results as $result) {
@@ -65,61 +79,103 @@ final readonly class PlanAlimentoRepository extends PDOManager implements PlanAl
         return $planAlimentos;
     }
 
-    // Crear un nuevo PlanAlimento
-    public function create(PlanAlimento $PlanAlimento): void
+    public function create(PlanAlimento $planAlimento): void
     {
-        $query = <<<INSERT_QUERY
-            INSERT INTO plan_alimentos (name, description, tipo)
-            VALUES (:name, :description, :tipo)
-        INSERT_QUERY;
+        $query = <<<SQL
+            INSERT INTO plan_alimentos (description, tipo, dias, id_plans_user, deleted)
+            VALUES (:description, :tipo, :dias, :id_plans_user, :deleted)
+        SQL;
 
         $parameters = [
-            "name" => $PlanAlimento->name(),
-            "description" => $PlanAlimento->description(),
-            "tipo" => $PlanAlimento->tipo()
+            "description"     => $planAlimento->description(),
+            "tipo"            => $planAlimento->tipo(),
+            "dias"            => $planAlimento->dias(),
+            "id_plans_user"   => $planAlimento->idPlansUser(),
+            "deleted"         => $planAlimento->deleted()
         ];
 
         $this->execute($query, $parameters);
     }
-
-    // Actualizar un PlanAlimento existente
-    public function update(PlanAlimento $PlanAlimento): void
+    public function update(PlanAlimento $planAlimento): void
     {
-        $query = <<<UPDATE_QUERY
+        $query = <<<SQL
             UPDATE plan_alimentos
-            SET name = :name, description = :description, tipo = :tipo
-            WHERE id = :id
-        UPDATE_QUERY;
+            SET description = :description,
+                tipo = :tipo,
+                dias = :dias
+            WHERE id = :id AND deleted = 0
+        SQL;
 
         $parameters = [
-            "id" => $PlanAlimento->id(),
-            "name" => $PlanAlimento->name(),
-            "description" => $PlanAlimento->description(),
-            "tipo" => $PlanAlimento->tipo(),
+            "id"             => $planAlimento->id(),
+            "description"    => $planAlimento->description(),
+            "tipo"           => $planAlimento->tipo(),
+            "dias"           => $planAlimento->dias()
         ];
 
         $this->execute($query, $parameters);
     }
 
-     public function delete(int $id): void
+
+    // borrado lógico
+    public function delete(int $id): void
     {
-        $query = "DELETE FROM plan_alimentos WHERE id = :id";
+        $query = "UPDATE plan_alimentos SET deleted = 1 WHERE id = :id";
         $parameters = [ "id" => $id ];
         $this->execute($query, $parameters);
     }
-    // Mapea un array de la DB a un objeto PlanAlimento
+    // PlanAlimentoRepository.php
+
+public function createForUser(PlanAlimento $planAlimento): void
+{
+    $query = <<<SQL
+        INSERT INTO plan_alimentos (description, tipo, dias, id_plans_user, deleted)
+        VALUES (:description, :tipo, :dias, :id_plans_user, 0)
+    SQL;
+
+    $params = [
+        "description" => $planAlimento->description(),
+        "tipo" => $planAlimento->tipo(),
+        "dias" => $planAlimento->dias(),
+        "id_plans_user" => $planAlimento->plansUserId(),
+    ];
+
+    $this->execute($query, $params);
+}
+
+
+public function updateForUser(PlanAlimento $planAlimento): void
+{
+    $query = <<<SQL
+        UPDATE plan_alimentos
+        SET description = :description, tipo = :tipo, dias = :dias
+        WHERE id = :id AND deleted = 0
+    SQL;
+
+    $params = [
+        "id" => $planAlimento->id(),
+        "description" => $planAlimento->description(),
+        "tipo" => $planAlimento->tipo(),
+        "dias" => $planAlimento->dias(),
+    ];
+
+    $this->execute($query, $params);
+}
+
+
     private function toPlanAlimento(?array $primitive): ?PlanAlimento
     {
         if ($primitive === null) {
             return null;
         }
-        
+
         return new PlanAlimento(
             $primitive["id"],
-            $primitive["name"],
             $primitive["description"],
-            $primitive["tipo"]
+            $primitive["tipo"],
+            $primitive["dias"],
+            $primitive["id_plans_user"],
+            $primitive["deleted"] ?? 0
         );
     }
-    
 }

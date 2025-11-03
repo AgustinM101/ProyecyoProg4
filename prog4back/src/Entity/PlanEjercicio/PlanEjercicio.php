@@ -3,36 +3,54 @@
 namespace Src\Entity\PlanEjercicio;
 
 final class PlanEjercicio {
+
     public function __construct(
         private readonly ?int $id,
-        private string $name,
         private string $description,
-        private string $tipo
+        private string $tipo,
+        private string $dias,
+        private int $id_plans_user,
+        private int $deleted = 0,
     ) {}
 
-    public function id(): ?int {
-        return $this->id;
+    // Factory
+    public static function create(
+        string $description,
+        string $tipo,
+        string $dias,
+        int $id_plans_user
+    ): self
+    {
+        return new self(
+            null,
+            $description,
+            $tipo,
+            $dias,
+            $id_plans_user,
+            0
+        );
     }
 
-    public function name(): string {
-        return $this->name;
-    }
+    // Getters
+    public function id(): ?int { return $this->id; }
+    public function description(): string { return $this->description; }
+    public function tipo(): string { return $this->tipo; }
+    public function dias(): string { return $this->dias; }
+    public function idPlansUser(): int { return $this->id_plans_user; }
+    public function deleted(): int { return $this->deleted; }
 
-    public function description(): string {
-        return $this->description;
-    }
+    // Setters
+    public function setDescription(string $description): void { $this->description = $description; }
+    public function setTipo(string $tipo): void { $this->tipo = $tipo; }
+    public function setDias(string $dias): void { $this->dias = $dias; }
+    public function setIdPlansUser(int $id): void { $this->id_plans_user = $id; }
+    public function setDeleted(int $deleted): void { $this->deleted = $deleted; }
 
-    public function tipo(): string {
-        return $this->tipo;
-    }
-
-    // ✅ Método para serializar a array
-    public function toArray(): array {
-        return [
-            "id" => $this->id(),
-            "name" => $this->name(),
-            "description" => $this->description(),
-            "tipo" => $this->tipo()
-        ];
+    // Modificación
+    public function modify(string $description, string $tipo, string $dias): void
+    {
+        $this->setDescription($description);
+        $this->setTipo($tipo);
+        $this->setDias($dias);
     }
 }

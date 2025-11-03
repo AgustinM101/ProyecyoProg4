@@ -2,7 +2,8 @@
 
 namespace Src\Entity\PlansForm;
 
-final class PlansForm {
+final class PlansForm implements \JsonSerializable
+{
     public function __construct(
         private readonly ?int $id,
         private string $nombre,
@@ -18,12 +19,11 @@ final class PlansForm {
         private ?string $problemas_digestivos,
         private int $comidas_diarias,
         private ?string $alimentos_evitar,
-        private string $horarios_comidas,
+        private ?string $horarios_comidas,
         private float $consumo_agua,
         private string $consumo_alcohol,
         private string $fecha_registro,
         private ?int $id_plans_user
-        
     ) {}
 
     public function id(): ?int {
@@ -32,7 +32,6 @@ final class PlansForm {
     public function nombre(): string {       
         return $this->nombre;
     }
-
     public function edad(): int {
         return $this->edad;
     }
@@ -85,5 +84,28 @@ final class PlansForm {
         return $this->id_plans_user;
     }
 
-
+    // 🔹 Implementación de JsonSerializable
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id(),
+            'nombre' => $this->nombre(),
+            'edad' => $this->edad(),
+            'sexo' => $this->sexo(),
+            'altura' => $this->altura(),
+            'peso_actual' => $this->pesoActual(),
+            'peso_deseado' => $this->pesoDeseado(),
+            'actividad_fisica' => $this->actividadFisica(),
+            'antecedentes_medicos' => $this->antecedentesMedicos(),
+            'alergias' => $this->alergias(),
+            'medicamentos' => $this->medicamentos(),
+            'problemas_digestivos' => $this->problemasDigestivos(),
+            'comidas_diarias' => $this->comidasDiarias(),
+            'alimentos_evitar' => $this->alimentosEvitar(),
+            'horarios_comidas' => $this->horariosComidas(),
+            'consumo_agua' => $this->consumoAgua(),
+            'consumo_alcohol' => $this->consumoAlcohol(),
+            'fecha_registro' => $this->fechaRegistro(),
+            'id_plans_user' => $this->idPlansUser(),
+        ];
+    }
 }

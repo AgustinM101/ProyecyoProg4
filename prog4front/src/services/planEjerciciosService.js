@@ -1,16 +1,16 @@
 import { api } from "./api";
 
 export const planEjerciciosService = {
+  createPlan: (data) => {
+    const id = data.id_plans_user;
+    return api.post(`/userPlanEjercicios/${id}`, data);
+  },
 
-  getPlans: () => api.get("/planEjercicios"),
-  getById: (id) => api.get(`/planEjercicios/${id}`),
-  createPlan: (data) => api.post("/planEjercicios", data),
-  updatePlan: (id, data) => api.put(`/planEjercicios/${id}`, data),
-  deletePlan: (id) => api.delete(`/planEjercicios/${id}`),
+  updatePlan: (data) => {
+    const id = data.id_plans_user;
+    return api.put(`/userPlanEjercicios/${id}`, data);
+  },
 
 
-
-
-  getPlanPhavId: () => api.get(`/plans/1`),
-  getPlanCompeticionId: () => api.get(`/plans/2`)
+  getPlanEjerciciosByUser: (id) => api.get(`/userPlanEjercicios/${id}`),
 };
