@@ -234,13 +234,13 @@ export function MyPlansPage() {
                           >
                             <Stack spacing={2}>
                               <Text size="sm">
-                                <strong>Día:</strong> {pa.dia}
+                                <strong>description:</strong> {pa.description}
                               </Text>
                               <Text size="sm">
-                                <strong>Comida:</strong> {pa.comida}
+                                <strong>tipo:</strong> {pa.tipo}
                               </Text>
                               <Text size="sm">
-                                <strong>Descripción:</strong> {pa.descripcion}
+                                <strong>Dias:</strong> {pa.dias}
                               </Text>
                             </Stack>
                           </Card>
@@ -266,17 +266,15 @@ export function MyPlansPage() {
                           >
                             <Stack spacing={2}>
                               <Text size="sm">
-                                <strong>Día:</strong> {pe.dia}
+                                <strong>tipo:</strong> {pe.tipo}
                               </Text>
                               <Text size="sm">
-                                <strong>Ejercicio:</strong> {pe.ejercicio}
+                                <strong>Dias:</strong> {pe.dias}
                               </Text>
                               <Text size="sm">
-                                <strong>Series:</strong> {pe.series}
+                                <strong>Descripcion:</strong> {pe.descripcion}
                               </Text>
-                              <Text size="sm">
-                                <strong>Repeticiones:</strong> {pe.repeticiones}
-                              </Text>
+                    
                             </Stack>
                           </Card>
                         ))
