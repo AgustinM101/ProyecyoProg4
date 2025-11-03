@@ -11,5 +11,6 @@ export const planEjerciciosService = {
     return api.put(`/userPlanEjercicios/${id}`, data);
   },
 
+
   getPlanEjerciciosByUser: (id) => api.get(`/userPlanEjercicios/${id}`),
 };
