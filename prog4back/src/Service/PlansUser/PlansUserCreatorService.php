@@ -37,14 +37,6 @@ final readonly class PlansUserCreatorService
 
         $userName = $user ? $user->name() : 'Desconocido';
         $planName = $plan ? $plan->name() : 'Desconocido';
-        
-        if (!$user || !$plan) {
-            ControllerUtils::logAction(
-                "Se asignó un plan a un usuario, pero no se pudo encontrar el nombre del usuario o del plan. ID Usuario: $id_user, ID Plan: $id_plan",
-                true,
-                3
-            );
-        }
 
         ControllerUtils::logAction(
             "Se asignó el plan '{$planName}' al usuario '{$userName}'.",

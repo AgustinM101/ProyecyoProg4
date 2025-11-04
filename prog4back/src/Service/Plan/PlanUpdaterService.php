@@ -4,7 +4,6 @@ namespace Src\Service\Plan;
 
 use Src\Entity\Plan\Plan;
 use Src\Infrastructure\Repository\Plan\PlanRepository;
-use Src\Utils\ControllerUtils;
 
 final readonly class PlanUpdaterService{
 
@@ -20,9 +19,6 @@ final readonly class PlanUpdaterService{
 
         $plan = $this->finderService->find($id);
         $plan->modify($name, $description, $price);
-        if (!$plan) {
-            ControllerUtils::logAction("Intento de modificar un plan inexistente con ID $id", true, 1);
-        }
 
         $this->repository->update($plan);
         // Registrar log

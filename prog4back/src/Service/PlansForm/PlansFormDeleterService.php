@@ -29,7 +29,7 @@ final readonly class PlansFormDeleterService
 
         // Si el formulario no existe
         if ($plansForm === null) {
-            ControllerUtils::logAction("Se intentó eliminar un formulario inexistente con ID $id", true, 2);
+            ControllerUtils::logAction("Se intentó eliminar un formulario inexistente con ID $id", true);
             return false;
         }
 
@@ -52,7 +52,7 @@ final readonly class PlansFormDeleterService
         // Registrar log
         ControllerUtils::logAction(
             "Se eliminó el formulario ID {$plansForm->id()} del usuario {$userName} correspondiente al plan {$planName}.",
-            false
+            true
         );
 
         return true;

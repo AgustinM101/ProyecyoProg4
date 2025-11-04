@@ -10,7 +10,6 @@ final class PlansUser {
         private string $status,
         private ?string $expiration_date = null,
         int $deleted = 0,
-        private ?string $created_at = null
     ) {}
 
     public function modify(string $status, string $expiration_date): void {
@@ -18,12 +17,30 @@ final class PlansUser {
         $this->expiration_date = $expiration_date;
     }
 
-    public function id(): ?int { return $this->id; }
-    public function id_user(): int { return $this->id_user; }
-    public function id_plan(): int { return $this->id_plan; }
-    public function status(): string { return $this->status; }
-    public function expiration_date(): ?string { return $this->expiration_date; }
-    public function deleted(): int { return $this->deleted; }
-    public function markAsDeleted(): void { $this->deleted = 1; }
-    public function created_at(): ?string { return $this->created_at;}
+    public function id(): ?int { 
+        return $this->id; 
+    }
+    
+    public function id_user(): int { 
+        return $this->id_user; 
+    }
+
+    public function id_plan(): int { 
+        return $this->id_plan; 
+    }
+
+    public function status(): string { 
+        return $this->status; 
+    }
+
+    public function expiration_date(): ?string {
+        return $this->expiration_date;
+    }
+    public function deleted(): int {
+    return $this->deleted;
+}
+
+public function markAsDeleted(): void {
+    $this->deleted = 1;
+}
 }

@@ -33,7 +33,7 @@ final readonly class PlansUserRemoverService {
 
             ControllerUtils::logAction(
                 "Se eliminó la asignación del plan '{$planName}' para el usuario '{$userName}'.",
-                false
+                true
             );
 
             // Eliminar después de loguear
@@ -42,8 +42,7 @@ final readonly class PlansUserRemoverService {
             // Log de alerta si el registro no existía
             ControllerUtils::logAction(
                 "Se intentó eliminar una asignación de plan inexistente con ID {$id}.",
-                true,
-                3
+                true
             );
         }
     }

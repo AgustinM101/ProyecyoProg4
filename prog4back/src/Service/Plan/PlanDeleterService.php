@@ -21,10 +21,6 @@ final readonly class PlanDeleterService {
 
         
         $this->repository->softDelete($id);
-        if (!$plan) {
-            ControllerUtils::logAction("Se intentó eliminar un plan inexistente con ID $id", true, 1);
-            return;
-        }
 
         // Registrar log
         ControllerUtils::logAction("Se eliminó el plan: {$plan->name()}", true);

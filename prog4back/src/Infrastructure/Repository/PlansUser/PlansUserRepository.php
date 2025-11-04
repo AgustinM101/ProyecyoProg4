@@ -72,8 +72,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
                 up.id_plan,
                 p.name AS plan_name,
                 up.status,
-                up.expiration_date,
-                up.created_at
+                up.expiration_date
             FROM plans_user up
             JOIN users u ON u.id = up.id_user
             JOIN plans p ON p.id = up.id_plan

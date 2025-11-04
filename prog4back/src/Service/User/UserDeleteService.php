@@ -21,7 +21,7 @@ final readonly class UserDeleteService {
         $user = $this->finderService->find($id);
 
         if (!$user) {
-            ControllerUtils::logAction("Se intentó eliminar un usuario inexistente con ID $id", true,2);
+            ControllerUtils::logAction("Se intentó eliminar un usuario inexistente con ID $id", true);
             return;
         }
 

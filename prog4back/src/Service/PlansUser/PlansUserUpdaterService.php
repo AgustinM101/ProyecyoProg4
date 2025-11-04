@@ -39,8 +39,7 @@ final readonly class PlansUserUpdaterService {
         } else {
             ControllerUtils::logAction(
                 "Se intentó actualizar una asignación de plan inexistente con ID {$id}.",
-                true,
-                2
+                true
             );
         }
     }

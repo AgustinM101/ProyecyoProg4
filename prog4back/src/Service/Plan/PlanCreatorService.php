@@ -16,9 +16,6 @@ final readonly class PlanCreatorService{
     public function create( string $name, string $description, int $price): void{
         $plan = Plan::create($name, $description, $price);
         $this->repository->create($plan);
-        if (!$plan) {
-            ControllerUtils::logAction("Error al crear un nuevo plan: {$name}", true, 1);
-        }
 
         // Registrar log
         ControllerUtils::logAction("Se creó un nuevo plan: {$plan->name()}", false);

@@ -13,7 +13,6 @@ import { SystemStatus } from "../../components/Admin/SystemStatus";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 
 import "./AdminHome.css";
-import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function AdminHome() {
   const fecha = new Date().toLocaleDateString("es-AR");
@@ -93,7 +92,9 @@ export function AdminHome() {
     return (
       <>
         <AdminNavbar />
-        <AdminPageLoader />
+        <div className="adminhome-loader">
+          <Loader color="#FF6600" size="xl" />
+        </div>
       </>
     );
   }

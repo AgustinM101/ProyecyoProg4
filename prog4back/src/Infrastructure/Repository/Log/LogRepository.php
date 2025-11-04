@@ -72,7 +72,7 @@ final readonly class LogRepository extends PDOManager implements LogRepositoryIn
             $row["text"],
             $row["created_at"],
             (bool)$row["is_alert"],
-            intval($row["severity"] ?? 1) // NUEVO
+            isset($row["severity"]) ? intval($row["severity"]) : null 
         );
     }
 }

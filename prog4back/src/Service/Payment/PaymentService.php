@@ -5,7 +5,6 @@ namespace Src\Service\Payment;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\Exceptions\MPApiException;
-use Src\Utils\ControllerUtils;
 
  class PaymentService
 {
@@ -44,11 +43,9 @@ use Src\Utils\ControllerUtils;
                 "init_point" => $preference->init_point,
                 "sandbox_init_point" => $preference->sandbox_init_point ?? null
             ];
-            ControllerUtils::logAction("Se creó una nueva preferencia de pago con ID: " . $preference->id, false);
 
         } catch (MPApiException $e) {
             throw new \Exception("Error al crear la preferencia: " . $e->getMessage());
-            ControllerUtils::logAction("Error al crear la preferencia de pago: " . $e->getMessage(), true);
         }
     }
 }

@@ -13,7 +13,6 @@ import { plansService } from "../../services/plansService";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 import { PlanGenericoTable } from "../../components/Admin/PlanGenericoTable";
 import { PlanGenericoModal } from "../../components/Admin/PlanGenericoModal";
-import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function PlanesGenericosPage() {
   const [plans, setPlans] = useState([]);
@@ -96,7 +95,9 @@ export function PlanesGenericosPage() {
     return (
       <>
         <AdminNavbar />
-        <AdminPageLoader />
+        <Center style={{ height: "100vh" }}>
+          <Loader color="#FF6600" size="xl" />
+        </Center>
       </>
     );
   }

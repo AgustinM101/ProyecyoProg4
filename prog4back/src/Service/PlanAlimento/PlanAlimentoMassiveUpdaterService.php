@@ -3,7 +3,6 @@
 namespace Src\Service\PlanAlimento;
 
 use Src\Infrastructure\Repository\PlanAlimento\PlanAlimentoRepository;
-use Src\Utils\ControllerUtils;
 
 final readonly class PlanAlimentoMassiveUpdaterService
 {
@@ -28,7 +27,6 @@ final readonly class PlanAlimentoMassiveUpdaterService
 
         if ($plan->idPlansUser() !== $plansUserId) {
             continue;
-            ControllerUtils::logAction("Intento de modificar un plan de alimento que no pertenece al usuario del plan: PlanAlimento ID {$item['id']}, PlansUser ID {$plansUserId}", true, 2);
         }
 
         $plan->modify(
@@ -36,7 +34,6 @@ final readonly class PlanAlimentoMassiveUpdaterService
             $item["tipo"],
             $item["dia"]
         );
-        ControllerUtils::logAction("Se modificó el plan de alimento ID {$item['id']} del PlansUser ID {$plansUserId}", false);
 
         $this->repository->update($plan);
     }

@@ -44,9 +44,6 @@ final class UserUpdateProfileService
         }
 
         $this->userRepository->update($user);
-        
-                // Registrar log después de la actualización
-        ControllerUtils::logAction("Se actualizó la imagen del usuario: $name con email: $email", false);
     }
 }
 
