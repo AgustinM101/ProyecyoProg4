@@ -39,10 +39,23 @@ function startRouter(): Router
     include_once "Routes/LogsRoutes.php";
     $routes = array_merge($routes, LogRoutes::getRoutes());
 
+    include_once "Routes/LogsRoutes.php";
+    $routes = array_merge($routes, LogRoutes::getRoutes());
+
+    include_once "Routes/PaymentIpnRoutes.php";
+    $routes = array_merge($routes, PaymentIpnRoutes::getRoutes());
+
+
     $routesClass = [];
     foreach ($routes as $route) {
         $routesClass[] = Route::fromArray($route);
     }
+       /*echo "<pre>";
+       print_r($routes);
+       echo "</pre>";
+       exit;
+       */
+       
 
     return new Router($routesClass);
 }

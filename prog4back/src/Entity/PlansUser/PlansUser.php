@@ -17,6 +17,10 @@ final class PlansUser {
         $this->status = $status;
         $this->expiration_date = $expiration_date;
     }
+    public function setId(int $id): void {
+    $this->id = $id;
+}
+
 
     public function id(): ?int { 
         return $this->id; 

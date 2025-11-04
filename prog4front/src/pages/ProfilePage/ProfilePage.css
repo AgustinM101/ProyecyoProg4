@@ -1,66 +1,53 @@
-
-.profile-wrapper {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Imagen de fondo */
-  background: url("https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80")
-    no-repeat center center / cover;
-
-  padding: 40px 20px;
+.profile-background {
+  min-height: 90vh;
+  background-image: url("https://images.unsplash.com/photo-1605296867304-46d5465a13f1");
+  background-size: cover;
+  background-position: center;
+  padding-top: 60px;
   position: relative;
 }
 
-/* Oscurecemos un poco el fondo para que el texto resalte */
-.profile-wrapper::before {
-  content: "";
+/* Foto + botones a la derecha */
+.profile-right-panel {
   position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 0;
-}
-
-.profile-container {
-  width: 100%;
-  max-width: 700px;
-  z-index: 1; /* Se asegura que quede sobre el overlay */
-}
-
-.profile-card {
-  background: rgba(255, 255, 255, 0.08); /* efecto glass */
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  border-radius: 20px;
-  padding: 40px;
-}
-
-.profile-title {
+  top: 40px;
+  right: 40px;
   text-align: center;
-  color: #FFD60A;
-  margin-bottom: 20px;
-  font-size: 2rem;
 }
 
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.profile-avatar {
+  border: 4px solid white;
+}
+
+/* Nombre + descripción centrados arriba */
+.profile-header-center {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.profile-name {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.profile-description {
+  color: white;
   font-size: 1.1rem;
+  max-width: 500px;
+  margin: 10px auto;
+  opacity: 0.9;
 }
 
-.profile-icon {
-  color: #FFD60A;
+/* Caja inferior (contenido futuro) */
+.profile-content-box {
+  margin-top: 80px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 12px;
+  padding: 30px;
+  color: white;
+  min-height: 200px;
 }
 
-@media (max-width: 768px) {
-  .profile-card {
-    padding: 20px;
-  }
 
-  .profile-title {
-    font-size: 1.5rem;
-  }
-}
+
