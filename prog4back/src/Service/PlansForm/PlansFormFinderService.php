@@ -25,4 +25,9 @@ final readonly class PlansFormFinderService
 
         return $plansForm;
     }
+    /** @return PlansForm|null */
+    public function findByPlansUserId(int $plansUserId): ?PlansForm
+    {
+        return $this->repository->findByPlansUser($plansUserId);
+    }
 }

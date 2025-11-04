@@ -9,4 +9,6 @@ export const plansFormService = {
   updatePlan: (id, data) => api.put(`/plansForm/${id}`, data),
   deletePlan: (id) => api.delete(`/plansForm/${id}`),
   getFormFieldsById: (id) => api.get(`/plansForms/${id}`),
+
+  getPlansFormsByPlansUser: (id) => api.get(`/PlansFormsByUserPlanId/${id}`)
 };
