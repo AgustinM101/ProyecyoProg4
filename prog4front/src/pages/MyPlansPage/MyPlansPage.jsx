@@ -10,6 +10,8 @@ import {
   Button,
   Center,
   Loader,
+  TextInput,
+  Textarea,
 } from "@mantine/core";
 import { IconEye } from "@tabler/icons-react";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
@@ -28,6 +30,7 @@ export function MyPlansPage() {
   const [planAlimento, setPlanAlimento] = useState([]);
   const [planEjercicio, setPlanEjercicio] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false); // ✅ nuevo estado
 
   useEffect(() => {
     fetchPlans();
@@ -70,6 +73,7 @@ export function MyPlansPage() {
       setFormData(formResp.data?.[0] || null);
       setPlanAlimento(alimentoResp.data || []);
       setPlanEjercicio(ejercicioResp.data || []);
+      setIsEditing(false);
     } catch (error) {
       console.error("Error al ver detalles del plan:", error);
       setPlanAlimento([]);
@@ -77,6 +81,15 @@ export function MyPlansPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = () => {
+    console.log("Datos guardados:", formData);
+    setIsEditing(false);
   };
 
   if (loading) {
@@ -149,68 +162,146 @@ export function MyPlansPage() {
 
                 {selectedPlan === plan.id && (
                   <Stack mt="md" spacing="md">
-                    {/* Formulario */}
+                    {/* FORMULARIO */}
                     <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Title order={5}>FORMULARIO</Title>
+                      <Group justify="space-between" align="center">
+                        <Title order={5}>FORMULARIO</Title>
+                        {formData && !isEditing && (
+                          <Button
+                            size="xs"
+                            color="yellow"
+                            onClick={() => setIsEditing(true)}
+                            style={{
+                              backgroundColor: "#eeff05ff",
+                              color: "black",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Editar
+                          </Button>
+                        )}
+                      </Group>
+
                       {formData ? (
-                        <Stack mt="xs" spacing={4}>
-                          <Text size="sm">
-                            <strong>Nombre:</strong> {formData.nombre || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Edad:</strong> {formData.edad || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Sexo:</strong> {formData.sexo || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Altura:</strong> {formData.altura || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Peso actual:</strong> {formData.peso_actual || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Peso deseado:</strong> {formData.peso_deseado || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Actividad física:</strong>{" "}
-                            {formData.actividad_fisica || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Antecedentes médicos:</strong>{" "}
-                            {formData.antecedentes_medicos || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Alergias:</strong> {formData.alergias || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Medicamentos:</strong>{" "}
-                            {formData.medicamentos || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Problemas digestivos:</strong>{" "}
-                            {formData.problemas_digestivos || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Comidas diarias:</strong>{" "}
-                            {formData.comidas_diarias || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Alimentos evitar:</strong>{" "}
-                            {formData.alimentos_evitar || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Horarios de comida:</strong>{" "}
-                            {formData.horarios_comida || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Consumo agua:</strong>{" "}
-                            {formData.consumo_agua || "-"}
-                          </Text>
-                          <Text size="sm">
-                            <strong>Consumo alcohol:</strong>{" "}
-                            {formData.consumo_alcohol || "-"}
-                          </Text>
+                        <Stack mt="xs" spacing={4} >
+                          <TextInput
+                            label="Nombre"
+                        
+                            value={formData.nombre || ""}
+                            onChange={(e) => handleChange("nombre", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          
+                          <TextInput
+                            label="Edad"
+                            value={formData.edad || ""}
+                            onChange={(e) => handleChange("edad", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Sexo"
+                            value={formData.sexo || ""}
+                            onChange={(e) => handleChange("sexo", e.target.value)}
+                            disabled={!isEditing}
+                          /> <TextInput
+                            label="Altura"
+                            value={formData.altura || ""}
+                            onChange={(e) => handleChange("altura", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="peso_actual"
+                            value={formData.peso_actual || ""}
+                            onChange={(e) => handleChange("peso_actual", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Peso_deseado"
+                            value={formData.peso_deseado || ""}
+                            onChange={(e) => handleChange("peso_deseado", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Actividad_fisica"
+                            value={formData.actividad_fisica || ""}
+                            onChange={(e) => handleChange("actividad_fisica", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <Textarea
+                            label="Antecedentes médicos"
+                            value={formData.antecedentes_medicos || ""}
+                            onChange={(e) =>
+                              handleChange("antecedentes_medicos", e.target.value)
+                            }
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Alergias"
+                            value={formData.alergias || ""}
+                            onChange={(e) => handleChange("alergias", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Medicamentos"
+                            value={formData.medicamentos || ""}
+                            onChange={(e) => handleChange("medicamentos", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Problemas_digestivos"
+                            value={formData.problemas_digestivos || ""}
+                            onChange={(e) => handleChange("problemas_digestivos", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Comidas_diarias"
+                            value={formData.comidas_diarias || ""}
+                            onChange={(e) => handleChange("comidas_diarias", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Alimentos_evitar"
+                            value={formData.alimentos_evitar || ""}
+                            onChange={(e) => handleChange("alimentos_evitar", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Horarios_comidas"
+                            value={formData.horarios_comidas || ""}
+                            onChange={(e) => handleChange("horarios_comidas", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Consumo_agua"
+                            value={formData.consumo_agua || ""}
+                            onChange={(e) => handleChange("consumo_agua", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                           <TextInput
+                            label="Consumo_alcohol"
+                            value={formData.consumo_alcohol || ""}
+                            onChange={(e) => handleChange("consumo_alcohol", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+  label="Fecha de registro"
+  value={
+    formData.fecha_registro
+      ? new Date(formData.fecha_registro).toLocaleDateString()
+      : new Date().toLocaleDateString()
+  }
+  disabled
+/>
+                          {isEditing && (
+                            <Group mt="md" justify="center">
+                              <Button color="green" onClick={handleSave}>
+                                Guardar
+                              </Button>
+                              <Button color="red" onClick={() => setIsEditing(false)}>
+                                Cancelar
+                              </Button>
+                            </Group>
+                          )}
                         </Stack>
                       ) : (
                         <Text size="sm" c="dimmed">
@@ -233,28 +324,13 @@ export function MyPlansPage() {
                         >
                           <thead>
                             <tr style={{ backgroundColor: "#1c1c1c" }}>
-                              <th
-                                style={{
-                                  border: "1px solid #eeff05ff",
-                                  padding: "6px",
-                                }}
-                              >
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                 Descripción
                               </th>
-                              <th
-                                style={{
-                                  border: "1px solid #eeff05ff",
-                                  padding: "6px",
-                                }}
-                              >
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                 Tipo
                               </th>
-                              <th
-                                style={{
-                                  border: "1px solid #eeff05ff",
-                                  padding: "6px",
-                                }}
-                              >
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                 Días
                               </th>
                             </tr>
@@ -262,28 +338,13 @@ export function MyPlansPage() {
                           <tbody>
                             {planAlimento.map((pa) => (
                               <tr key={pa.id} style={{ backgroundColor: "#2a2a2a" }}>
-                                <td
-                                  style={{
-                                    border: "1px solid #eeff05ff",
-                                    padding: "6px",
-                                  }}
-                                >
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                   {pa.description}
                                 </td>
-                                <td
-                                  style={{
-                                    border: "1px solid #eeff05ff",
-                                    padding: "6px",
-                                  }}
-                                >
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                   {pa.tipo}
                                 </td>
-                                <td
-                                  style={{
-                                    border: "1px solid #eeff05ff",
-                                    padding: "6px",
-                                  }}
-                                >
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                   {pa.dias}
                                 </td>
                               </tr>
@@ -311,28 +372,13 @@ export function MyPlansPage() {
                         >
                           <thead>
                             <tr style={{ backgroundColor: "#1c1c1c" }}>
-                              <th
-                                style={{
-                                  border: "1px solid #eeff05ff",
-                                  padding: "6px",
-                                }}
-                              >
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                 Tipo
                               </th>
-                              <th
-                                style={{
-                                  border: "1px solid #eeff05ff",
-                                  padding: "6px",
-                                }}
-                              >
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                 Días
                               </th>
-                              <th
-                                style={{
-                                  border: "1px solid #eeff05ff",
-                                  padding: "6px",
-                                }}
-                              >
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                 Descripción
                               </th>
                             </tr>
@@ -340,28 +386,13 @@ export function MyPlansPage() {
                           <tbody>
                             {planEjercicio.map((pe) => (
                               <tr key={pe.id} style={{ backgroundColor: "#2a2a2a" }}>
-                                <td
-                                  style={{
-                                    border: "1px solid #eeff05ff",
-                                    padding: "6px",
-                                  }}
-                                >
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                   {pe.tipo}
                                 </td>
-                                <td
-                                  style={{
-                                    border: "1px solid #eeff05ff",
-                                    padding: "6px",
-                                  }}
-                                >
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                   {pe.dias}
                                 </td>
-                                <td
-                                  style={{
-                                    border: "1px solid #eeff05ff",
-                                    padding: "6px",
-                                  }}
-                                >
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
                                   {pe.descripcion}
                                 </td>
                               </tr>
@@ -385,4 +416,3 @@ export function MyPlansPage() {
     </>
   );
 }
-
