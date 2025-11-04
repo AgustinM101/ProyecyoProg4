@@ -27,7 +27,6 @@ export function MyPlansPage() {
     const fetchUser = async () => {
         try {
             setLoading(true);
-
             const response = await userService.getCurrentUser();
             const data = response?.data;
             if (data) setUser(data);
@@ -86,9 +85,7 @@ function PlanCard({ userPlan }) {
                     <Text size="sm" c="dimmed">
                         Expira:{" "}
                         {userPlan.expiration_date
-                            ? new Date(
-                                  userPlan.expiration_date
-                              ).toLocaleDateString()
+                            ? new Date(userPlan.expiration_date).toLocaleDateString()
                             : "Sin fecha"}
                     </Text>
                 </div>
@@ -115,97 +112,95 @@ function PlanCard({ userPlan }) {
 }
 
 function FormCard() {
-    const [loading, setFormLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState(null);
+
+    useEffect(() => {
+        fetchForm();
+    }, []);
 
     const fetchForm = async () => {
         try {
-            setFormLoading(true);
+            setLoading(true);
             const formResp = await plansFormService.getPlansFormsByUser();
             setFormData(formResp.data?.[0] || null);
         } catch (error) {
             console.error("Error al ver detalles del plan:", error);
         } finally {
-            setFormLoading(false);
+            setLoading(false);
         }
     };
 
-    useEffect(() => {
-        fetchForm();
-    }, []);
-                    {/* Plan Alimentario */}
-                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Title order={5}>Plan Alimentario</Title>
-                      {planAlimento.length > 0 ? (
-                        planAlimento.map((pa) => (
-                          <Card
+    if (loading) return <Loader />;
+
+    const planAlimento = formData?.planAlimento || [];
+    const planEjercicio = formData?.planEjercicio || [];
+
+    return (
+        <Stack spacing="md">
+            {/* Plan Alimentario */}
+            <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                <Title order={5}>Plan Alimentario</Title>
+                {planAlimento.length > 0 ? (
+                    planAlimento.map((pa) => (
+                        <Card
                             key={pa.id}
                             mt="xs"
                             p="sm"
                             radius="md"
                             style={{ backgroundColor: "#3A3B3E" }}
-                          >
+                        >
                             <Stack spacing={2}>
-                              <Text size="sm">
-                                <strong>description:</strong> {pa.description}
-                              </Text>
-                              <Text size="sm">
-                                <strong>tipo:</strong> {pa.tipo}
-                              </Text>
-                              <Text size="sm">
-                                <strong>Dias:</strong> {pa.dias}
-                              </Text>
+                                <Text size="sm">
+                                    <strong>Descripción:</strong> {pa.description}
+                                </Text>
+                                <Text size="sm">
+                                    <strong>Tipo:</strong> {pa.tipo}
+                                </Text>
+                                <Text size="sm">
+                                    <strong>Días:</strong> {pa.dias}
+                                </Text>
                             </Stack>
-                          </Card>
-                        ))
-                      ) : (
-                        <Text size="sm" c="dimmed">
-                          Aún no hay plan alimentario asignado.
-                        </Text>
-                      )}
-                    </Card>
+                        </Card>
+                    ))
+                ) : (
+                    <Text size="sm" c="dimmed">
+                        Aún no hay plan alimentario asignado.
+                    </Text>
+                )}
+            </Card>
 
-                    {/* Plan de Ejercicio */}
-                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Title order={5}>Plan de Ejercicio</Title>
-                      {planEjercicio.length > 0 ? (
-                        planEjercicio.map((pe) => (
-                          <Card
+            {/* Plan de Ejercicio */}
+            <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                <Title order={5}>Plan de Ejercicio</Title>
+                {planEjercicio.length > 0 ? (
+                    planEjercicio.map((pe) => (
+                        <Card
                             key={pe.id}
                             mt="xs"
                             p="sm"
                             radius="md"
                             style={{ backgroundColor: "#090909ff" }}
-                          >
+                        >
                             <Stack spacing={2}>
-                              <Text size="sm">
-                                <strong>tipo:</strong> {pe.tipo}
-                              </Text>
-                              <Text size="sm">
-                                <strong>Dias:</strong> {pe.dias}
-                              </Text>
-                              <Text size="sm">
-                                <strong>Descripcion:</strong> {pe.descripcion}
-                              </Text>
-                    
+                                <Text size="sm">
+                                    <strong>Tipo:</strong> {pe.tipo}
+                                </Text>
+                                <Text size="sm">
+                                    <strong>Días:</strong> {pe.dias}
+                                </Text>
+                                <Text size="sm">
+                                    <strong>Descripción:</strong> {pe.descripcion}
+                                </Text>
                             </Stack>
-                          </Card>
-                        ))
-                      ) : (
-                        <Text size="sm" c="dimmed">
-                          Aún no hay plan de ejercicios asignado.
-                        </Text>
-                      )}
-                    </Card>
-                  </Stack>
+                        </Card>
+                    ))
+                ) : (
+                    <Text size="sm" c="dimmed">
+                        Aún no hay plan de ejercicios asignado.
+                    </Text>
                 )}
-              </Card>
-            ))}
-          </Stack>
-        )}
-      </Container>
-      <Footer />
-    </>
-  );
-
+            </Card>
+        </Stack>
+    );
 }
