@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Group } from "@mantine/core";
 import { IconPlus, IconEye, IconPencil, IconTrash } from "@tabler/icons-react";
 import { UserPlansAccordion } from "./UserPlansAccordion";
+import dayjs from "dayjs";
 
 export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
     const [showAccordion, setShowAccordion] = useState(false);
@@ -17,7 +18,11 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
                 <td>{pu.plan_name || pu.plan?.name || "Sin plan"}</td>
                 <td>{pu.plan?.price ? `$${pu.plan.price}` : "-"}</td>
                 <td style={{ color: "green", fontWeight: 700 }}>Activo</td>
-                <td>{pu.expiration_date || "A definir"}</td>
+                <td>
+                    {pu.expiration_date
+                        ? dayjs(pu.expiration_date).format("DD/MM/YYYY")
+                        : "A definir"}
+                </td>
                 <td>
                     <Group spacing="xs">
                         <Button

@@ -19,6 +19,7 @@ import "./ClientesPage.css";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 import { plansFormService } from "../../services/plansFormService";
 import { FormularioModal } from "../../components/Admin/FormularioModal";
+import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function ClientesPage() {
   const [plansUsers, setPlansUsers] = useState([]);
@@ -33,6 +34,8 @@ export function ClientesPage() {
   const [viewModal, setViewModal] = useState(false);
   const [formDetails, setFormDetails] = useState(null);
   const [loadingForm, setLoadingForm] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false); // NUEVO estado para loader de eliminar
 
   const itemsPerPage = 5;
 
@@ -96,15 +99,20 @@ export function ClientesPage() {
   };
 
   const handleConfirmDelete = async () => {
-    if (!selectedUser) return;
-    try {
-      await plansUserService.deletePlan(selectedUser.id);
-      setDeleteModal(false);
-      fetchPlansUsers();
-    } catch (error) {
-      console.error("Error al eliminar usuario:", error);
-    }
-  };
+  if (!selectedUser) return;
+
+  setDeleting(true); // activamos loader
+  try {
+    await plansUserService.deletePlan(selectedUser.id);
+    setDeleteModal(false);   // cerramos modal
+    fetchPlansUsers();       // refrescamos tabla
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    alert("❌ No se pudo eliminar el usuario");
+  } finally {
+    setDeleting(false); // desactivamos loader
+  }
+};
 
   const handleConfirmPayment = async (pu, newStatus) => {
     if (!pu) return;
@@ -131,7 +139,7 @@ export function ClientesPage() {
     setFormDetails(null);
 
     try {
-      const response = await plansFormService.getPlansFormsByUser(pu.id);
+      const response = await plansFormService.getPlansFormsByPlansUser(pu.id);
       setFormDetails(response.data);
     } catch (error) {
       console.error("Error al obtener formulario:", error);
@@ -144,9 +152,10 @@ export function ClientesPage() {
 
   if (loading) {
     return (
-      <Center style={{ height: "100vh" }}>
-        <Loader />
-      </Center>
+      <>
+        <AdminNavbar />
+        <AdminPageLoader />
+      </>
     );
   }
 
@@ -191,7 +200,7 @@ export function ClientesPage() {
             </>
           )}
 
-          {/* ✅ Modal editar */}
+          {/* Modal editar */}
           <Modal
             opened={editModal}
             onClose={() => setEditModal(false)}
@@ -220,9 +229,15 @@ export function ClientesPage() {
                   }
                 />
 
+                {/* BOTÓN CON LOADER */}
                 <Button
+                  fullWidth
+                  color="blue"
+                  loading={saving}           // muestra el spinner
+                  disabled={saving}          // deshabilita mientras se procesa
                   onClick={async () => {
                     if (!selectedUser) return;
+                    setSaving(true);         // activamos loader
 
                     const payload = { status: selectedUser.status, expiration_date: null };
                     if (selectedUser.expiration_date) {
@@ -231,21 +246,22 @@ export function ClientesPage() {
 
                     try {
                       await plansUserService.updatePlan(selectedUser.id, payload);
-                      setEditModal(false);
-                      fetchPlansUsers();
+                      setEditModal(false);    // cerramos modal
+                      fetchPlansUsers();      // refrescamos tabla
                     } catch (error) {
                       console.error("Error al actualizar usuario:", error);
                       alert("❌ No se pudo actualizar el usuario");
+                    } finally {
+                      setSaving(false);       // desactivamos loader
                     }
                   }}
-                  fullWidth
-                  color="blue"
                 >
                   Guardar Cambios
                 </Button>
               </Stack>
             )}
           </Modal>
+
 
           {/* ✅ Modal eliminar */}
           <Modal
@@ -258,14 +274,15 @@ export function ClientesPage() {
               ¿Estás seguro de que deseas eliminar este registro?
             </Text>
             <Group position="apart">
-              <Button color="gray" onClick={() => setDeleteModal(false)}>
+              <Button color="gray" onClick={() => setDeleteModal(false)} disabled={deleting}>
                 Cancelar
               </Button>
-              <Button color="red" onClick={handleConfirmDelete}>
+              <Button color="red" onClick={handleConfirmDelete} loading={deleting} disabled={deleting}>
                 Eliminar definitivamente
               </Button>
             </Group>
           </Modal>
+
 
           {/* ✅ Modal ver formulario */}
           <FormularioModal

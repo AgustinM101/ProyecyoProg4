@@ -10,6 +10,7 @@ final class PlansUser {
         private string $status,
         private ?string $expiration_date = null,
         int $deleted = 0,
+        private ?string $created_at = null
     ) {}
 
     public function modify(string $status, string $expiration_date): void {
@@ -43,4 +44,5 @@ final class PlansUser {
 public function markAsDeleted(): void {
     $this->deleted = 1;
 }
+public function created_at(): ?string { return $this->created_at;}
 }

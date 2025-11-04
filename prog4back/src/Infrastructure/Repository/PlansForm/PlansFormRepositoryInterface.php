@@ -6,6 +6,7 @@ use Src\Entity\PlansForm\PlansForm;
 
 interface PlansFormRepositoryInterface
 {
+    public function findByPlansUser(int $id): ?PlansForm;
     public function find(int $id): ?PlansForm;
 
     public function findByUserId(int $id_user): array;

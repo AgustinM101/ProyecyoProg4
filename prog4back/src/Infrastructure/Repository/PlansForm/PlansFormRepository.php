@@ -7,6 +7,20 @@ use Src\Entity\PlansForm\PlansForm;
 
 final readonly class PlansFormRepository extends PDOManager implements PlansFormRepositoryInterface
 {
+    public function findByPlansUser(int $id): ?PlansForm {
+    $query = <<<SQL
+        SELECT * FROM plans_forms
+        WHERE id_plans_user = :id AND deleted = 0
+        LIMIT 1
+    SQL;
+
+    $results = $this->execute($query, ["id" => $id]);
+
+    if (empty($results)) return null;
+
+    return $this->toPlansForm($results[0]);
+}
+
     public function find(int $id): ?PlansForm {
         $query = <<<HEREDOC
             SELECT id, nombre, edad, sexo, altura, peso_actual, peso_deseado,

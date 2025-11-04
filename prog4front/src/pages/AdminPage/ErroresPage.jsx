@@ -4,6 +4,7 @@ import { Table, Card, Text, Loader, Group, Badge } from "@mantine/core";
 import { logsService } from "../../services/logsService";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 import "./ErroresPage.css";
+import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function ErroresPage() {
   const [errores, setErrores] = useState([]);
@@ -48,10 +49,10 @@ export function ErroresPage() {
   if (loading) {
     return (
       <>
+              
         <AdminNavbar />
-        <div className="errores-loader">
-          <Loader color="#f5b301" size="xl" />
-        </div>
+        <AdminPageLoader />
+      
       </>
     );
   }
