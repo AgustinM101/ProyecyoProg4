@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, Avatar, Group, Text, UnstyledButton } from "@mantine/core";
-import { IconChevronDown, IconLogout, IconUser } from "@tabler/icons-react";
+import { IconChevronDown, IconLockAccess, IconLogout, IconUser } from "@tabler/icons-react";
 import cx from "clsx";
 import classes from "./HeaderMenu.module.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -52,6 +52,13 @@ export function UserMenu({ user }) {
                 Mi perfil
               </Menu.Item>
             </Link>
+            {user.admin === 1 && (
+              <Link to={`/admin`} className={classes.menuLink}>
+                <Menu.Item leftSection={<IconLockAccess size={16} />}>
+                  Panel de Administración
+                </Menu.Item>
+              </Link>
+            )}
             <Menu.Item
               leftSection={<IconLogout size={16} />}
               onClick={() => {

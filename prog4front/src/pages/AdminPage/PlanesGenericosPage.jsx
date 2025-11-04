@@ -23,6 +23,8 @@ export function PlanesGenericosPage() {
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const itemsPerPage = 5;
+  const [deleting, setDeleting] = useState(false);
+
 
   // 🔹 Obtener planes del backend
   const fetchPlans = async () => {
@@ -81,16 +83,20 @@ export function PlanesGenericosPage() {
     }
   };
 
-  // ❌ Eliminar plan
+  //  Eliminar plan
   const handleDelete = async (planId) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
-    try {
-      await plansService.deletePlan(planId);
-      fetchPlans();
-    } catch (error) {
-      console.error("Error al eliminar plan:", error);
-    }
-  };
+  if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
+  setDeleting(true);
+  try {
+    await plansService.deletePlan(planId);
+    fetchPlans();
+  } catch (error) {
+    console.error("Error al eliminar plan:", error);
+  } finally {
+    setDeleting(false);
+  }
+};
+
 
   if (loading) {
     return (
@@ -135,6 +141,7 @@ export function PlanesGenericosPage() {
                 plans={paginatedPlans}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                deleting={deleting}
               />
               <Center mt="md">
                 <Pagination
