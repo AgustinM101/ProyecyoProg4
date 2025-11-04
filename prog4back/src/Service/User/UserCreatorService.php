@@ -22,6 +22,7 @@ final readonly class UserCreatorService {
 
         if (!empty($user)) {
             throw new UserAlreadyExistsException();
+            ControllerUtils::logAction("Error al crear usuario: el email $email ya está en uso.", true,2);
         }
 
         $user = User::create($name, $email, $password);

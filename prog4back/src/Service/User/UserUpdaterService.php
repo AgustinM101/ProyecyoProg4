@@ -29,6 +29,7 @@ final readonly class UserUpdaterService {
 
         if (!$user) {
             throw new \Exception("Usuario con ID $userId no encontrado.");
+            ControllerUtils::logAction("Error al actualizar usuario: ID $userId no encontrado.", true,2);
         }
 
         // Actualizar campos si se envían

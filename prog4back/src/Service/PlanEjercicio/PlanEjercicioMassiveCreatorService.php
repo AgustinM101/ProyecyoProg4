@@ -4,6 +4,7 @@ namespace Src\Service\PlanEjercicio;
 
 use Src\Entity\PlanEjercicio\PlanEjercicio;
 use Src\Infrastructure\Repository\PlanEjercicio\PlanEjercicioRepository;
+use Src\Utils\ControllerUtils;
 
 final readonly class PlanEjercicioMassiveCreatorService
 {
@@ -29,6 +30,20 @@ final readonly class PlanEjercicioMassiveCreatorService
                 $plansUserId
             );
 
+
+            if (!$plan) {
+                            ControllerUtils::logAction(
+                "Se intentó actualizar un plan de ejercicio inexistente con ID {$item['id']}",
+                true,
+                2
+            ); 
+                continue;
+            }else{
+                            ControllerUtils::logAction(
+                "Se creó el plan de ejercicio para el usuario con ID {$plansUserId}",
+                false
+            ); 
+            }
             $this->repository->createForUser($plan);
         }
     }

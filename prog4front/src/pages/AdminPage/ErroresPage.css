@@ -43,19 +43,20 @@
   transition: background-color 0.2s ease;
 }
 
+/* Ajustes para el badge */
+.mantine-Badge-root {
+  font-weight: 600;
+  text-transform: none;
+  font-size: 0.8rem;
+}
+
+/* Loader */
 .errores-loader {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80vh;
   background-color: #000;
-}
-
-/* Ajustes del badge (severidad) */
-.mantine-Badge-root {
-  font-weight: 600;
-  text-transform: none;
-  font-size: 0.8rem;
 }
 
 /* Responsivo */

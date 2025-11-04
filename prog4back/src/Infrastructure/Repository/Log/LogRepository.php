@@ -11,7 +11,7 @@ final readonly class LogRepository extends PDOManager implements LogRepositoryIn
     public function findAll(): array
     {
         $query = <<<SQL
-            SELECT id, text, created_at, is_alert
+            SELECT id, text, created_at, is_alert, severity
             FROM logs
             ORDER BY created_at DESC
         SQL;
@@ -29,7 +29,7 @@ final readonly class LogRepository extends PDOManager implements LogRepositoryIn
     public function findById(int $id): ?Log
     {
         $query = <<<SQL
-            SELECT id, text, created_at, is_alert
+            SELECT id, text, created_at, is_alert, severity
             FROM logs
             WHERE id = :id
         SQL;
@@ -41,24 +41,27 @@ final readonly class LogRepository extends PDOManager implements LogRepositoryIn
     public function create(Log $log): void
     {
         $query = <<<SQL
-            INSERT INTO logs (text, created_at, is_alert)
-            VALUES (:text, :created_at, :is_alert)
+            INSERT INTO logs (text, created_at, is_alert, severity)
+            VALUES (:text, :created_at, :is_alert, :severity)
         SQL;
 
         $params = [
             "text" => $log->text(),
             "created_at" => $log->created_at(),
-            "is_alert" => $log->isAlert() ? 1 : 0
+            "is_alert" => $log->isAlert() ? 1 : 0,
+            "severity" => $log->severity()
         ];
 
         $this->execute($query, $params);
     }
+
 
     public function delete(int $id): void
     {
         $query = "DELETE FROM logs WHERE id = :id";
         $this->execute($query, ["id" => $id]);
     }
+
 
     private function toLog(?array $row): ?Log
     {
@@ -68,7 +71,8 @@ final readonly class LogRepository extends PDOManager implements LogRepositoryIn
             $row["id"] ?? null,
             $row["text"],
             $row["created_at"],
-            (bool)$row["is_alert"]
+            (bool)$row["is_alert"],
+            intval($row["severity"] ?? 1) // NUEVO
         );
     }
 }

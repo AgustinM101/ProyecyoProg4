@@ -1,9 +1,10 @@
 // src/pages/AdminPage/ErroresPage.jsx
 import { useEffect, useState } from "react";
-import { Table, Card, Text, Loader, Group, Badge } from "@mantine/core";
+import { Table, Card, Text, Group, Badge } from "@mantine/core";
 import { logsService } from "../../services/logsService";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 import "./ErroresPage.css";
+import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function ErroresPage() {
   const [errores, setErrores] = useState([]);
@@ -13,10 +14,15 @@ export function ErroresPage() {
     async function fetchErrores() {
       try {
         const response = await logsService.getLogs();
+        console.log("Respuesta logs:", response);
         const erroresFiltrados = response.data
+        
           .filter((l) => Boolean(l.is_alert))
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
         setErrores(erroresFiltrados);
+        
+
       } catch (error) {
         console.error("Error al cargar los errores:", error);
       } finally {
@@ -27,19 +33,24 @@ export function ErroresPage() {
     fetchErrores();
   }, []);
 
-  // 🔍 Generar severidad visual según el texto
-  const getSeverity = (text) => {
-    const lower = text.toLowerCase();
-    if (lower.includes("error") || lower.includes("crítico")) return "Alta";
-    if (lower.includes("falló") || lower.includes("advertencia")) return "Media";
-    return "Baja";
+  // Texto según severidad
+  const getSeverityText = (sev) => {
+    switch (Number(sev)) {
+      case 3:
+        return "Alta";
+      case 2:
+        return "Media";
+      default:
+        return "Baja";
+    }
   };
 
-  const getSeverityColor = (severity) => {
-    switch (severity) {
-      case "Alta":
+  // Color según severidad
+  const getSeverityColor = (sev) => {
+    switch (Number(sev)) {
+      case 3:
         return "red";
-      case "Media":
+      case 2:
         return "orange";
       default:
         return "gray";
@@ -50,9 +61,7 @@ export function ErroresPage() {
     return (
       <>
         <AdminNavbar />
-        <div className="errores-loader">
-          <Loader color="#f5b301" size="xl" />
-        </div>
+        <AdminPageLoader />
       </>
     );
   }
@@ -79,17 +88,22 @@ export function ErroresPage() {
                     <Table.Th>Severidad</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
+
                 <Table.Tbody>
                   {errores.map((e, index) => {
-                    const sev = getSeverity(e.text);
+                    const sevText = getSeverityText(e.severity);
+                    const sevColor = getSeverityColor(e.severity);
+
                     return (
                       <Table.Tr key={index}>
                         <Table.Td>
                           {new Date(e.created_at).toLocaleString("es-AR")}
                         </Table.Td>
+
                         <Table.Td>{e.text}</Table.Td>
+
                         <Table.Td>
-                          <Badge color={getSeverityColor(sev)}>{sev}</Badge>
+                          <Badge color={sevColor}>{sevText}</Badge>
                         </Table.Td>
                       </Table.Tr>
                     );

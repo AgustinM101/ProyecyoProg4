@@ -31,7 +31,8 @@ final readonly class PlansFormUpdaterService
         if ($existing === null) {
             ControllerUtils::logAction(
                 "Se intentó actualizar un formulario inexistente con ID {$plansForm->id()}",
-                true
+                true,
+                2
             );
             return null;
         }

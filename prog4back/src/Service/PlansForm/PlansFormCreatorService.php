@@ -102,7 +102,8 @@ final readonly class PlansFormCreatorService
         } else {
             ControllerUtils::logAction(
                 "Se creó un nuevo formulario sin datos de plan/usuario asociados.",
-                true
+                true,
+                3
             );
         }
     }
