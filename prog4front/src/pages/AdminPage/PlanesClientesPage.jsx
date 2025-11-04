@@ -18,6 +18,7 @@ import { plansUserService } from "../../services/plansUserService";
 import { planAlimentosService } from "../../services/planAlimentosService";
 import { planEjerciciosService } from "../../services/planEjerciciosService";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
+import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function PlanesClientesPage() {
   const [clientes, setClientes] = useState([]);
@@ -159,9 +160,10 @@ export function PlanesClientesPage() {
 
   if (loading) {
     return (
-      <Center style={{ height: "100vh" }}>
-        <Loader />
-      </Center>
+      <>
+        <AdminNavbar />
+        <AdminPageLoader />
+      </>
     );
   }
 

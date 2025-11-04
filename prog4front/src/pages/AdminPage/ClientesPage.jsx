@@ -19,6 +19,7 @@ import "./ClientesPage.css";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 import { plansFormService } from "../../services/plansFormService";
 import { FormularioModal } from "../../components/Admin/FormularioModal";
+import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function ClientesPage() {
   const [plansUsers, setPlansUsers] = useState([]);
@@ -33,6 +34,7 @@ export function ClientesPage() {
   const [viewModal, setViewModal] = useState(false);
   const [formDetails, setFormDetails] = useState(null);
   const [loadingForm, setLoadingForm] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const itemsPerPage = 5;
 
@@ -144,9 +146,10 @@ export function ClientesPage() {
 
   if (loading) {
     return (
-      <Center style={{ height: "100vh" }}>
-        <Loader />
-      </Center>
+      <>
+        <AdminNavbar />
+        <AdminPageLoader />
+      </>
     );
   }
 
@@ -191,7 +194,7 @@ export function ClientesPage() {
             </>
           )}
 
-          {/* ✅ Modal editar */}
+          {/* Modal editar */}
           <Modal
             opened={editModal}
             onClose={() => setEditModal(false)}
@@ -220,9 +223,15 @@ export function ClientesPage() {
                   }
                 />
 
+                {/* BOTÓN CON LOADER */}
                 <Button
+                  fullWidth
+                  color="blue"
+                  loading={saving}           // muestra el spinner
+                  disabled={saving}          // deshabilita mientras se procesa
                   onClick={async () => {
                     if (!selectedUser) return;
+                    setSaving(true);         // activamos loader
 
                     const payload = { status: selectedUser.status, expiration_date: null };
                     if (selectedUser.expiration_date) {
@@ -231,21 +240,22 @@ export function ClientesPage() {
 
                     try {
                       await plansUserService.updatePlan(selectedUser.id, payload);
-                      setEditModal(false);
-                      fetchPlansUsers();
+                      setEditModal(false);    // cerramos modal
+                      fetchPlansUsers();      // refrescamos tabla
                     } catch (error) {
                       console.error("Error al actualizar usuario:", error);
                       alert("❌ No se pudo actualizar el usuario");
+                    } finally {
+                      setSaving(false);       // desactivamos loader
                     }
                   }}
-                  fullWidth
-                  color="blue"
                 >
                   Guardar Cambios
                 </Button>
               </Stack>
             )}
           </Modal>
+
 
           {/* ✅ Modal eliminar */}
           <Modal
