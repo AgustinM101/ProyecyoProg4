@@ -146,6 +146,13 @@ final readonly class PlanEjercicioRepository extends PDOManager implements PlanE
         ]);
     }
 
+    public function deleteAllByPlansUserId(int $id_plans_user): void
+    {
+        $query = "DELETE FROM plan_ejercicios WHERE id_plans_user = :id_plans_user";
+        $parameters = ["id_plans_user" => $id_plans_user];
+        $this->execute($query, $parameters);
+    }
+
     private function toPlanEjercicio(?array $primitive): ?PlanEjercicio
     {
         if ($primitive === null) {

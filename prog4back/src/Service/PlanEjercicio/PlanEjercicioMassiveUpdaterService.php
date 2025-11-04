@@ -2,6 +2,7 @@
 
 namespace Src\Service\PlanEjercicio;
 
+use Src\Entity\PlanEjercicio\PlanEjercicio;
 use Src\Infrastructure\Repository\PlanEjercicio\PlanEjercicioRepository;
 use Src\Service\PlanEjercicio\PlanEjercicioFinderService;
 
@@ -18,26 +19,22 @@ final readonly class PlanEjercicioMassiveUpdaterService
 
     public function updateAll(int $plansUserId, array $items): void
     {
+        $this->repository->deleteAllByPlansUserId($plansUserId);
+
         foreach ($items as $item) {
-
-            if (!isset($item["id"], $item["descripcion"], $item["tipo"], $item["dia"])) {
+            // Cada item debe traer descripcion, tipo y dia
+            if (!isset($item["descripcion"], $item["tipo"], $item["dia"])) {
                 continue;
             }
 
-            $plan = $this->finder->find($item["id"]);
-
-            // seguridad: solo actualiza si pertenece al usuario
-            if ($plan->idPlansUser() !== $plansUserId) {
-                continue;
-            }
-
-            $plan->modify(
+            $plan = PlanEjercicio::create(
                 $item["descripcion"],
                 $item["tipo"],
-                $item["dia"]
+                $item["dia"],
+                $plansUserId
             );
 
-            $this->repository->updateForUser($plan);
+            $this->repository->createForUser($plan);
         }
     }
 }
