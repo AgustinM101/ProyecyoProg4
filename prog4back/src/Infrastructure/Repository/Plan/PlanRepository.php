@@ -59,8 +59,8 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             UPDATE plans
             SET name = :name, 
                 description = :description, 
-                price = :price,
-                deleted = :deleted
+                price = :price
+                
             WHERE id = :id
         SQL;
 
@@ -69,7 +69,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             "name" => $plan->name(),
             "description" => $plan->description(),
             "price" => $plan->price(),
-            "deleted" => $plan->deleted() ? 1 : 0
+            
         ];
 
         $this->execute($query, $parameters);
@@ -102,6 +102,7 @@ final readonly class PlanRepository extends PDOManager implements PlanRepository
             $row["name"],
             $row["description"],
             $row["price"]
+            
         );
     }
 }
