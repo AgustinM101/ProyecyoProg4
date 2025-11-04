@@ -14,17 +14,16 @@ final class LogCreatorService
         $this->repository = new LogRepository();
     }
 
-    public function create(string $text, bool $isAlert): void
+    public function create(string $text, bool $isAlert, int $severity = 1): void
     {
-      
         $log = new Log(
-            null, 
+            null,
             $text,
-            date("Y-m-d H:i:s"), 
-            $isAlert
+            date("Y-m-d H:i:s"),
+            $isAlert,
+            $severity
         );
 
-       
         $this->repository->create($log);
     }
 }

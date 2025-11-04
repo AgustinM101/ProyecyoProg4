@@ -68,14 +68,15 @@ final readonly class ControllerUtils {
         return $token;
     }
 
-    public static function logAction(string $text, bool $isAlert = false): void
-{
-    try {
-        $logService = new LogCreatorService();
-        $logService->create($text, $isAlert);
-    } catch (\Exception $e) {
-        error_log("Error creando log: " . $e->getMessage());
+    public static function logAction(string $text, bool $isAlert = false, int $severity = 1): void
+    {
+        try {
+            $logService = new LogCreatorService();
+            $logService->create($text, $isAlert, $severity);
+        } catch (\Exception $e) {
+            error_log("Error creando log: " . $e->getMessage());
+        }
     }
-}
+
 
 }

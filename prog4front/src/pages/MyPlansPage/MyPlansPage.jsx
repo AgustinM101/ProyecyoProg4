@@ -133,86 +133,79 @@ function FormCard() {
     useEffect(() => {
         fetchForm();
     }, []);
+                    {/* Plan Alimentario */}
+                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                      <Title order={5}>Plan Alimentario</Title>
+                      {planAlimento.length > 0 ? (
+                        planAlimento.map((pa) => (
+                          <Card
+                            key={pa.id}
+                            mt="xs"
+                            p="sm"
+                            radius="md"
+                            style={{ backgroundColor: "#3A3B3E" }}
+                          >
+                            <Stack spacing={2}>
+                              <Text size="sm">
+                                <strong>description:</strong> {pa.description}
+                              </Text>
+                              <Text size="sm">
+                                <strong>tipo:</strong> {pa.tipo}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Dias:</strong> {pa.dias}
+                              </Text>
+                            </Stack>
+                          </Card>
+                        ))
+                      ) : (
+                        <Text size="sm" c="dimmed">
+                          Aún no hay plan alimentario asignado.
+                        </Text>
+                      )}
+                    </Card>
 
-    if (loading) return <Loader color="orange" />;
+                    {/* Plan de Ejercicio */}
+                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                      <Title order={5}>Plan de Ejercicio</Title>
+                      {planEjercicio.length > 0 ? (
+                        planEjercicio.map((pe) => (
+                          <Card
+                            key={pe.id}
+                            mt="xs"
+                            p="sm"
+                            radius="md"
+                            style={{ backgroundColor: "#090909ff" }}
+                          >
+                            <Stack spacing={2}>
+                              <Text size="sm">
+                                <strong>tipo:</strong> {pe.tipo}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Dias:</strong> {pe.dias}
+                              </Text>
+                              <Text size="sm">
+                                <strong>Descripcion:</strong> {pe.descripcion}
+                              </Text>
+                    
+                            </Stack>
+                          </Card>
+                        ))
+                      ) : (
+                        <Text size="sm" c="dimmed">
+                          Aún no hay plan de ejercicios asignado.
+                        </Text>
+                      )}
+                    </Card>
+                  </Stack>
+                )}
+              </Card>
+            ))}
+          </Stack>
+        )}
+      </Container>
+      <Footer />
+    </>
+  );
 
-    return (
-        <Card
-            p="md"
-            radius="md"
-            style={{
-                backgroundColor: "#000000ff",
-            }}
-        >
-            <Title order={5}>FORMULARIO</Title>
-            {formData ? (
-                <Stack mt="xs" spacing={4}>
-                    <Text size="sm">
-                        <strong>Nombre:</strong> {formData.nombre || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Edad:</strong> {formData.edad || "-"}
-                    </Text>
-
-                    <Text size="sm">
-                        <strong>Sexo:</strong> {formData.sexo || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Altura:</strong> {formData.altura || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Peso actual:</strong>{" "}
-                        {formData.peso_actual || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Peso deseado:</strong>{" "}
-                        {formData.peso_deseado || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Actividad física:</strong>{" "}
-                        {formData.actividad_fisica || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Antecedentes médicos:</strong>{" "}
-                        {formData.antecedentes_medicos || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Alergias:</strong> {formData.alergias || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Medicamentos:</strong>{" "}
-                        {formData.medicamentos || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Problemas digestivos:</strong>{" "}
-                        {formData.problemas_digestivos || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Comidas diarias:</strong>{" "}
-                        {formData.comidas_diarias || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Alimentos evitar:</strong>{" "}
-                        {formData.alimentos_evitar || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Horarios de comida:</strong>{" "}
-                        {formData.horarios_comida || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Consumo agua:</strong>{" "}
-                        {formData.consumo_agua || "-"}
-                    </Text>
-                    <Text size="sm">
-                        <strong>Consumo alcohol:</strong>{" "}
-                        {formData.consumo_alcohol || "-"}
-                    </Text>
-                </Stack>
-            ) : (
-                <Text size="sm" c="dimmed">
-                    No hay información del formulario.
-                </Text>
-            )}
-        </Card>
-    );
 }

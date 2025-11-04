@@ -13,9 +13,12 @@ export function ErroresPage() {
     async function fetchErrores() {
       try {
         const response = await logsService.getLogs();
+
+        // ✅ Filtramos solo los que son alerta
         const erroresFiltrados = response.data
-          .filter((l) => Boolean(l.is_alert))
+          .filter((l) => l.is_alert === true)
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
         setErrores(erroresFiltrados);
       } catch (error) {
         console.error("Error al cargar los errores:", error);
@@ -27,23 +30,19 @@ export function ErroresPage() {
     fetchErrores();
   }, []);
 
-  // 🔍 Generar severidad visual según el texto
-  const getSeverity = (text) => {
-    const lower = text.toLowerCase();
-    if (lower.includes("error") || lower.includes("crítico")) return "Alta";
-    if (lower.includes("falló") || lower.includes("advertencia")) return "Media";
-    return "Baja";
+  // ✅ Severidad en función del número (1,2,3)
+  const getSeverityName = (sev) => {
+    if (sev === 3) return "Alta";
+    if (sev === 2) return "Media";
+    if (sev === 1) return "Baja";
+    return "-";
   };
 
-  const getSeverityColor = (severity) => {
-    switch (severity) {
-      case "Alta":
-        return "red";
-      case "Media":
-        return "orange";
-      default:
-        return "gray";
-    }
+  const getSeverityColor = (sev) => {
+    if (sev === 3) return "red";
+    if (sev === 2) return "orange";
+    if (sev === 1) return "green";
+    return "gray";
   };
 
   if (loading) {
@@ -80,20 +79,21 @@ export function ErroresPage() {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {errores.map((e, index) => {
-                    const sev = getSeverity(e.text);
-                    return (
-                      <Table.Tr key={index}>
-                        <Table.Td>
-                          {new Date(e.created_at).toLocaleString("es-AR")}
-                        </Table.Td>
-                        <Table.Td>{e.text}</Table.Td>
-                        <Table.Td>
-                          <Badge color={getSeverityColor(sev)}>{sev}</Badge>
-                        </Table.Td>
-                      </Table.Tr>
-                    );
-                  })}
+                  {errores.map((e) => (
+                    <Table.Tr key={e.id}>
+                      <Table.Td>{new Date(e.created_at).toLocaleString("es-AR")}</Table.Td>
+                      <Table.Td>{e.text}</Table.Td>
+                      <Table.Td>
+                        {e.severity ? (
+                          <Badge color={getSeverityColor(e.severity)}>
+                            {getSeverityName(e.severity)}
+                          </Badge>
+                        ) : (
+                          "-"
+                        )}
+                      </Table.Td>
+                    </Table.Tr>
+                  ))}
                 </Table.Tbody>
               </Table>
             </div>
