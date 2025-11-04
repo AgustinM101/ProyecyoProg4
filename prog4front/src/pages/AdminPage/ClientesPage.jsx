@@ -59,6 +59,7 @@ export function ClientesPage() {
     fetchPlansUsers();
   }, []);
 
+  
   const filteredUsers = useMemo(() => {
     return plansUsers.filter(
       (pu) =>

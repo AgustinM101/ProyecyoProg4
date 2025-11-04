@@ -162,6 +162,13 @@ public function updateForUser(PlanAlimento $planAlimento): void
     $this->execute($query, $params);
 }
 
+    public function deleteAllByPlansUserId(int $id_plans_user): void
+    {
+        $query = "DELETE FROM plan_alimentos WHERE id_plans_user = :id_plans_user";
+        $parameters = ["id_plans_user" => $id_plans_user];
+        $this->execute($query, $parameters);
+    }
+
 
     private function toPlanAlimento(?array $primitive): ?PlanAlimento
     {
