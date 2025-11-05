@@ -1,53 +1,111 @@
-.profile-background {
-  min-height: 90vh;
-  background-image: url("https://images.unsplash.com/photo-1605296867304-46d5465a13f1");
+/* Fondo completo de la página */
+.profile-wrapper {
+  min-height: 100vh;
+  background-image: url("https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&w=1920&q=80"); /* gimnasio claro con pesas */
   background-size: cover;
   background-position: center;
-  padding-top: 60px;
   position: relative;
+  padding-top: 60px;
+  color: #FFD60A;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Foto + botones a la derecha */
-.profile-right-panel {
+/* Capa semitransparente para mejorar contraste */
+.profile-wrapper::before {
+  content: "";
   position: absolute;
-  top: 40px;
-  right: 40px;
-  text-align: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 0;
 }
 
+/* Contenedor principal */
+.profile-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Card central */
+.profile-card {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 500px;
+  position: relative;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Foto de perfil arriba a la derecha */
 .profile-avatar {
-  border: 4px solid white;
+  position: absolute;
+  top: 40px; /* más abajo para que no toque el header */
+  right: 40px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid #FFD60A;
+  object-fit: cover;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/1077/1077012.png"); /* imagen por defecto */
+  background-size: cover;
+  background-position: center;
+  background-color: #222;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
-/* Nombre + descripción centrados arriba */
-.profile-header-center {
-  text-align: center;
-  margin-top: 40px;
+/* Botones debajo de la foto */
+.profile-buttons {
+  position: absolute;
+  top: 205px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
+/* Nombre centrado */
 .profile-name {
-  color: white;
   font-size: 2.5rem;
   font-weight: 800;
+  margin-top: 80px;
+  text-align: center;
+  color: #FFD60A;
 }
 
+/* Descripción centrada debajo del nombre */
 .profile-description {
-  color: white;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  margin-top: 20px;
   max-width: 500px;
-  margin: 10px auto;
+  text-align: center;
+  color: #FFD60A;
   opacity: 0.9;
 }
 
-/* Caja inferior (contenido futuro) */
-.profile-content-box {
-  margin-top: 80px;
-  background: rgba(0, 0, 0, 0.55);
-  border-radius: 12px;
-  padding: 30px;
-  color: white;
-  min-height: 200px;
+/* Info adicional dentro del card */
+.profile-info {
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1rem;
+  color: #FFD60A;
 }
 
+/* Botones dentro del card (por si se agregan más en el futuro) */
+.profile-card-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
 
 

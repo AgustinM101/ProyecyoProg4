@@ -15,12 +15,11 @@ import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { paymentService } from "../../services/paymentService";
 import { plansUserService } from "../../services/plansUserService";
+import { userService } from "../../services/userService";
 import "./PurchasePage.css";
-import { PaymentService } from "../../services/PaymentService";
 
 export function PurchasePage() {
   const navigate = useNavigate();
-
   const [paymentMethod, setPaymentMethod] = useState("");
   const [formData, setFormData] = useState({
     nombre: "",
@@ -28,13 +27,11 @@ export function PurchasePage() {
     telefono: "",
   });
 
-  // 🔹 Maneja el regreso desde Mercado Pago y redirige según el estado
   useEffect(() => {
     const status = new URLSearchParams(window.location.search).get("status");
     if (!status) return;
-
-    if (status === "success" || status === "approved") navigate("/plansForms");
-    else if (status === "pending") navigate("/plansForms");
+    if (status === "success" || status === "approved" || status === "pending")
+      navigate("/plansForms");
     else if (status === "failure") navigate("/purchase");
   }, [navigate]);
 
@@ -46,49 +43,80 @@ export function PurchasePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userData = {
-      ...formData,
-      plan: "Plan PHAV",
-      paymentMethod,
-      fechaCompra: new Date().toLocaleDateString(),
-    };
-
-    const planStatus = paymentMethod === "mercadopago" ? "Pendiente" : "Payment Request";
-
     try {
-      // 1️⃣ Crear plan en tu sistema
-      const planResponse = await plansUserService.createUserPlan({
-        id_user: 11,
-        id_plan: 1,
+      const userResponse = await userService.getCurrentUser();
+      const user = userResponse.data;
+
+      if (!user?.id) {
+        alert("No se pudo obtener el usuario logueado.");
+        return;
+      }
+
+      const idPlan = 1; // ajustar si hay varios planes
+      const planStatus =
+        paymentMethod === "mercadopago" ? "Pendiente" : "Payment Request";
+
+      // calcular expiration_date solo para transferencia/efectivo
+      let expirationDate = null;
+      if (paymentMethod === "efectivo" || paymentMethod === "transferencia") {
+        const date = new Date();
+        date.setDate(date.getDate() + 30);
+        expirationDate = date.toISOString().slice(0, 19).replace("T", " ");
+      }
+
+      // Debug - ver exactamente qué enviamos
+      console.log("Payload createUserPlan:", {
+        id_user: user.id,
+        id_plan: idPlan,
+        paymentMethod,
         status: planStatus,
+        expiration_date: expirationDate,
         amount: 19000,
       });
 
+      // Usamos createUserPlan (no tocamos createPlan)
+      const response = await plansUserService.createUserPlan({
+        id_user: user.id,
+        id_plan: idPlan,
+        paymentMethod,
+        status: planStatus,
+        expiration_date: expirationDate,
+        amount: 19000,
+      });
+
+      // axios puede devolver el objeto en response.data; adaptamos casos comunes
+      const payload = response?.data || response;
+      console.log("Respuesta createUserPlan:", payload);
+
+      // Extraemos ID de varias posibles formas
       const plansUserId =
-        planResponse?.data?.id ||
-        planResponse?.data?.data?.id ||
-        planResponse?.data?.plans_user_id;
+        payload?.data?.id ||
+        payload?.id ||
+        payload?.data?.plans_user_id ||
+        payload?.plans_user_id ||
+        null;
 
-      if (!plansUserId) throw new Error("No se recibió el ID del plan asignado");
+      if (!plansUserId) {
+        console.error("No se recibió ID del plan asignado. Respuesta completa:", payload);
+        throw new Error("No se recibió el ID del plan asignado.");
+      }
 
-      // 2️⃣ Si el usuario elige Mercado Pago
+      // Si es MercadoPago: crear preferencia y redirigir
       if (paymentMethod === "mercadopago") {
         const paymentData = await paymentService.createPaymentPreference({
           plans_user_id: plansUserId,
-          id_user: 11,
-          id_plan: 1,
+          id_user: user.id,
+          id_plan: idPlan,
           title: "Plan PHAV",
           amount: 19000,
         });
 
-        // ✅ Extraemos la URL correcta
         const paymentUrl =
           paymentData?.preference?.data?.preference?.sandbox_init_point ||
           paymentData?.preference?.data?.preference?.init_point ||
           null;
 
         if (paymentUrl) {
-          // 🔹 Redirigimos en la misma pestaña
           window.location.href = paymentUrl;
           return;
         } else {
@@ -98,12 +126,13 @@ export function PurchasePage() {
         }
       }
 
-      // 3️⃣ Para transferencia o efectivo
-      localStorage.setItem("userProfile", JSON.stringify(userData));
+      // Efectivo / transferencia: éxito y redirección
       alert("Compra registrada correctamente. Redirigiendo al formulario...");
       navigate("/plansForms");
     } catch (error) {
       console.error("Error al procesar la compra:", error);
+      // si axios, mostrar error.response.data para debugging
+      if (error?.response) console.error("Axios response:", error.response);
       alert("Hubo un error al registrar tu compra. Revisá la consola (F12).");
     }
   };
@@ -117,6 +146,7 @@ export function PurchasePage() {
             <Title order={2} className="purch-title">
               Formulario de Compra
             </Title>
+
             <form onSubmit={handleSubmit}>
               <Stack className="purch-stack">
                 <TextInput
@@ -140,6 +170,7 @@ export function PurchasePage() {
                   onChange={handleChange}
                   required
                 />
+
                 <Select
                   label="Forma de pago"
                   placeholder="Selecciona una opción"
@@ -152,18 +183,22 @@ export function PurchasePage() {
                   ]}
                   required
                 />
+
                 {paymentMethod === "transferencia" && (
                   <>
                     <Text>Alias: InfinitSport12</Text>
                     <Text>CBU: 123-4567890123456789012-3</Text>
                   </>
                 )}
+
                 {paymentMethod === "mercadopago" && (
                   <Text>Será redirigido a Mercado Pago</Text>
                 )}
+
                 {paymentMethod === "efectivo" && (
                   <Text>Pague en efectivo en nuestras instalaciones</Text>
                 )}
+
                 <Group position="center" mt="md">
                   <Button type="submit" size="lg" radius="md">
                     Finalizar compra
@@ -178,9 +213,3 @@ export function PurchasePage() {
     </>
   );
 }
-
-
-
-
-
-

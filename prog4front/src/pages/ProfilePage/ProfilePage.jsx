@@ -16,27 +16,31 @@ import { Footer } from "../../components/Footer/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import { userService } from "../../services/userService";
 import "./ProfilePage.css";
+import { IconMail } from "@tabler/icons-react";
 
 export function ProfilePage() {
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [modalOpened, setModalOpened] = useState(false);
 
-  // Estados del formulario de edición
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [profileImage, setProfileImage] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    userService.getCurrentUser()
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    userService
+      .getCurrentUser()
       .then((res) => {
         setUser(res.data);
         setName(res.data.name || "");
-        setPhone(res.data.phone || "");
       })
       .catch((err) => {
         if (err.message.includes("401")) {
@@ -53,18 +57,24 @@ export function ProfilePage() {
     try {
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("phone", phone);
-      if (profileImage) formData.append("profileImage", profileImage);
+      if (profileImage) formData.append("profile_image", profileImage);
 
       const res = await userService.updateProfile(formData);
-      setUser(res.data);
+
+      // Conservar datos existentes para evitar que desaparezcan
+      setUser((prevUser) => ({
+        ...prevUser,
+        name: res.data.name || prevUser.name,
+        profileImage: res.data.profileImage || prevUser.profileImage,
+        email: prevUser.email,
+        admin: prevUser.admin,
+      }));
+
       setModalOpened(false);
     } catch (err) {
       alert(err.message);
     }
   };
-
-
 
   if (loading) return <p>Cargando perfil...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -76,48 +86,57 @@ export function ProfilePage() {
       <div className="profile-wrapper">
         <Container size="md" className="profile-container">
           <Card shadow="xl" radius="lg" padding="xl" className="profile-card">
-            <Title order={2} className="profile-title">
-              Mi Perfil
-            </Title>
-            <Stack spacing="md" mt="lg">
-
-              {user.profileImage && (
+            {/* Foto de perfil */}
+            <div className="avatar-container">
+              {user.profileImage ? (
                 <img
-                  src={user.profileImage}
+                  src={`http://localhost:9091${user.profileImage}`}
                   alt="Foto de perfil"
-                  style={{ width: 120, height: 120, borderRadius: "50%" }}
+                  className="profile-avatar"
                 />
+              ) : (
+                <div className="profile-avatar placeholder">👤</div>
               )}
-              <Text><strong>Nombre:</strong> {user.name}</Text>
-              <Text><strong>Email:</strong> {user.email}</Text>
-              <Text><strong>Teléfono:</strong> {user.phone || "-"}</Text>
-              <Text><strong>Plan contratado:</strong> {user.plan?.name || "-"}</Text>
-              <Text>{user.plan?.description}</Text>
-              <Text>{user.plan?.price ? `$${user.plan.price}` : ""}</Text>
+            </div>
 
-
-              <Group position="center" mt="xl">
-                <Link to="/myplans">
-                  <Button variant="outline" radius="md">
-                    Ver mis planes
-                  </Button>
-                </Link>
-                <Button
-                  variant="filled"
-                  radius="md"
-                  color="#FFD60A"
-                  onClick={() => setModalOpened(true)}
-                >
-                  Editar perfil
+            {/* Botones */}
+            <div className="profile-buttons">
+              <Link to="/myplans">
+                <Button variant="filled" color="#FFD60A" radius="md">
+                  Mis planes
                 </Button>
-              </Group>
-            </Stack>
+              </Link>
+              <Button
+                variant="filled"
+                radius="md"
+                color="#FFD60A"
+                onClick={() => setModalOpened(true)}
+              >
+                Editar perfil
+              </Button>
+            </div>
 
+            {/* Info */}
+            <Title order={2} className="profile-name">
+              {user.name}
+            </Title>
+            <Text className="profile-description">
+              ¡Bienvenido a tu espacio personal! Aquí podés ver y editar tu
+              información, acceder a tus formularios y mantener tu perfil
+              actualizado.
+            </Text>
+
+            <div className="profile-info-box">
+              <Group spacing="xs">
+                <IconMail size={18} />
+                <Text size="sm">{user.email}</Text>
+              </Group>
+            </div>
           </Card>
         </Container>
       </div>
 
-      {/* Modal de edición */}
+      {/* Modal edición */}
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
@@ -125,8 +144,11 @@ export function ProfilePage() {
         centered
       >
         <Stack>
-          <TextInput label="Nombre" value={name} onChange={(e) => setName(e.target.value)} />
-          <TextInput label="Teléfono" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <TextInput
+            label="Nombre"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <FileInput
             label="Foto de perfil"
             accept="image/*"
@@ -140,4 +162,5 @@ export function ProfilePage() {
     </>
   );
 }
+
 
