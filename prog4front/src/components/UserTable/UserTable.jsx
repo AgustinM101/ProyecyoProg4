@@ -1,21 +1,44 @@
-import React, { useState } from "react";
-import dayjs from "dayjs";
+import React from "react";
+import { Table } from "@mantine/core";
+import { UserRowPendiente } from "./UserRowPendiente";
+import { UserRowActivo } from "./UserRowActivo";
+import { UserRowConfirmarPago } from "./UserRowConfirmarPago";
+import { UserRowFinalizado } from "./UserRowFinalizado";
+import { plansUserService } from "../../services/plansUserService";
 import "./UserTable.css";
-import { Table, Text, Button, Group, Accordion, Card } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
 
-export function UserTable({ users, onEdit, onDelete }) {
-  const [expanded, setExpanded] = useState(null);
+export function UserTable({
+  users,
+  onEdit,
+  onDelete,
+  onAddPlan,
+  onUpdatePlan,
+  onView,
+  fetchPlansUsers, // función para recargar toda la tabla
+}) {
+  const handleConfirmPayment = async (pu, newStatus) => {
+    if (!pu) return;
 
-  const handleExpand = (id) => {
-    setExpanded(expanded === id ? null : id);
+    try {
+      await plansUserService.updatePlan(pu.id, {
+        status: newStatus,
+        expiration_date: pu.expiration_date, // mantenemos la fecha existente
+      });
+
+      // refresh tabla
+      fetchPlansUsers?.();
+    } catch (error) {
+      console.error("Error al actualizar status:", error);
+      alert("❌ Error al actualizar el estado del usuario");
+    }
   };
 
   return (
     <Table highlightOnHover className="user-table admin-page">
       <thead>
         <tr>
-          <th>Usuario</th>
+          <th>ID</th>
+          <th>Nombre</th>
           <th>Email</th>
           <th>Plan</th>
           <th>Precio</th>
@@ -26,83 +49,82 @@ export function UserTable({ users, onEdit, onDelete }) {
       </thead>
 
       <tbody>
-        {users.map((pu) => (
-          <React.Fragment key={`${pu.user.id}-${pu.plan.id}`}>
-            <tr> 
+        {users.map((pu) => {
+          switch (pu.status) {
+            case "chargePending":
+              return (
+                <UserRowPendiente
+                  key={pu.id}
+                  pu={pu}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onView={onView}
+                  onActivate={async (id) => {
+                    await plansUserService.updatePlan(id, {
+                      status: "active",
+                      expiration_date: pu.expiration_date
+                    });
+                    fetchPlansUsers?.();
+                  }}
+                />
+              );
 
-              <td>{pu.user.name}</td>
-              <td>{pu.user.email}</td>
-              <td
-                style={{ cursor: "pointer" }}
-                onClick={() => handleExpand(pu.id_plans_user)}
-              >
-                <Group gap={6} align="center" justify="center">
-                  {pu.plan.name}
-                  <IconPlus
-                    className="icon-plus"
-                    size={18}
-                    style={{
-                      color:
-                        expanded === pu.id_plans_user ? "#f5b301" : "#aaa",
-                    }}
-                  />
-                </Group>
-              </td>
-              <td>${pu.plan.price}</td>
-              <td>
-                <Text fw={700} color={pu.status === "active" ? "green" : "red"}>
-                  {pu.status === "active" ? "Activo" : "Inactivo"}
-                </Text>
-              </td>
-              <td>
-                {pu.expiration_date
-                  ? dayjs(pu.expiration_date).format("DD/MM/YYYY")
-                  : null}
-              </td>
-              <td>
-                <Group spacing="xs" justify="center">
-                  <Button
-                    size="xs"
-                    color="blue"
-                    variant="light"
-                    onClick={() => onEdit(pu)}
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    size="xs"
-                    color="red"
-                    variant="light"
-                    onClick={() => onDelete(pu)}
-                  >
-                    Eliminar
-                  </Button>
-                </Group>
-              </td>
-            </tr>
 
-            {expanded === pu.id_plans_user && (
-              <tr className="accordion-row">
-                <td colSpan="7">
-                  <Accordion variant="contained" className="accordion-inside">
-                    <Accordion.Item value="form" className="accordion-item">
-                      <Accordion.Control className="accordion-control">
-                        Plan personalizado de{" "}
-                        <span style={{ color: "#f5b301" }}>{pu.user.name}</span>
-                      </Accordion.Control>
-                      <Accordion.Panel className="accordion-panel">
-                        Aquí podrás cargar los datos del plan de alimentación
-                        y ejercicio personalizados para este usuario.
-                      </Accordion.Panel>
-                    </Accordion.Item>
-                  </Accordion>
-                </td>
-              </tr>
-            )}
+            case "active":
+              return (
+                <UserRowActivo
+                  key={pu.id}
+                  pu={pu}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onUpdatePlan={onUpdatePlan}
+                  onView={onView}
+                />
+              );
 
-          </React.Fragment>
-        ))}
+            case "confirmPayment":
+              return (
+                <UserRowConfirmarPago
+                  key={pu.id}
+                  pu={pu}
+                  onDelete={onDelete}
+                  onConfirm={() => handleConfirmPayment(pu, "active")}
+                  onReject={() => handleConfirmPayment(pu, "finished")}
+                  onView={onView}
+                />
+              );
+
+            case "finished":
+              return (
+                <UserRowFinalizado
+                  key={pu.id}
+                  pu={pu}
+                  onDelete={onDelete}
+                  onView={onView}
+                />
+              );
+
+            default:
+              return (
+                <UserRowPendiente
+                  key={pu.id}
+                  pu={pu}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onView={onView}
+                  onActivate={async (id) => {
+                    await plansUserService.updatePlan(id, {
+                      status: "active",
+                      expiration_date: pu.expiration_date
+                    });
+                    fetchPlansUsers?.();
+                  }}
+                />
+              );
+          }
+        })}
       </tbody>
     </Table>
   );
 }
+

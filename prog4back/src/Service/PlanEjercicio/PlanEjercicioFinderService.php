@@ -24,4 +24,11 @@ final readonly class PlanEjercicioFinderService {
 
         return $planEjercicio;
     }
+
+     // NUEVO: traer todos los ejercicio de un plan de usuario
+    /** @return PlanEjercicio[] */
+    public function findByPlansUserId(int $plansUserId): array
+    {
+        return $this->repository->findByPlanUser($plansUserId);
+    }
 }

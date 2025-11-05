@@ -29,3 +29,107 @@
   border: 1px solid #f5b301;
   border-radius: 0;
 }
+
+.alimentosEjerciciosGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.plans-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.plans-table th,
+.plans-table td {
+  border: 1px solid #f5b301;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.plans-table th {
+  background-color: #f5b301;
+}
+/* Tabla principal */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e6ee09;
+}
+
+
+.user-table tr:hover {
+  background-color: #242222;
+}
+
+/* IconPlus */
+.icon-plus {
+  transition: transform 0.2s ease;
+}
+
+.icon-plus:hover {
+  transform: rotate(45deg);
+}
+
+/* Accordion interno */
+.accordion-inside {
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.accordion-control {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.accordion-panel {
+  padding: 1rem;
+  background-color: #edf504;
+  border-top: 1px solid #f0e908;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Tabla de planes dentro del Accordion */
+.plans-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+
+.plans-table td {
+  border: 1px solid #232420;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.plans-table th {
+  background-color: #f1ed0b;
+  font-weight: 600;
+}
+
+/* Botones de eliminar dentro de la tabla */
+.plans-table button {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+}
+
+/* Inputs para agregar */
+.accordion-panel .mantine-TextInput-root {
+  margin-bottom: 0.5rem;
+}
+
+/* Group para botones y inputs */
+.accordion-panel .mantine-Group-root {
+  display: flex;
+  gap: 0.5rem;
+}
+

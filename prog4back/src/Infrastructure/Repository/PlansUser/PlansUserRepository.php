@@ -63,6 +63,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     public function findByUserIdWithDetails(int $id_user): array {
         $query = <<<SQL
             SELECT 
+                up.id,
                 up.id_user,
                 u.name AS user_name,
                 u.email AS user_email,
@@ -99,7 +100,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     /** @return PlansUser[] */
     public function findByUserId(int $id_user): array {
         $query = <<<SQL
-            SELECT id_user, id_plan, status, expiration_date
+            SELECT id, id_user, id_plan, status, expiration_date
             FROM plans_user
             WHERE id_user = :id_user
         SQL;
@@ -138,13 +139,21 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
         $plan->setId((int)$lastId);
     }
 
-    public function updateStatusAndExpirationById(int $id, string $status, string $expiration_date): void {
-        $query = <<<SQL
-            UPDATE plans_user
-            SET status = :status,
-                expiration_date = :expiration_date
-            WHERE id = :id
-        SQL;
+
+    public function updateStatusAndExpirationById(int $id, string $status, ?string $expiration_date): void {
+    $query = <<<SQL
+        UPDATE plans_user
+        SET status = :status,
+            expiration_date = :expiration_date
+        WHERE id = :id
+    SQL;
+
+    $params = [
+        "id" => $id,
+        "status" => $status,
+        "expiration_date" => $expiration_date
+    ];
+
 
         $params = [
             "id" => $id,
@@ -192,6 +201,20 @@ public function markAsDeleted(int $id): void {
     $this->execute($query, $params);
 }
 
+
+
+
+
+private function toPlansUser(?array $row): ?PlansUser {
+    if ($row === null) return null;
+
+    return new PlansUser(
+        $row["id"] ?? null,
+        $row["id_user"],
+        $row["id_plan"],
+        $row["status"],
+        $row["expiration_date"] ?? null
+    );
 
 }
 

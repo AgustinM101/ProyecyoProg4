@@ -7,9 +7,9 @@ use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\Exceptions\MPApiException;
 
 
+
 class PaymentService
 
->>>>>>> 6cdabf8 (Resueltos conflictos y agregados archivos nuevos de PaymentIpn)
 {
     public function createPreference(
         ?int $id,
@@ -54,6 +54,7 @@ class PaymentService
                 ],
 
 
+
                 "notification_url" => "$ngrokUrl/payment_ipn",
                 "auto_return" => "approved",
                 "metadata" => [
@@ -61,6 +62,7 @@ class PaymentService
                     "id_plan" => $id_plan,
                 ],
                 "external_reference" => "{$id_user}_{$id_plan}",
+
 
             ]);
 

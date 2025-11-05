@@ -3,57 +3,48 @@
 final readonly class PlanAlimentoRoutes {
   public static function getRoutes(): array {
     return [
-  [
-        "name" => "planAlimento_get",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoGetController.php",
+
+      
+      [
+        "name" => "planAlimentos_getByUserPlanId",
+        "url" => "/userPlanAlimentos",
+        "controller" => "PlanAlimento/PlanAlimentosGetByUserPlanIdController.php",
         "method" => "GET",
         "parameters" => [
           [
-            "name" => "id",
+            "name" => "id",    // id_plans_user
             "type" => "int"
           ]
         ]
       ],
-      [
-        "name" => "planAlimentos_get",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentosGetController.php",
-        "method" => "GET"
-      ],
 
-
-
+      
       [
-        "name" => "planAlimento_create",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPostController.php",
-        "method" => "POST"
-      ],
-      [
-        "name" => "planAlimento_update",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoPutController.php",
-        "method" => "PUT",
-        "parameters" => [
-          [
-            "name" => "id",
-            "type" => "int"
+          "name" => "userPlanAlimento_massive_create",
+          "url" => "/userPlanAlimentos",
+          "controller" => "PlanAlimento/PlanAlimentoMassivePostController.php",
+          "method" => "POST",
+          "parameters" => [
+              [
+                  "name" => "id",      // id_plans_user
+                  "type" => "int"
+              ]
           ]
-        ]
       ],
+
+     
       [
-        "name" => "planAlimento_delete",
-        "url" => "/planAlimentos",
-        "controller" => "PlanAlimento/PlanAlimentoDeleteController.php",
-        "method" => "DELETE",
-        "parameters" => [
-          [
-            "name" => "id",
-            "type" => "int"
+          "name" => "userPlanAlimento_massive_update",
+          "url" => "/userPlanAlimentos",
+          "controller" => "PlanAlimento/PlanAlimentoMassivePutController.php",
+          "method" => "PUT",
+          "parameters" => [
+              [
+                  "name" => "id",      // id_plans_user
+                  "type" => "int"
+              ]
           ]
-        ]
-      ]
+      ],
 
     ];
   }

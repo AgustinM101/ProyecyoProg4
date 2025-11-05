@@ -19,7 +19,7 @@ final readonly class PlansUserUpdaterService {
         $this->planRepository = new PlanRepository();
     }
 
-    public function updateStatusAndExpirationById(int $id, string $status, string $expiration_date): void {
+    public function updateStatusAndExpirationById(int $id, string $status, ?string $expiration_date): void {
         $plansUser = $this->repository->findById($id);
 
         if ($plansUser) {
