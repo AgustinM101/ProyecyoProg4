@@ -42,7 +42,7 @@ export function ClientesPage() {
   const STATUS_OPTIONS = [
     { value: "chargePending", label: "Pendiente de carga" },
     { value: "active", label: "Activo" },
-    { value: "confirmPayment", label: "Confirmar pago" },
+    { value: "expired", label: "Confirmar pago" },
     { value: "finished", label: "Finalizado" },
   ];
 

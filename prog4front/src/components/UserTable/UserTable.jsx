@@ -82,7 +82,7 @@ export function UserTable({
                 />
               );
 
-            case "confirmPayment":
+            case "expired":
               return (
                 <UserRowConfirmarPago
                   key={pu.id}
