@@ -16,7 +16,7 @@ import { Footer } from "../../components/Footer/Footer";
 
 import { paymentService } from "../../services/paymentService";
 import { plansUserService } from "../../services/plansUserService";
-<<<<<<< HEAD
+
 import { userService } from "../../services/userService";
 import "./PurchasePage.css";
 
