@@ -7,7 +7,8 @@ final class Plan {
         private readonly ?int $id,
         private string $name,
         private string $description,
-        private int $price
+        private int $price,
+        private ?int $deleted = 0
     ) {
     }
     public static function create(string $name, string $description, int $price): self
@@ -18,9 +19,12 @@ final class Plan {
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
+        
     }
 
-
+    public function delete(): void {
+        $this->deleted = 1;
+    }
     public function id(): ?int
     {
         return $this->id;

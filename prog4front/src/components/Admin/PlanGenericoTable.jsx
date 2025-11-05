@@ -2,7 +2,7 @@ import { Table, Button } from "@mantine/core";
 import { IconTrash, IconPencil } from "@tabler/icons-react";
 import "./PlanGenericoTable.css";
 
-export function PlanGenericoTable({ plans, onEdit, onDelete }) {
+export function PlanGenericoTable({ plans, onEdit, onDelete, deleting }) {
   return (
     <Table className="plan-table">
       <thead>
@@ -26,7 +26,7 @@ export function PlanGenericoTable({ plans, onEdit, onDelete }) {
                 <Button variant="subtle" color="blue" onClick={() => onEdit(plan)}>
                   <IconPencil size={16} />
                 </Button>
-                <Button variant="subtle" color="red" onClick={() => onDelete(plan.id)}>
+                <Button variant="subtle" color="red" loading={deleting} disabled={deleting} onClick={() => onDelete(plan.id)}>
                   <IconTrash size={16} />
                 </Button>
               </div>

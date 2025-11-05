@@ -2,6 +2,7 @@
 
 namespace Src\Service\PlanAlimento;
 
+use Src\Entity\PlanAlimento\PlanAlimento;
 use Src\Infrastructure\Repository\PlanAlimento\PlanAlimentoRepository;
 
 final readonly class PlanAlimentoMassiveUpdaterService
@@ -17,25 +18,22 @@ final readonly class PlanAlimentoMassiveUpdaterService
 
     public function updateAll(int $plansUserId, array $items): void
 {
+    $this->repository->deleteAllByPlansUserId($plansUserId);
+
     foreach ($items as $item) {
-
-        if (!isset($item["id"], $item["descripcion"], $item["tipo"], $item["dia"])) {
-            continue;
+        // Cada item debe traer descripción, tipo y dia
+        if (!isset($item["descripcion"], $item["tipo"], $item["dia"])) {
+            continue; // opcional: acumular errores
         }
 
-        $plan = $this->finder->find($item["id"]);
-
-        if ($plan->idPlansUser() !== $plansUserId) {
-            continue;
-        }
-
-        $plan->modify(
+        $plan = PlanAlimento::create(
             $item["descripcion"],
             $item["tipo"],
-            $item["dia"]
+            $item["dia"],
+            $plansUserId
         );
 
-        $this->repository->update($plan);
+        $this->repository->create($plan);
     }
 }
 

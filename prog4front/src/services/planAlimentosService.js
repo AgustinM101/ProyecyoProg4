@@ -1,12 +1,17 @@
 import { api } from "./api";
 
 export const planAlimentosService = {
+  createPlan: (data) => {
+    const id = data.id_plans_user;
+    return api.post(`/userPlanAlimentos/${id}`, data);
+  },
 
-  getPlans: () => api.get("/planAlimentos"),
-  getById: (id) => api.get(`/planAlimentos/${id}`),
-  createPlan: (data) => api.post("/planAlimentos", data),
-  updatePlan: (id, data) => api.put(`/planAlimentos/${id}`, data),
-  deletePlan: (id) => api.delete(`/planAlimentos/${id}`),
- getPlanAlimentosByUser: (id) => api.get(`/userPlanAlimentos?id=${id}`),
 
+  updatePlan: (data) => {
+    const id = data.id_plans_user;
+    return api.put(`/userPlanAlimentos/${id}`, data);
+  },
+
+
+  getPlanAlimentosByUser: (id) => api.get(`/userPlanAlimentos/${id}`),
 };

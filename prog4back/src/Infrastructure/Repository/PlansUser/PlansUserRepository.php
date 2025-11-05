@@ -65,13 +65,15 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     public function findByUserIdWithDetails(int $id_user): array {
         $query = <<<SQL
             SELECT 
+                up.id,
                 up.id_user,
                 u.name AS user_name,
                 u.email AS user_email,
                 up.id_plan,
                 p.name AS plan_name,
                 up.status,
-                up.expiration_date
+                up.expiration_date,
+                up.created_at
             FROM plans_user up
             JOIN users u ON u.id = up.id_user
             JOIN plans p ON p.id = up.id_plan

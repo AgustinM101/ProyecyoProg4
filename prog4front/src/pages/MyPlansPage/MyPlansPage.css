@@ -16,3 +16,44 @@
 body {
   background-color: #070707;
 }
+
+/* MyPlans.css */
+
+/* Tablas */
+.myplans-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  text-align: center;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.myplans-table th,
+.myplans-table td {
+  border: 1px solid #eeff05ff;
+  padding: 8px;
+}
+
+.myplans-table th {
+  background-color: #222;
+  color: #eeff05ff;
+}
+
+.myplans-table td {
+  background-color: #333;
+}
+
+/* Encabezados de sección */
+.myplans-section-title {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #eeff05ff;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Scroll horizontal si hace falta */
+.myplans-table-container {
+  overflow-x: auto;
+}

@@ -23,6 +23,27 @@ final readonly class PlansFormRoutes {
           ]
         ]
       ],
+      [
+                "name" => "plansForm_getByUserPlanId",
+                "url" => "/PlansFormsByUserPlanId",
+                "controller" => "PlansForm/PlansFormGetByUserPlanIdController.php",
+                "method" => "GET",
+                "parameters" => [
+                    [
+                        "name" => "id",
+                        "type" => "int"
+                    ]
+                ]
+            ],
+
+      [
+        "name" => "plansForm_getbyuser",
+        "url" => "/plansFormbyuser",
+        "controller" => "PlansForm/PlansFormGetByUserController.php",
+        "method" => "GET",
+
+        
+      ],
 
       [
         "name" => "plansForm_getbyuser",

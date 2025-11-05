@@ -1,86 +1,96 @@
 import { useEffect, useState } from "react";
 import {
   Container,
-  SimpleGrid,
+  Stack,
   Card,
   Text,
   Title,
   Badge,
   Group,
   Button,
-  Stack,
   Center,
   Loader,
+  TextInput,
+  Textarea,
 } from "@mantine/core";
 import { IconEye } from "@tabler/icons-react";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import { plansFormService } from "../../services/plansFormService";
-import {planAlimentosService } from "../../services/planAlimentosService";
+import { planAlimentosService } from "../../services/planAlimentosService";
+import { planEjerciciosService } from "../../services/planEjerciciosService";
 import { plansUserService } from "../../services/plansUserService";
 import { userService } from "../../services/userService";
-import { planEjerciciosService } from "../../services/planEjerciciosService";
 
 export function MyPlansPage() {
   const [user, setUser] = useState(null);
   const [plansUsers, setPlansUsers] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(null);
   const [planAlimento, setPlanAlimento] = useState([]);
+  const [planEjercicio, setPlanEjercicio] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false); // ✅ nuevo estado
 
   useEffect(() => {
     fetchPlans();
   }, []);
 
-  // 🔹 Traer usuario y sus planes
   const fetchPlans = async () => {
     setLoading(true);
     try {
       const userResp = await userService.getCurrentUser();
       const currentUser = userResp?.data;
       if (!currentUser) throw new Error("No hay usuario logueado");
+
       setUser(currentUser);
 
       const resp = await plansUserService.getByUserId(currentUser.id);
       setPlansUsers(resp.data || []);
     } catch (error) {
-      console.error("Error al cargar los planes del usuario:", error);
+      console.error("Error al cargar los planes:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔹 Mostrar detalle del plan usando token del usuario logueado
-  const handleView = async (plansUserId) => {
+  const handleView = async (pu) => {
+    if (!pu) return;
+
     try {
-      setSelectedPlan(plansUserId);
+      setSelectedPlan(pu.id);
       setLoading(true);
 
-      // Solo traer el formulario del usuario logueado vía token
-      //PREGUNTAR A AGUS COMO LEER POR USUARIO LOGUEADO
-    const formResp = await plansFormService.getPlansFormsByUser();
-    setFormData(formResp.data?.[0] || null);
+      const plansUserId = pu.id;
+      console.log("Fetching planAlimento with plansUserId:", plansUserId);
 
+      const [formResp, alimentoResp, ejercicioResp] = await Promise.all([
+        plansFormService.getPlansFormsByUser(),
+        planAlimentosService.getPlanAlimentosByUser(plansUserId),
+        planEjerciciosService.getPlanEjerciciosByUser(plansUserId),
+      ]);
 
-    const userPlanId = formData?.plansUserId; // 👈 ajustá esto según cómo venga tu dato (por ejemplo formData?.user_plan_id)
-
-  if (!userPlanId) {
-    console.warn("⚠️ No se encontró userPlanId en el formulario");
-    return;
-  }
-
-     const alimentosResp = await planAlimentosService.getPlanAlimentosByUser(userPlanId);
-    setPlanAlimento(alimentosResp.data?.[0] || null);
-
-
-    const ejerciciosResp = await planEjerciciosService.getPlanEjerciciosByUser(userPlanId);
-    setPlanEjercicios(ejerciciosResp.data?.[0] || null);
-
-
+      setFormData(formResp.data?.[0] || null);
+      setPlanAlimento(alimentoResp.data || []);
+      setPlanEjercicio(ejercicioResp.data || []);
+      setIsEditing(false);
     } catch (error) {
-  console.error("Error al cargar los datos del plan:", error);
-}
+      console.error("Error al ver detalles del plan:", error);
+      setPlanAlimento([]);
+      setPlanEjercicio([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = () => {
+    console.log("Datos guardados:", formData);
+    setIsEditing(false);
+  };
 
   if (loading) {
     return (
@@ -89,13 +99,13 @@ export function MyPlansPage() {
       </Center>
     );
   }
-}
+
 
   return (
     <>
       <HeaderMenu />
       <Container size="md" py="xl">
-        <Title order={2} ta="center" mb="xl">
+        <Title order={1} ta="center" mb="xl">
           Mis Planes
         </Title>
 
@@ -110,19 +120,29 @@ export function MyPlansPage() {
                 p="lg"
                 radius="md"
                 withBorder
-                style={{ backgroundColor: "#141413ff", color: "white", border: "1px solid #eeff05ff" }}
+                style={{
+                  backgroundColor: "#141413ff",
+                  color: "white",
+                  border: "1px solid #eeff05ff",
+                }}
               >
                 <Group justify="space-between">
                   <div>
                     <Title order={4}>{plan.plan_name}</Title>
                     <Text size="sm" c="dimmed">
-                      Expira: {plan.expiration_date ? new Date(plan.expiration_date).toLocaleDateString() : "Sin fecha"}
+                      Expira:{" "}
+                      {plan.expiration_date
+                        ? new Date(plan.expiration_date).toLocaleDateString()
+                        : "Sin fecha"}
                     </Text>
                   </div>
                   <Badge
                     color={
-                      plan.status === "active" ? "green" :
-                      plan.status === "chargePending" ? "yellow" : "red"
+                      plan.status === "active"
+                        ? "green"
+                        : plan.status === "chargePending"
+                          ? "yellow"
+                          : "red"
                     }
                     variant="filled"
                   >
@@ -131,87 +151,267 @@ export function MyPlansPage() {
                 </Group>
 
                 <Group mt="md" justify="end">
-                  <Button size="sm" color="teal" onClick={() => handleView(plan.id)}>
+                  <Button
+                    size="sm"
+                    color="teal"
+                    leftSection={<IconEye size={16} />}
+                    onClick={() => handleView(plan)}
+                  >
                     Ver detalles
                   </Button>
                 </Group>
 
                 {selectedPlan === plan.id && (
                   <Stack mt="md" spacing="md">
-                    {/* Formulario */}
+                    {/* FORMULARIO */}
                     <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Title order={5}>Formulario</Title>
-                      {formData ? (
-                        <Stack mt="xs" spacing={4}>
-                          <Text size="sm"><strong>Nombre:</strong> {formData.nombre || "-"}</Text>
-                          <Text size="sm"><strong>Edad:</strong> {formData.edad || "-"}</Text>
-                          <Text size="sm"><strong>Peso:</strong> {formData.peso || "-"} kg</Text>
-                          <Text size="sm"><strong>Altura:</strong> {formData.altura || "-"} cm</Text>
-                          <Text size="sm"><strong>Peso_actual:</strong> {formData.peso_actual || "-"}</Text>
-                          <Text size="sm"><strong>Peso_deseado:</strong> {formData.peso_deseado || "-"}</Text>
-                          <Text size="sm"><strong>Actividad_fisica:</strong> {formData.actividad_fisica || "-"}</Text>
-                          <Text size="sm"><strong>Antecedentes_medicos:</strong> {formData.antecedentes_medicos || "-"}</Text>
-                          <Text size="sm"><strong>Alergias:</strong> {formData.alergias || "-"}</Text>
-                          <Text size="sm"><strong> Medicamentos:</strong> {formData.medicamentos || "-"}</Text>
-                          <Text size="sm"><strong>Problemas_digestivos:</strong> {formData.problemas_digestivos || "-"}</Text>
-                          <Text size="sm"><strong>Comidas_diarias:</strong> {formData.comidas_diarias || "-"}</Text>
-                          <Text size="sm"><strong>horarios_de_comidas:</strong> {formData.horarios_de_comidas || "-"}</Text>
-                          <Text size="sm"><strong>Consumo_de_agua:</strong> {formData.consumo_de_agua || "-"}</Text>
-                          <Text size="sm"><strong>Consumo_de_alcohol:</strong> {formData.consumo_de_alcohol || "-"}</Text>
+                      <Group justify="space-between" align="center">
+                        <Title order={5}>FORMULARIO</Title>
+                        {formData && !isEditing && (
+                          <Button
+                            size="xs"
+                            color="yellow"
+                            onClick={() => setIsEditing(true)}
+                            style={{
+                              backgroundColor: "#eeff05ff",
+                              color: "black",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Editar
+                          </Button>
+                        )}
+                      </Group>
 
+                      {formData ? (
+                        <Stack mt="xs" spacing={4} >
+                          <TextInput
+                            label="Nombre"
+
+                            value={formData.nombre || ""}
+                            onChange={(e) => handleChange("nombre", e.target.value)}
+                            disabled={!isEditing}
+                          />
+
+                          <TextInput
+                            label="Edad"
+                            value={formData.edad || ""}
+                            onChange={(e) => handleChange("edad", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Sexo"
+                            value={formData.sexo || ""}
+                            onChange={(e) => handleChange("sexo", e.target.value)}
+                            disabled={!isEditing}
+                          /> <TextInput
+                            label="Altura"
+                            value={formData.altura || ""}
+                            onChange={(e) => handleChange("altura", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="peso_actual"
+                            value={formData.peso_actual || ""}
+                            onChange={(e) => handleChange("peso_actual", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Peso_deseado"
+                            value={formData.peso_deseado || ""}
+                            onChange={(e) => handleChange("peso_deseado", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Actividad_fisica"
+                            value={formData.actividad_fisica || ""}
+                            onChange={(e) => handleChange("actividad_fisica", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <Textarea
+                            label="Antecedentes médicos"
+                            value={formData.antecedentes_medicos || ""}
+                            onChange={(e) =>
+                              handleChange("antecedentes_medicos", e.target.value)
+                            }
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Alergias"
+                            value={formData.alergias || ""}
+                            onChange={(e) => handleChange("alergias", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Medicamentos"
+                            value={formData.medicamentos || ""}
+                            onChange={(e) => handleChange("medicamentos", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Problemas_digestivos"
+                            value={formData.problemas_digestivos || ""}
+                            onChange={(e) => handleChange("problemas_digestivos", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Comidas_diarias"
+                            value={formData.comidas_diarias || ""}
+                            onChange={(e) => handleChange("comidas_diarias", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Alimentos_evitar"
+                            value={formData.alimentos_evitar || ""}
+                            onChange={(e) => handleChange("alimentos_evitar", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Horarios_comidas"
+                            value={formData.horarios_comidas || ""}
+                            onChange={(e) => handleChange("horarios_comidas", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Consumo_agua"
+                            value={formData.consumo_agua || ""}
+                            onChange={(e) => handleChange("consumo_agua", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Consumo_alcohol"
+                            value={formData.consumo_alcohol || ""}
+                            onChange={(e) => handleChange("consumo_alcohol", e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          <TextInput
+                            label="Fecha de registro"
+                            value={
+                              formData.fecha_registro
+                                ? new Date(formData.fecha_registro).toLocaleDateString()
+                                : new Date().toLocaleDateString()
+                            }
+                            disabled
+                          />
+                          {isEditing && (
+                            <Group mt="md" justify="center">
+                              <Button color="green" onClick={handleSave}>
+                                Guardar
+                              </Button>
+                              <Button color="red" onClick={() => setIsEditing(false)}>
+                                Cancelar
+                              </Button>
+                            </Group>
+                          )}
                         </Stack>
                       ) : (
-                        <Text size="sm" c="dimmed">No hay información del formulario.</Text>
-                      )}
-                      
-
-                  
-                    
-                        </Card>
-                    {/* Plan Ejercicio */}
-                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Title order={5}>Plan de Ejercicio</Title>
-                      {planEjerciciosService.length > 0 ? (
-                        planEjerciciosService.map((pe) => (
-                          <Card key={pe.id} mt="xs" p="sm" radius="md" style={{ backgroundColor: "#090909ff" }}>
-                            <Stack spacing={2}>
-                              <Text size="sm"><strong>Tipo:</strong> {pe.tipo}</Text>
-                              <Text size="sm"><strong>Descripción:</strong> {pe.description}</Text>
-                              <Text size="sm"><strong>Días:</strong> {pe.dias}</Text>
-                            </Stack>
-                          </Card>
-                        ))
-                      ) : (
-                        <Text size="sm" c="dimmed">Aún no hay plan de ejercicio asignado.</Text>
+                        <Text size="sm" c="dimmed">
+                          No hay información del formulario.
+                        </Text>
                       )}
                     </Card>
 
-                    {/* Plan Alimento */}
+                    {/* Plan Alimentario */}
                     <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
                       <Title order={5}>Plan Alimentario</Title>
                       {planAlimento.length > 0 ? (
-                        planAlimento.map((pa) => (
-                          <Card key={pa.id} mt="xs" p="sm" radius="md" style={{ backgroundColor: "#3A3B3E" }}>
-                            <Stack spacing={2}>
-                              <Text size="sm"><strong>Tipo:</strong> {pa.tipo}</Text>
-                              <Text size="sm"><strong>Descripción:</strong> {pa.description}</Text>
-                              <Text size="sm"><strong>Días:</strong> {pa.dias}</Text>
-                            </Stack>
-                          </Card>
-                        ))
+                        <table
+                          style={{
+                            width: "100%",
+                            color: "white",
+                            borderCollapse: "collapse",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <thead>
+                            <tr style={{ backgroundColor: "#1c1c1c" }}>
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                Descripción
+                              </th>
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                Tipo
+                              </th>
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                Días
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {planAlimento.map((pa) => (
+                              <tr key={pa.id} style={{ backgroundColor: "#2a2a2a" }}>
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                  {pa.description}
+                                </td>
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                  {pa.tipo}
+                                </td>
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                  {pa.dias}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       ) : (
-                        <Text size="sm" c="dimmed">Aún no hay plan alimentario asignado.</Text>
+                        <Text size="sm" c="dimmed">
+                          Aún no hay plan alimentario asignado.
+                        </Text>
+                      )}
+                    </Card>
+
+                    {/* Plan de Ejercicio */}
+                    <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
+                      <Title order={5}>Plan de Ejercicio</Title>
+                      {planEjercicio.length > 0 ? (
+                        <table
+                          style={{
+                            width: "100%",
+                            color: "white",
+                            borderCollapse: "collapse",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <thead>
+                            <tr style={{ backgroundColor: "#1c1c1c" }}>
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                Tipo
+                              </th>
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                Días
+                              </th>
+                              <th style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                Descripción
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {planEjercicio.map((pe) => (
+                              <tr key={pe.id} style={{ backgroundColor: "#2a2a2a" }}>
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                  {pe.tipo}
+                                </td>
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                  {pe.dias}
+                                </td>
+                                <td style={{ border: "1px solid #eeff05ff", padding: "6px" }}>
+                                  {pe.descripcion}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <Text size="sm" c="dimmed">
+                          Aún no hay plan de ejercicios asignado.
+                        </Text>
                       )}
                     </Card>
                   </Stack>
-
-                  
                 )}
               </Card>
             ))}
           </Stack>
         )}
-      
       </Container>
       <Footer />
     </>

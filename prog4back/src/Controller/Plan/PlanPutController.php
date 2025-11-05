@@ -16,6 +16,7 @@ final readonly class PlanPutController
         $name = ControllerUtils::getPost("name");
         $description = ControllerUtils::getPost("description");
         $price = ControllerUtils::getPost("price");
+        
 
         $plan = $this->service->update($name, $description, $price, $id);
     }

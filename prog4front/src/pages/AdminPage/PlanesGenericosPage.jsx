@@ -13,6 +13,7 @@ import { plansService } from "../../services/plansService";
 import { AdminNavbar } from "../../components/Admin/AdminNavbar";
 import { PlanGenericoTable } from "../../components/Admin/PlanGenericoTable";
 import { PlanGenericoModal } from "../../components/Admin/PlanGenericoModal";
+import { AdminPageLoader } from "../../components/Admin/AdminPageLoader";
 
 export function PlanesGenericosPage() {
   const [plans, setPlans] = useState([]);
@@ -22,6 +23,8 @@ export function PlanesGenericosPage() {
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const itemsPerPage = 5;
+  const [deleting, setDeleting] = useState(false);
+
 
   // 🔹 Obtener planes del backend
   const fetchPlans = async () => {
@@ -80,24 +83,28 @@ export function PlanesGenericosPage() {
     }
   };
 
-  // ❌ Eliminar plan
+  //  Eliminar plan
   const handleDelete = async (planId) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
-    try {
-      await plansService.deletePlan(planId);
-      fetchPlans();
-    } catch (error) {
-      console.error("Error al eliminar plan:", error);
-    }
-  };
+  if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
+  setDeleting(true);
+  try {
+    await plansService.deletePlan(planId);
+    fetchPlans();
+  } catch (error) {
+    console.error("Error al eliminar plan:", error);
+  } finally {
+    setDeleting(false);
+  }
+};
+
 
   if (loading) {
     return (
       <>
+              
         <AdminNavbar />
-        <Center style={{ height: "100vh" }}>
-          <Loader color="#FF6600" size="xl" />
-        </Center>
+        <AdminPageLoader />
+      
       </>
     );
   }
@@ -134,6 +141,7 @@ export function PlanesGenericosPage() {
                 plans={paginatedPlans}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                deleting={deleting}
               />
               <Center mt="md">
                 <Pagination
