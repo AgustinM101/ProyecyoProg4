@@ -75,7 +75,7 @@ export function DashboardStats({ stats }) {
           />
           <StatItem
             icon={<IconClipboardList color="#FF6600" size={20} />}
-            label="Formularios pendientes"
+            label="Planes pendientes"
             value={stats.planesPendientes}
           />
 

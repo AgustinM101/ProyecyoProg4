@@ -44,7 +44,7 @@ export function AdminHome() {
         // 📦 Métricas generales
         const planesComprados = planesUser.data.length;
         const planesPendientes = planesUser.data.filter(
-          (p) => p.status === "pendiente"
+          (p) => p.status === "chargePending"
         ).length;
 
         // 🕒 Planes por vencer (dentro de 7 días)
