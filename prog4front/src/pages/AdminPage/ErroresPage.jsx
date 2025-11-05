@@ -82,7 +82,16 @@ export function ErroresPage() {
                 <Table.Tbody>
                   {errores.map((e) => (
                     <Table.Tr key={e.id}>
-                      <Table.Td>{new Date(e.created_at).toLocaleString("es-AR")}</Table.Td>
+                      <Table.Td>
+                        {new Date(e.created_at).toLocaleString("es-AR", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })}
+                      </Table.Td>
+
                       <Table.Td>{e.text}</Table.Td>
                       <Table.Td>
                         {e.severity ? (

@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { planAlimentosService } from "../../services/planAlimentosService";
 import { planEjerciciosService } from "../../services/planEjerciciosService";
+import { plansUserService } from "../../services/plansUserService";
 
 export function UserPlansAccordion({ action, plansUserId, onFinish }) {
     const [loading, setLoading] = useState(false);
@@ -98,7 +99,15 @@ export function UserPlansAccordion({ action, plansUserId, onFinish }) {
                 );
             }
 
-            // Ejecutar ambos al mismo tiempo
+            // Si se creó al menos un plan, actualizar el estado del plans_user a "active"
+            if (action === "create" && (alimentos.length > 0 || ejercicios.length > 0)) {
+                promises.push(
+                    plansUserService.updatePlan(plansUserId, {
+                        status: "active",
+                    })
+                );
+            }
+
             await Promise.all(promises);
 
             alert("✅ Plan actualizado correctamente");
