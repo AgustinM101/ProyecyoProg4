@@ -83,6 +83,8 @@ export function UserPlansAccordion({ action, plansUserId, onFinish }) {
                 );
             }
 
+            
+
             if (action === "create" && ejercicios.length > 0) {
                 promises.push(
                     planEjerciciosService.createPlan({
