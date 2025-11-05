@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 
 namespace Src\Infrastructure\Repository\User;
 
@@ -44,16 +43,13 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         return $this->primitiveToUser($result[0] ?? null);
     }
 
-        public function insert(User $user): void
+    public function insert(User $user): void
     {
         $query = <<<INSERT_QUERY
-                    INSERT INTO
-                        users
-                    (name, email, password, token)
-                        VALUES
-                    (:name, :email, :password, :token)
-                INSERT_QUERY;
-            
+            INSERT INTO users (name, email, password, token)
+            VALUES (:name, :email, :password, :token)
+        INSERT_QUERY;
+
         $parameters = [
             "name" => $user->name(),
             "email" => $user->email(),
@@ -71,12 +67,9 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             SET name = :name,
                 email = :email,
                 password = :password,
-                
-
                 token = :token,
                 token_auth_date = :tokenAuthDate,
                 admin = :admin,
-
                 deleted = :deleted
             WHERE id = :id
         SQL;
@@ -85,12 +78,9 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             "name" => $user->name(),
             "email" => $user->email(),
             "password" => $user->password(),
-            
-
             "token" => $user->token(),
             "tokenAuthDate" => $user->tokenAuthDate()?->format("Y-m-d H:i:s"),
             "admin" => $user->admin(),
-            
             "deleted" => $user->deleted() ?? 0,
             "id" => $user->id()
         ];
@@ -99,7 +89,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
     }
 
     /**
-     * ✅ Actualiza solo los datos del perfil (nombre, teléfono e imagen)
+     * ✅ Actualiza solo los datos del perfil (nombre e imagen)
      * sin tocar contraseña, token o plan.
      */
     public function updateProfile(int $id, ?string $name, ?string $profileImage): void
@@ -108,7 +98,6 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             UPDATE users
             SET 
                 name = COALESCE(:name, name),
-                
                 profile_image = COALESCE(:profileImage, profile_image)
             WHERE id = :id
         SQL;
@@ -116,7 +105,6 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         $parameters = [
             "id" => $id,
             "name" => $name,
-            
             "profileImage" => $profileImage
         ];
 
@@ -150,7 +138,6 @@ final readonly class UserRepository extends PDOManager implements UserRepository
             $primitive["name"],
             $primitive["email"],
             $primitive["password"],
-           
             $primitive["token"] ?? null,
             !empty($primitive["token_auth_date"]) ? new DateTime($primitive["token_auth_date"]) : null,
             $primitive["admin"] ?? 0,
@@ -162,7 +149,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         if (!empty($primitive["plan_id"])) {
             $planRepository = new \Src\Infrastructure\Repository\Plan\PlanRepository();
             $plan = $planRepository->find($primitive["plan_id"]);
-            $user-> setPlan($plan);
+            $user->setPlan($plan);
         }
 
         // Asignar deleted
@@ -171,6 +158,7 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         return $user;
     }
 }
+
 
 
 

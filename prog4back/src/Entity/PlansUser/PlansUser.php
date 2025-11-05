@@ -9,7 +9,7 @@ final class PlansUser {
         private int $id_plan,
         private string $status,
         private ?string $expiration_date = null,
-        int $deleted = 0,
+        private int $deleted = 0,
     ) {}
 
     public function modify(string $status, string $expiration_date): void {

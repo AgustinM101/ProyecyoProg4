@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Src\Service\User;
 
 use Src\Infrastructure\Repository\User\UserRepository;
-use Src\Entity\User\User;
 
 final class UserUpdateProfileService
 {
@@ -23,28 +22,47 @@ final class UserUpdateProfileService
             throw new \Exception("Usuario no encontrado");
         }
 
+        // Actualizar nombre si viene en los datos
         if (isset($data['name'])) {
             $user->setName($data['name']);
         }
 
-        
+        // Actualizar teléfono si viene en los datos
+        if (isset($data['phone'])) {
+            $user->setPhone($data['phone']);
+        }
 
+        // Actualizar foto de perfil si viene en los datos
         if (isset($data['profile_image'])) {
             $file = $data['profile_image'];
-            $uploadDir = __DIR__ . '/../../../public/uploads/profile_images/';
+
+            // Usar ruta absoluta desde la raíz del servidor
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/app/build/data/public/uploads/profile_images/';
+
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
 
-            $filePath = $uploadDir . uniqid() . '_' . $file['name'];
-            move_uploaded_file($file['tmp_name'], $filePath);
+            // Generar nombre único para evitar conflictos
+            $uniqueName = uniqid('profile_') . '_' . basename($file['name']);
+            $filePath = $uploadDir . $uniqueName;
 
-            // Guardamos la ruta relativa a la imagen
-            $user->setProfileImage('/uploads/profile_images/' . basename($filePath));
+            if (!move_uploaded_file($file['tmp_name'], $filePath)) {
+                throw new \Exception("Error al mover el archivo subido.");
+            }
+
+            // Guardamos la ruta relativa para el frontend
+            $user->setProfileImage('/uploads/profile_images/' . $uniqueName);
         }
 
-        $this->userRepository->update($user);
+        // Guardar los cambios en la base de datos
+        $this->userRepository->updateProfile(
+        $user->id(),
+        $user->name(),
+        $user->profileImage()
+);
     }
 }
+
 
     

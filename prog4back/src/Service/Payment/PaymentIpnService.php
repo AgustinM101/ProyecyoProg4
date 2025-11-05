@@ -4,14 +4,17 @@ namespace Src\Service\Payment;
 
 use Src\Infrastructure\Repository\Purchase\PurchaseRepository;
 
-final readonly class PaymentIpnService {
+final readonly class PaymentIpnService
+{
     private PurchaseRepository $repo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->repo = new PurchaseRepository();
     }
 
-    public function processNotification(array $data): void {
+    public function processNotification(array $data): void
+    {
         /**
          * Mercado Pago puede enviar las notificaciones IPN de dos formas:
          * 1️⃣ Como JSON (POST body)
@@ -39,7 +42,7 @@ final readonly class PaymentIpnService {
         $paymentId = $data['id'];
 
         /**
-         * 🔗 NUEVO BLOQUE: Consultar el pago directamente desde la API de Mercado Pago
+         * 🔗 Consultar el pago directamente desde la API de Mercado Pago
          */
         $accessToken = $_ENV['MERCADOPAGO_ACCESS_TOKEN'] ?? 'TU_ACCESS_TOKEN_AQUI';
 
@@ -65,7 +68,6 @@ final readonly class PaymentIpnService {
         }
 
         $paymentData = json_decode($response, true);
-
         if (!$paymentData || !isset($paymentData['status'])) {
             throw new \Exception("No se pudo obtener el estado del pago desde la respuesta de Mercado Pago");
         }
@@ -73,41 +75,33 @@ final readonly class PaymentIpnService {
         $status = $paymentData['status']; // approved, pending, rejected, etc.
         $externalReference = $paymentData['external_reference'] ?? null;
 
-        /**
-         * 🧩 Guardamos en la base de datos
-         *  - Si tenés un campo 'preference_id' o 'external_reference' lo podés usar como referencia
-         */
+        // Guardamos en la base de datos
         $this->repo->updateStatus($externalReference ?? $paymentId, $status);
 
-        // 🧠 Si el pago fue aprobado, actualizamos el plan del usuario
-if ($status === 'approved' && $externalReference) {
-    try {
-        // Conectamos a la base de datos
-        $pdo = new \PDO(
-            "mysql:host=" . $_ENV['DB_HOST'] . ";dbname=" . $_ENV['DB_NAME'],
-            $_ENV['DB_USER'],
-            $_ENV['DB_PASS'],
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-        );
+        // Si el pago fue aprobado, actualizamos el plan del usuario
+        if ($status === 'approved' && $externalReference) {
+            try {
+                $pdo = new \PDO(
+                    "mysql:host=" . $_ENV['DB_HOST'] . ";dbname=" . $_ENV['DB_NAME'],
+                    $_ENV['DB_USER'],
+                    $_ENV['DB_PASS'],
+                    [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+                );
 
-        // Actualizamos el estado y fecha de expiración (por ejemplo, 30 días desde hoy)
-        $stmt = $pdo->prepare("
-            UPDATE plans_user 
-            SET status = 'Activo', expiration_date = DATE_ADD(NOW(), INTERVAL 30 DAY)
-            WHERE id = :external_ref
-        ");
-        $stmt->execute(['external_ref' => $externalReference]);
+                $stmt = $pdo->prepare("
+                    UPDATE plans_user 
+                    SET status = 'Activo', expiration_date = DATE_ADD(NOW(), INTERVAL 30 DAY)
+                    WHERE id = :external_ref
+                ");
+                $stmt->execute(['external_ref' => $externalReference]);
 
-        file_put_contents(__DIR__ . '/ipn_debug.log', date('Y-m-d H:i:s') . " ✅ Plan activado para reference: {$externalReference}\n", FILE_APPEND);
-    } catch (\Exception $e) {
-        file_put_contents(__DIR__ . '/ipn_debug.log', date('Y-m-d H:i:s') . " ❌ Error al actualizar plan: " . $e->getMessage() . "\n", FILE_APPEND);
-    }
-}
+                file_put_contents(__DIR__ . '/ipn_debug.log', date('Y-m-d H:i:s') . " ✅ Plan activado para reference: {$externalReference}\n", FILE_APPEND);
+            } catch (\Exception $e) {
+                file_put_contents(__DIR__ . '/ipn_debug.log', date('Y-m-d H:i:s') . " ❌ Error al actualizar plan: " . $e->getMessage() . "\n", FILE_APPEND);
+            }
+        }
 
-
-        /**
-         * 🪵 Log opcional para depurar
-         */
+        // Log opcional
         file_put_contents(__DIR__ . '/ipn_debug.log', date('Y-m-d H:i:s') . " Pago consultado:\n" . print_r([
             'payment_id' => $paymentId,
             'status' => $status,
@@ -116,5 +110,6 @@ if ($status === 'approved' && $externalReference) {
         ], true) . "\n\n", FILE_APPEND);
     }
 }
+
 
 
