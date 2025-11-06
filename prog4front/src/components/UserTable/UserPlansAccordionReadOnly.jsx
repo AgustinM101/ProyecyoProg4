@@ -9,7 +9,15 @@ export function UserPlansAccordionReadOnly({ pu }) {
   const [planEjercicio, setPlanEjercicio] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+  const dias = [
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+    "Domingo",
+  ];
   const comidas = ["Desayuno", "Almuerzo", "Merienda", "Cena"];
   const tiposEjercicio = ["Fuerza", "Cardio", "Flexibilidad", "Descanso"];
 
@@ -52,9 +60,7 @@ export function UserPlansAccordionReadOnly({ pu }) {
           <tr key={tipo}>
             <td style={{ fontWeight: "bold" }}>{tipo}</td>
             {dias.map((dia) => (
-              <td key={dia}>
-                {plan[dia]?.[tipo] || "-"}
-              </td>
+              <td key={dia}>{plan[dia]?.[tipo] || "-"}</td>
             ))}
           </tr>
         ))}
@@ -68,9 +74,11 @@ export function UserPlansAccordionReadOnly({ pu }) {
       <Accordion.Item value="alimentos">
         <Accordion.Control>🍗 Plan de Alimentación</Accordion.Control>
         <Accordion.Panel>
-          {Object.keys(planAlimento).length > 0
-            ? renderTable(planAlimento, comidas, "alimento")
-            : <Text color="dimmed">No hay plan de alimentos</Text>}
+          {Object.keys(planAlimento).length > 0 ? (
+            renderTable(planAlimento, comidas, "alimento")
+          ) : (
+            <Text color="dimmed">No hay plan de alimentos</Text>
+          )}
         </Accordion.Panel>
       </Accordion.Item>
 
@@ -78,9 +86,11 @@ export function UserPlansAccordionReadOnly({ pu }) {
       <Accordion.Item value="ejercicios">
         <Accordion.Control>🏋️ Plan de Ejercicios</Accordion.Control>
         <Accordion.Panel>
-          {Object.keys(planEjercicio).length > 0
-            ? renderTable(planEjercicio, tiposEjercicio, "ejercicio")
-            : <Text color="dimmed">No hay plan de ejercicios</Text>}
+          {Object.keys(planEjercicio).length > 0 ? (
+            renderTable(planEjercicio, tiposEjercicio, "ejercicio")
+          ) : (
+            <Text color="dimmed">No hay plan de ejercicios</Text>
+          )}
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>

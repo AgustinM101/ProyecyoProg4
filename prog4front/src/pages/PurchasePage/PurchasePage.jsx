@@ -38,14 +38,11 @@ export function PurchasePage() {
 
   const userData = {
     ...formData,
-    plan: "Plan PHAV",
-    paymentMethod,
-    fechaCompra: new Date().toLocaleDateString(),
+    plan: 1,
+    paymentMethod
   };
 
   if (paymentMethod === "mercadopago") {
-  // 🔹 Abrimos la ventana ANTES del await
-  const mpWindow = window.open("", "_blank");
 
   try {
     const data = await paymentService.createPaymentPreference({
@@ -61,17 +58,16 @@ export function PurchasePage() {
 
     const paymentUrl = data?.url?.init_point || null;
 
-    if (paymentUrl && mpWindow) {
+    if (paymentUrl) {
+      const mpWindow = window.open("", "_blank");
       mpWindow.location.href = paymentUrl; // redirigimos la ventana abierta
       mpWindow.focus();
       alert("Se abrió Mercado Pago en una nueva pestaña. Completá el pago allí.");
     } else {
-      if (mpWindow) mpWindow.close();
       alert("No se obtuvo la URL de pago. Mirá la consola (F12) para más detalles.");
       console.log("Respuesta inesperada del backend:", data);
     }
   } catch (error) {
-    if (mpWindow) mpWindow.close();
     console.error("Axios error object:", error);
     alert("Error al conectar con Mercado Pago. Verificá la ruta o el Access Token.");
   }
@@ -79,11 +75,7 @@ export function PurchasePage() {
   return;
 }
 
-
-  // 🔹 Otros métodos (simulación)
-  localStorage.setItem("userProfile", JSON.stringify(userData));
-  alert("Compra simulada. Redirigiendo a tu perfil...");
-  navigate("/profile");
+  navigate("/plansForm");
 };
 
 
@@ -99,27 +91,7 @@ export function PurchasePage() {
 
             <form onSubmit={handleSubmit}>
               <Stack className="purch-stack">
-                <TextInput
-                  label="Nombre"
-                  name="nombre"
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  required
-                />
-                <TextInput
-                  label="Email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-                <TextInput
-                  label="Teléfono"
-                  name="telefono"
-                  value={formData.telefono}
-                  onChange={handleChange}
-                  required
-                />
+
 
                 <Select
                   label="Forma de pago"
