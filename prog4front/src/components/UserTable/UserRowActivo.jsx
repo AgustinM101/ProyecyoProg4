@@ -76,5 +76,5 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
                 </tr>
             )}
         </>
-    )
+    );
 }
