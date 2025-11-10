@@ -22,7 +22,7 @@ final class PlansForm implements \JsonSerializable
         private ?string $horarios_comidas,
         private float $consumo_agua,
         private string $consumo_alcohol,
-        private string $fecha_registro,
+        private ?string $fecha_registro = null,
         private ?int $id_plans_user
     ) {}
 
@@ -77,7 +77,7 @@ final class PlansForm implements \JsonSerializable
     public function consumoAlcohol(): string {
         return $this->consumo_alcohol;
     }
-    public function fechaRegistro(): string {
+    public function fechaRegistro(): ?string {
         return $this->fecha_registro;
     }
     public function idPlansUser(): ?int {
@@ -105,6 +105,7 @@ final class PlansForm implements \JsonSerializable
             'consumo_agua' => $this->consumoAgua(),
             'consumo_alcohol' => $this->consumoAlcohol(),
             'fecha_registro' => $this->fechaRegistro(),
+
             'id_plans_user' => $this->idPlansUser(),
         ];
     }
