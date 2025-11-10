@@ -80,7 +80,7 @@ export function PlansFormPage() {
       data.append("fecha_registro", new Date().toISOString().split("T")[0]);
       data.append("id_plans_user", 1);
 
-      const response = await plansFormService.create(data);
+      const response = await plansFormService.createPlanForms(data);
 
       if (response?.success || response?.status === 200) {
         // 🔹 2. Crear el registro en plans_user (solo id_user + id_plan)
@@ -313,32 +313,7 @@ export function PlansFormPage() {
               </Stack>
             </form>
 
-            {forms.length > 0 && (
-              <div style={{ marginTop: "2rem" }}>
-                <Title order={3}>Formularios enviados</Title>
-
-                {forms.map((f) => (
-                  <Card key={f.id} shadow="sm" radius="md" mt="md" p="md">
-                    <div>
-                      <strong>{f.nombre}</strong> ({f.edad} años) - {f.sexo}
-                    </div>
-                    <div style={{ fontSize: "0.9rem", marginTop: "0.3rem" }}>
-                      Actividad física: {f.actividad_fisica || "No especificada"}
-                    </div>
-
-                    <Button
-                      color="red"
-                      variant="light"
-                      size="xs"
-                      mt="sm"
-                      onClick={() => handleDelete(f.id)}
-                    >
-                      Eliminar
-                    </Button>
-                  </Card>
-                ))}
-              </div>
-            )}
+            
           </Card>
         </Container>
       </div>

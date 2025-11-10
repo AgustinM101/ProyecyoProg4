@@ -19,8 +19,7 @@ import { MyPlansPage } from "./pages/MyPlansPage/MyPlansPage";
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
 import { DatesProvider } from "@mantine/dates";
 import { PlanesClientesPage } from "./pages/AdminPage/PlanesClientesPage";
-;
-import { FormulariosPage } from "./pages/AdminPage/FormulariosPage";
+
 import { ClientesPage } from "./pages/AdminPage/ClientesPage";
 
 import { PlansFormPage } from "./pages/PlansFormPage/PlansFormPage";
@@ -50,10 +49,12 @@ function App() {
                             <Route path="/myplans" element={<MyPlansPage />} />   
                             <Route path="/purchase" element={<PurchasePage />} />
                             <Route path="/profile" element={<ProfilePage />} />
-                            <Route path="/formularios" element={<FormulariosPage />} />
+                            
                             <Route path="/clientes" element={<ClientesPage />} />
                             <Route path="/userplanes" element={<PlanesClientesPage />} />
                             <Route path="/genericplanes" element={<PlanesGenericosPage />} />
+
+                            <Route path="/plansForms" element={<PlansFormPage />} />
 
                         {/* Rutas públicas */}
                         <Route element={<PublicRoute />}>
@@ -68,7 +69,7 @@ function App() {
                             <Route path="/myplans" element={<MyPlansPage />} />
 
 
-                            <Route path="/plansForms" element={<PlansFormPage />} />
+                            
 
 
                             <Route path="/purchase" element={<PurchasePage />} />
