@@ -41,8 +41,8 @@ final readonly class PlansFormCreatorService
         string $horarios_comidas,
         float $consumo_agua,
         string $consumo_alcohol,
-        string $fecha_registro,
-        ?int $id_plans_user = null // ✅ ahora puede ser null
+ 
+        ?int $id_plans_user = null 
     ): void {
         // 🔹 Si no viene id_plans_user, intentar asignar el plan activo del usuario logueado
         if ($id_plans_user === null) {
@@ -78,7 +78,7 @@ final readonly class PlansFormCreatorService
             $horarios_comidas,
             $consumo_agua,
             $consumo_alcohol,
-            $fecha_registro,
+            $fecha_registro = null,
             $id_plans_user
         );
 
