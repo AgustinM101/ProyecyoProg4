@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Container,
   Card,
@@ -12,19 +12,16 @@ import {
   Center,
   Loader,
 } from "@mantine/core";
-import { useNavigate } from "react-router-dom"; // ✅ agregado
+import { useNavigate } from "react-router-dom";
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import "./PlansFormPage.css";
 import { plansFormService } from "../../services/plansFormService";
-import { plansUserService } from "../../services/plansUserService"; 
-import { userService } from "../../services/userService"; // ✅ agregado
 
 export function PlansFormPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [forms, setForms] = useState([]);
-  const navigate = useNavigate(); // ✅ agregado
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -45,20 +42,6 @@ export function PlansFormPage() {
     consumo_alcohol: "",
   });
 
-  // 🔹 Cargar formularios al montar
-  useEffect(() => {
-    loadForms();
-  }, []);
-
-  const loadForms = async () => {
-    try {
-      const response = await plansFormService.getPlansForms();
-      setForms(response.data);
-    } catch (error) {
-      console.error("❌ Error al obtener formularios:", error);
-    }
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -74,34 +57,13 @@ export function PlansFormPage() {
     setSuccess(false);
 
     try {
-      // 🔹 1. Crear el form principal (igual que antes)
       const data = new FormData();
       Object.keys(formData).forEach((key) => data.append(key, formData[key]));
       data.append("fecha_registro", new Date().toISOString().split("T")[0]);
-      data.append("id_plans_user", 1);
 
       const response = await plansFormService.createPlanForms(data);
 
       if (response?.success || response?.status === 200) {
-        // 🔹 2. Crear el registro en plans_user (solo id_user + id_plan)
-        try {
-          const userResponse = await userService.getCurrentUser(); // ✅ obtener usuario actual
-          const id_user = userResponse?.data?.id;
-
-          // ⚠️ reemplazá este id_plan con el que corresponda (puede venir de props, de localStorage, etc.)
-          const id_plan = 1;
-
-          await plansUserService.createPlan({
-            id_user: id_user,
-            id_plan: id_plan,
-          });
-
-          console.log("✅ PlanUser creado correctamente");
-        } catch (err) {
-          console.error("⚠️ Error al crear plan user:", err);
-        }
-
-        // 🔹 3. Resetear formulario (igual)
         setSuccess(true);
         setFormData({
           nombre: "",
@@ -122,13 +84,9 @@ export function PlansFormPage() {
           consumo_alcohol: "",
         });
 
-        // 🔹 4. Actualizar lista
-        loadForms();
-
-        // 🔹 5. Redirigir al perfil automáticamente ✅
         setTimeout(() => {
           navigate("/profile");
-        }, 1200);
+        }, 1000);
       } else {
         throw new Error("Error al enviar el formulario");
       }
@@ -137,18 +95,6 @@ export function PlansFormPage() {
       alert("Ocurrió un error al enviar el formulario ❌");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!confirm("¿Seguro que querés eliminar este formulario?")) return;
-
-    try {
-      await plansFormService.deletePlan(id);
-      loadForms();
-    } catch (error) {
-      console.error("❌ Error al eliminar formulario:", error);
-      alert("Error al eliminar el formulario ❌");
     }
   };
 
@@ -179,20 +125,9 @@ export function PlansFormPage() {
 
             <form onSubmit={handleSubmit}>
               <Stack gap="sm">
-                <TextInput
-                  label="Nombre"
-                  name="nombre"
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  required
-                />
-                <TextInput
-                  label="Edad"
-                  name="edad"
-                  value={formData.edad}
-                  onChange={handleChange}
-                  required
-                />
+                <TextInput label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} required />
+                <TextInput label="Edad" name="edad" value={formData.edad} onChange={handleChange} required />
+
                 <Select
                   label="Sexo"
                   name="sexo"
@@ -205,115 +140,30 @@ export function PlansFormPage() {
                   ]}
                   required
                 />
-                <TextInput
-                  label="Altura (m)"
-                  name="altura"
-                  value={formData.altura}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  label="Peso actual (kg)"
-                  name="peso_actual"
-                  value={formData.peso_actual}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  label="Peso deseado (kg)"
-                  name="peso_deseado"
-                  value={formData.peso_deseado}
-                  onChange={handleChange}
-                />
-                <Textarea
-                  label="Actividad física"
-                  name="actividad_fisica"
-                  value={formData.actividad_fisica}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <Textarea
-                  label="Antecedentes médicos"
-                  name="antecedentes_medicos"
-                  value={formData.antecedentes_medicos}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <Textarea
-                  label="Alergias"
-                  name="alergias"
-                  value={formData.alergias}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <Textarea
-                  label="Medicamentos"
-                  name="medicamentos"
-                  value={formData.medicamentos}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <Textarea
-                  label="Problemas digestivos"
-                  name="problemas_digestivos"
-                  value={formData.problemas_digestivos}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <Textarea
-                  label="Comidas diarias"
-                  name="comidas_diarias"
-                  value={formData.comidas_diarias}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <Textarea
-                  label="Alimentos a evitar"
-                  name="alimentos_evitar"
-                  value={formData.alimentos_evitar}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <Textarea
-                  label="Horarios de comidas"
-                  name="horarios_comidas"
-                  value={formData.horarios_comidas}
-                  onChange={handleChange}
-                  autosize
-                  minRows={2}
-                />
-                <TextInput
-                  label="Consumo de agua (litros diarios)"
-                  name="consumo_agua"
-                  value={formData.consumo_agua}
-                  onChange={handleChange}
-                />
-                <TextInput
-                  label="Consumo de alcohol (veces por semana)"
-                  name="consumo_alcohol"
-                  value={formData.consumo_alcohol}
-                  onChange={handleChange}
-                />
+
+                <TextInput label="Altura (m)" name="altura" value={formData.altura} onChange={handleChange} />
+                <TextInput label="Peso actual (kg)" name="peso_actual" value={formData.peso_actual} onChange={handleChange} />
+                <TextInput label="Peso deseado (kg)" name="peso_deseado" value={formData.peso_deseado} onChange={handleChange} />
+
+                <Textarea label="Actividad física" name="actividad_fisica" value={formData.actividad_fisica} onChange={handleChange} autosize minRows={2} />
+                <Textarea label="Antecedentes médicos" name="antecedentes_medicos" value={formData.antecedentes_medicos} onChange={handleChange} autosize minRows={2} />
+                <Textarea label="Alergias" name="alergias" value={formData.alergias} onChange={handleChange} autosize minRows={2} />
+                <Textarea label="Medicamentos" name="medicamentos" value={formData.medicamentos} onChange={handleChange} autosize minRows={2} />
+                <Textarea label="Problemas digestivos" name="problemas_digestivos" value={formData.problemas_digestivos} onChange={handleChange} autosize minRows={2} />
+                <Textarea label="Comidas diarias" name="comidas_diarias" value={formData.comidas_diarias} onChange={handleChange} autosize minRows={2} />
+                <Textarea label="Alimentos a evitar" name="alimentos_evitar" value={formData.alimentos_evitar} onChange={handleChange} autosize minRows={2} />
+                <Textarea label="Horarios de comidas" name="horarios_comidas" value={formData.horarios_comidas} onChange={handleChange} autosize minRows={2} />
+
+                <TextInput label="Consumo de agua (litros diarios)" name="consumo_agua" value={formData.consumo_agua} onChange={handleChange} />
+                <TextInput label="Consumo de alcohol (veces por semana)" name="consumo_alcohol" value={formData.consumo_alcohol} onChange={handleChange} />
 
                 <Group position="center" mt="md">
-                  <Button
-                    type="submit"
-                    size="lg"
-                    radius="md"
-                    className="plansform-btn"
-                  >
+                  <Button type="submit" size="lg" radius="md" className="plansform-btn">
                     Enviar formulario
                   </Button>
                 </Group>
               </Stack>
             </form>
-
-            
           </Card>
         </Container>
       </div>

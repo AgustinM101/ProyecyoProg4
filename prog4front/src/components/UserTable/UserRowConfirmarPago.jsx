@@ -33,7 +33,7 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
       <td>{pu.user?.email || pu.user_email}</td>
       <td>{pu.plan?.name || pu.plan_name || "Sin plan"}</td>
       <td>{pu.plan?.price ? `$${pu.plan.price}` : "-"}</td>
-      <td style={{ color: "orange", fontWeight: 700 }}>Confirmar pago</td>
+      <td style={{ color: "orange", fontWeight: 700 }}>Expirado</td>
       <td>
         {pu.expiration_date
           ? dayjs(pu.expiration_date).format("DD/MM/YYYY")
@@ -47,7 +47,7 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
             onClick={() => onView(pu)}
             title="Ver formulario"
           >
-            <IconEye size={18} />
+            Ver Formulario
           </Button>
 
           <Button
@@ -58,7 +58,7 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
             onClick={handleConfirm}
             title="Confirmar pago"
           >
-            <IconCheck size={18} />
+            Confirmar pago
           </Button>
 
           <Button
@@ -69,7 +69,7 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
             onClick={handleReject}
             title="Rechazar pago"
           >
-            <IconX size={16} />
+            Rechazar pago
           </Button>
         </Group>
       </td>

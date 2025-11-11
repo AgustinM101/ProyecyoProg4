@@ -29,7 +29,7 @@ export function UserRowFinalizado({ pu, onView, onDelete }) {
                             onClick={() => onView(pu)}
                             title="Ver formulario"
                         >
-                            <IconEye size={18} />
+                            Ver Formulario
                         </Button>
 
                         <Button
@@ -38,7 +38,7 @@ export function UserRowFinalizado({ pu, onView, onDelete }) {
                             onClick={() => setExpanded((prev) => !prev)}
                             title="Ver planes del usuario"
                         >
-                            <IconPlus size={18} />
+                            Ver planes
                         </Button>
 
                         <Button

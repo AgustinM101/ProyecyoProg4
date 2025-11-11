@@ -31,7 +31,7 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
                             onClick={() => onView(pu)}
                             title="Ver formulario"
                         >
-                            <IconEye size={18} />
+                            Ver Formulario
                         </Button>
 
                         <Button
@@ -40,7 +40,7 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
                             onClick={() => onEdit(pu)}
                             title="Editar plan"
                         >
-                            <IconPencil size={18} />
+                            Editar Estado/Fecha
                         </Button>
 
                         <Button
@@ -49,7 +49,7 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
                             onClick={handleToggleAccordion}
                             title={showAccordion ? "Ocultar plan" : "Ver plan"}
                         >
-                            <IconPlus size={18} />
+                            Ver/Editar planes
                         </Button>
 
                         <Button
