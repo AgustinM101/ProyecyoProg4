@@ -44,7 +44,7 @@ export function MyPlansPage() {
       if (!currentUser) throw new Error("No hay usuario logueado");
 
       setUser(currentUser);
-
+// probando
       const resp = await plansUserService.getByUserId(currentUser.id);
       setPlansUsers(resp.data || []);
     } catch (error) {
