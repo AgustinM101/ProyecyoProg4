@@ -5,26 +5,29 @@ namespace Src\Entity\PlansForm;
 final class PlansForm implements \JsonSerializable
 {
     public function __construct(
-        private readonly ?int $id,
-        private string $nombre,
-        private int $edad,
-        private string $sexo,
-        private float $altura,
-        private float $peso_actual,
-        private float $peso_deseado,
-        private string $actividad_fisica,
-        private ?string $antecedentes_medicos,
-        private ?string $alergias,
-        private ?string $medicamentos,
-        private ?string $problemas_digestivos,
-        private int $comidas_diarias,
-        private ?string $alimentos_evitar,
-        private ?string $horarios_comidas,
-        private float $consumo_agua,
-        private string $consumo_alcohol,
-        private ?string $fecha_registro = null,
-        private ?int $id_plans_user
-    ) {}
+    private readonly ?int $id,
+    private string $nombre,
+    private int $edad,
+    private string $sexo,
+    private float $altura,
+    private float $peso_actual,
+    private float $peso_deseado,
+    private string $actividad_fisica,
+    private ?string $antecedentes_medicos,
+    private ?string $alergias,
+    private ?string $medicamentos,
+    private ?string $problemas_digestivos,
+    private int $comidas_diarias,
+    private ?string $alimentos_evitar,
+    private ?string $horarios_comidas,
+    private float $consumo_agua,
+    private string $consumo_alcohol,
+    
+    private ?string $fecha_registro,
+    private ?int $id_plans_user
+)
+{}
+
 
     public function id(): ?int {
         return $this->id;
@@ -105,7 +108,6 @@ final class PlansForm implements \JsonSerializable
             'consumo_agua' => $this->consumoAgua(),
             'consumo_alcohol' => $this->consumoAlcohol(),
             'fecha_registro' => $this->fechaRegistro(),
-
             'id_plans_user' => $this->idPlansUser(),
         ];
     }

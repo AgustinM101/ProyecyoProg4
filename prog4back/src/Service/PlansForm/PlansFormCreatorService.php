@@ -89,8 +89,8 @@ final readonly class PlansFormCreatorService
         $plansUser = $this->plansUserRepository->findById($id_plans_user);
 
         if ($plansUser) {
-            $user = $this->userRepository->find($plansUser->userId());
-            $plan = $this->planRepository->find($plansUser->planId());
+            $user = $this->userRepository->find($plansUser->id_user());
+            $plan = $this->planRepository->find($plansUser->id_plan());
 
             $userName = $user ? $user->name() : 'Desconocido';
             $planName = $plan ? $plan->name() : 'Desconocido';

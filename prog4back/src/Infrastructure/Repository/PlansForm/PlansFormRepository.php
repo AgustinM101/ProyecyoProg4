@@ -107,11 +107,11 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
             INSERT INTO plans_forms (nombre, edad, sexo, altura, peso_actual, peso_deseado,
                 actividad_fisica, antecedentes_medicos, alergias, medicamentos,
                 problemas_digestivos, comidas_diarias, alimentos_evitar, horarios_comidas,
-                consumo_agua, consumo_alcohol, id_plans_user, deleted)
+                consumo_agua, consumo_alcohol, fecha_registro, id_plans_user, deleted)
             VALUES (:nombre, :edad, :sexo, :altura, :peso_actual, :peso_deseado,
                 :actividad_fisica, :antecedentes_medicos, :alergias, :medicamentos,
                 :problemas_digestivos, :comidas_diarias, :alimentos_evitar, :horarios_comidas,
-                :consumo_agua, :consumo_alcohol, :id_plans_user, 0)
+                :consumo_agua, :consumo_alcohol, :fecha_registro, :id_plans_user, 0)
         INSERT_QUERY;
 
         $parameters = [
@@ -131,6 +131,7 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
             "horarios_comidas" => $plansForm->horariosComidas(),
             "consumo_agua" => $plansForm->consumoAgua(),
             "consumo_alcohol" => $plansForm->consumoAlcohol(),
+            "fecha_registro" => $plansForm->fechaRegistro(),
             
             "id_plans_user" => $plansForm->idPlansUser(),
         ];
@@ -156,7 +157,7 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
             $plansForm->horariosComidas(),
             $plansForm->consumoAgua(),
             $plansForm->consumoAlcohol(),
-            
+            $plansForm->fechaRegistro(),
             $plansForm->idPlansUser()
         );
     }
