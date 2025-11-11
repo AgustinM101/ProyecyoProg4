@@ -31,7 +31,7 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
                             onClick={() => onView(pu)}
                             title="Ver formulario"
                         >
-                            <IconEye size={18} />
+                            Ver Formulario
                         </Button>
 
                         <Button
@@ -40,7 +40,7 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
                             onClick={() => onEdit(pu)}
                             title="Editar plan"
                         >
-                            <IconPencil size={18} />
+                            Editar Estado/Fecha
                         </Button>
 
                         <Button
@@ -49,7 +49,7 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
                             onClick={handleToggleAccordion}
                             title={showAccordion ? "Ocultar plan" : "Crear plan"}
                         >
-                            <IconPlus size={18} />
+                            Agregar plan
                         </Button>
 
                         <Button
