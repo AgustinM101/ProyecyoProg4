@@ -29,11 +29,26 @@ final readonly class PlansFormPostController
         $consumo_agua = ControllerUtils::getPost("consumo_agua");
         $consumo_alcohol = ControllerUtils::getPost("consumo_alcohol");
 
-        $id_plans_user = ControllerUtils::getPost("id_plans_user");
+        $id_plans_user = ControllerUtils::getPost("id_plans_user", false);
 
-
-        
-        $plan = $this->service->create($nombre, $edad, $sexo, $altura, $peso_actual, $peso_deseado, $actividad_fisica, $antecedentes_medicos, $alergias, $medicamentos, $problemas_digestivos, $comidas_diarias, $alimentos_evitar, $horarios_comidas, $consumo_agua, $consumo_alcohol, $id_plans_user);
+        $this->service->create(
+            $nombre,
+            $edad,
+            $sexo,
+            $altura,
+            $peso_actual,
+            $peso_deseado,
+            $actividad_fisica,
+            $antecedentes_medicos,
+            $alergias,
+            $medicamentos,
+            $problemas_digestivos,
+            $comidas_diarias,
+            $alimentos_evitar,
+            $horarios_comidas,
+            $consumo_agua,
+            $consumo_alcohol,
+            $id_plans_user ? (int)$id_plans_user : null
+        );
     }
 }
-
