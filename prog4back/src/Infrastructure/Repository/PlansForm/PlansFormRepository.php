@@ -204,27 +204,28 @@ final readonly class PlansFormRepository extends PDOManager implements PlansForm
         $this->execute($query, $parameters);
     }
 
-    private function toPlansForm(array $row): PlansForm {
-        return new PlansForm(
-            (int) $row['id'],
-            (string) $row['nombre'],
-            (int) $row['edad'],
-            (string) $row['sexo'],
-            (float) $row['altura'],
-            (float) $row['peso_actual'],
-            (float) $row['peso_deseado'],
-            (string) $row['actividad_fisica'],
-            $row['antecedentes_medicos'] ?? null,
-            $row['alergias'] ?? null,
-            $row['medicamentos'] ?? null,
-            $row['problemas_digestivos'] ?? null,
-            (int) $row['comidas_diarias'],
-            $row['alimentos_evitar'] ?? null,
-            $row['horarios_comidas'] ?? null,
-            (float) $row['consumo_agua'],
-            (string) $row['consumo_alcohol'],
-          
-            isset($row['id_plans_user']) ? (int)$row['id_plans_user'] : null
-        );
-    }
+   private function toPlansForm(array $row): PlansForm {
+    return new PlansForm(
+        (int) $row['id'],
+        (string) $row['nombre'],
+        (int) $row['edad'],
+        (string) $row['sexo'],
+        (float) $row['altura'],
+        (float) $row['peso_actual'],
+        (float) $row['peso_deseado'],
+        (string) $row['actividad_fisica'],
+        $row['antecedentes_medicos'] ?? null,
+        $row['alergias'] ?? null,
+        $row['medicamentos'] ?? null,
+        $row['problemas_digestivos'] ?? null,
+        (int) $row['comidas_diarias'],
+        $row['alimentos_evitar'] ?? null,
+        $row['horarios_comidas'] ?? null,
+        (float) $row['consumo_agua'],
+        (string) $row['consumo_alcohol'],
+        $row['fecha_registro'] ?? null, 
+        isset($row['id_plans_user']) ? (int)$row['id_plans_user'] : null
+    );
+}
+
 }
