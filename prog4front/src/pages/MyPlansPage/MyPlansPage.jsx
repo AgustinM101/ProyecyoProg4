@@ -165,23 +165,23 @@ export function MyPlansPage() {
                   <Stack mt="md" spacing="md">
                     {/* FORMULARIO */}
                     <Card p="md" radius="md" style={{ backgroundColor: "#000000ff" }}>
-                      <Group justify="space-between" align="center">
-                        <Title order={5}>FORMULARIO</Title>
-                        {formData && !isEditing && (
-                          <Button
-                            size="xs"
-                            color="yellow"
-                            onClick={() => setIsEditing(true)}
-                            style={{
-                              backgroundColor: "#eeff05ff",
-                              color: "black",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Editar
-                          </Button>
-                        )}
-                      </Group>
+                  <Group justify="space-between" align="center">
+  <Title order={5}>FORMULARIO</Title>
+  {formData && plan.status === "expired" && (
+    <Button
+      size="xs"
+      color={isEditing ? "red" : "yellow"}
+      onClick={() => setIsEditing((prev) => !prev)}
+      style={{
+        backgroundColor: isEditing ? "#ff3b3b" : "#eeff05ff",
+        color: isEditing ? "white" : "black",
+        fontWeight: "bold",
+      }}
+    >
+      {isEditing ? "Cancelar edición" : "Editar"}
+    </Button>
+  )}
+</Group>
 
                       {formData ? (
                         <Stack mt="xs" spacing={4} >
