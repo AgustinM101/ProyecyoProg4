@@ -23,25 +23,26 @@ final readonly class ControllerUtils {
         return $value ?? $default;
     }
 
-    // ✅ Método seguro que nunca devuelve null
-    private static function getPostData(): array
-    {
-        $json = file_get_contents('php://input');
-        
-        if (empty($json)) {
-            return [];
-        }
-        
-        $postData = json_decode($json, true);
+   private static function getPostData(): array
+{
+    $json = file_get_contents('php://input');
+    $data = [];
 
-        // Si JSON inválido o no es array, devolvemos array vacío
-        if (!is_array($postData)) {
-            return [];
+    // Intentamos decodificar JSON
+    if (!empty($json)) {
+        $decoded = json_decode($json, true);
+        if (is_array($decoded)) {
+            $data = $decoded;
         }
-
-        return $postData;
     }
 
+    // Si no vino JSON, usamos $_POST (por multipart/form-data)
+    if (empty($data) && !empty($_POST)) {
+        $data = $_POST;
+    }
+
+    return $data;
+}
     public static function getFile(string $name, bool $required = true, mixed $default = null): mixed 
     {
         $fileData = self::getFileData();
