@@ -9,7 +9,7 @@ final class PlansUser {
         private int $id_plan,
         private string $status,
         private ?string $expiration_date = null,
-        int $deleted = 0,
+        private int $deleted = 0,
         private ?string $created_at = null
     ) {}
 
@@ -38,11 +38,11 @@ final class PlansUser {
         return $this->expiration_date;
     }
     public function deleted(): int {
-    return $this->deleted;
+       return $this->deleted;
 }
 
-public function markAsDeleted(): void {
+    public function markAsDeleted(): void {
     $this->deleted = 1;
-}
-public function created_at(): ?string { return $this->created_at;}
+  }
+    public function created_at(): ?string { return $this->created_at;}
 }

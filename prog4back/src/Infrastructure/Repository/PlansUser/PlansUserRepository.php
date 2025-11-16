@@ -95,7 +95,7 @@ final readonly class PlansUserRepository extends PDOManager implements PlansUser
     }
 
     public function delete(int $id): void {
-        $query = "DELETE FROM plans_users WHERE id = :id";
+        $query = "DELETE FROM plans_user WHERE id = :id";
         $parameters = ["id" => $id];
 
         $this->execute($query, $parameters); // usa el método execute que ya maneja la conexión
