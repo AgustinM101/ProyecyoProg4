@@ -1,24 +1,31 @@
+
 import { Container, Title, Text, Card, Button, Group, Divider, Center, Loader } from "@mantine/core";
 import { IconClockHour4, IconCurrencyDollar } from "@tabler/icons-react";
-
 import { useNavigate } from "react-router-dom";
-
 import { Link } from "react-router-dom";
-
 import { HeaderMenu } from "../../components/HeaderMenu/HeaderMenu";
 import { Footer } from "../../components/Footer/Footer";
 import "./PlanPhavPage.css";
 import { useEffect, useState } from "react";
 import { plansService } from "../../services/plansService";
+import { PurchaseModal } from "../../components/Purchase/PurchaseModal"; // importa el modal 
+ 
 
 export function PlanPhavPage() {
-
   const navigate = useNavigate();
-  
+
+  // 👇 estado nuevo para controlar si el modal está abierto
+  const [open, setOpen] = useState(false);
+
   const handleBuy = () => {
     const token = localStorage.getItem("token");
-    if (token) navigate("/purchase");
-    else navigate("/login?redirect=purchase");
+    if (token) {
+      // 👇 si el usuario está logueado, abrimos el modal
+      setOpen(true);
+    } else {
+      // 👇 si no está logueado, lo mandamos al login
+      navigate("/login");
+    }
   };
 
   const [plan, setPlan] = useState(null);
@@ -55,9 +62,11 @@ export function PlanPhavPage() {
     );
   }
 
-
   return (
     <>
+      {/*  el modal recibe las props opened y onClose */}
+      <PurchaseModal opened={open} onClose={() => setOpen(false)} plan={plan} />
+
       <HeaderMenu />
 
       <div className="phav-wrapper">
@@ -72,7 +81,8 @@ export function PlanPhavPage() {
             </div>
 
             <Title order={2} className="phav-title">
-              {plan.name.toUpperCase()}
+              {plan?.name?.toUpperCase() || ""}
+
             </Title>
 
             <Text size="lg" className="phav-description">
@@ -109,7 +119,7 @@ export function PlanPhavPage() {
             <Divider my="md" />
 
             <Group position="center" spacing="md" mt="lg">
-
+              {/* 👇 este botón usa el handleBuy con setOpen */}
               <Button size="lg" radius="md" className="phav-btn" onClick={handleBuy}>
                 Comprar plan
               </Button>
@@ -119,11 +129,10 @@ export function PlanPhavPage() {
                 variant="outline"
                 radius="md"
                 color="gray"
-                onClick={() => navigate("/plans")}
+                onClick={() => navigate("/plansforms")}
               >
                 Volver a planes
               </Button>
-
             </Group>
           </Card>
         </Container>
@@ -133,4 +142,3 @@ export function PlanPhavPage() {
     </>
   );
 }
-

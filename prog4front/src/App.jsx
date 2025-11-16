@@ -13,7 +13,7 @@ import { PrivateRoute, PublicRoute, AdminRoute } from "./Routes";
 import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
-import { PurchasePage } from "./pages/PurchasePage/PurchasePage";
+
 import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 import { MyPlansPage } from "./pages/MyPlansPage/MyPlansPage";
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
@@ -47,7 +47,7 @@ function App() {
 
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/myplans" element={<MyPlansPage />} />   
-                            <Route path="/purchase" element={<PurchasePage />} />
+                            
                             <Route path="/profile" element={<ProfilePage />} />
                             
                             <Route path="/clientes" element={<ClientesPage />} />
@@ -72,7 +72,7 @@ function App() {
                             
 
 
-                            <Route path="/purchase" element={<PurchasePage />} />
+                            
                             <Route path="/profile" element={<ProfilePage />} />
 
 
