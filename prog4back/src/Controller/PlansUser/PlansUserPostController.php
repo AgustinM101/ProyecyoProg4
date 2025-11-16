@@ -14,8 +14,11 @@ final readonly class PlansUserPostController
     public function start(): void {
         $id_user = ControllerUtils::getPost("id_user");
         $id_plan = ControllerUtils::getPost("id_plan");
+        $status = str_replace(' ', '', ControllerUtils::getPost("status") ?? "paymentRequest");
 
-        $plansUser = $this->service->create($id_user, $id_plan);
+
+
+        $plansUser = $this->service->create($id_user, $id_plan, $status);
 
         echo json_encode([
             "success" => true,
@@ -23,7 +26,7 @@ final readonly class PlansUserPostController
             "data" => [
                 "id_user" => $id_user,
                 "id_plan" => $id_plan,
-                "status" => "Pendiente",
+                "status" => $status,
                 "expiration_date" => null
             ]
         ]);

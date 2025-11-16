@@ -20,12 +20,12 @@ final readonly class PlansUserCreatorService
         $this->planRepository = new PlanRepository();
     }
 
-    public function create(int $id_user, int $id_plan): PlansUser {
+    public function create(int $id_user, int $id_plan,string $status="paymentRequest"): PlansUser {
         $plansUser = new PlansUser(
             null,
             $id_user,
             $id_plan,
-            "Pendiente",
+            $status,
             null
         );
 
@@ -37,12 +37,24 @@ final readonly class PlansUserCreatorService
 
         $userName = $user ? $user->name() : 'Desconocido';
         $planName = $plan ? $plan->name() : 'Desconocido';
+        
 
-        ControllerUtils::logAction(
-            "Se asignó el plan '{$planName}' al usuario '{$userName}'.",
-            false
-        );
+        if ($status === "paymentRequest") {
+    ControllerUtils::logAction(
+        "El usuario '{$userName}' solicitó el plan '{$planName}' (pendiente de confirmación).",
+        false
+    );
+   } else {
+    ControllerUtils::logAction(
+        "Se asignó el plan '{$planName}' al usuario '{$userName}'.",
+        false
+    );
+  
+}
+
+
 
         return $plansUser;
-    }
+      }
 }
+
