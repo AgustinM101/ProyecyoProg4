@@ -5,7 +5,6 @@ import {
   TextInput,
   Title,
   Button,
-  Stack,
   Select,
   Textarea,
   Group,
@@ -117,52 +116,231 @@ export function PlansFormPage() {
               Formulario de Información Nutricional
             </Title>
 
+            {/* ⚠️ AVISO DE CONFIDENCIALIDAD */}
+            <div
+              style={{
+                backgroundColor: "#111",
+                border: "1px solid #f5c400",
+                padding: "15px",
+                borderRadius: "10px",
+                marginTop: "15px",
+                marginBottom: "25px",
+              }}
+            >
+              <p
+                style={{
+                  color: "white",
+                  margin: 0,
+                  fontSize: "0.95rem",
+                  lineHeight: 1.6,
+                  fontStyle: "italic",
+                }}
+              >
+                ⚠️ <strong>Aviso de Confidencialidad:</strong>  
+                La información proporcionada en esta ficha clínica es estrictamente confidencial.
+                Será utilizada únicamente para evaluación nutricional y seguimiento profesional,
+                sin ser compartida con terceros bajo ninguna circunstancia.
+              </p>
+            </div>
+
             {success && (
               <div style={{ color: "green", marginBottom: 20 }}>
                 Formulario enviado correctamente ✅
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
-              <Stack gap="sm">
-                <TextInput label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} required />
-                <TextInput label="Edad" name="edad" value={formData.edad} onChange={handleChange} required />
+            <form onSubmit={handleSubmit} className="premium-form">
+              {/* === SECCIÓN 1: DATOS PERSONALES === */}
+              <h3 className="section-title">Datos Personales</h3>
+              <div className="section-divider"></div>
 
-                <Select
-                  label="Sexo"
-                  name="sexo"
-                  value={formData.sexo}
-                  onChange={(value) => handleSelect("sexo", value)}
-                  data={[
-                    { value: "F", label: "Femenino" },
-                    { value: "M", label: "Masculino" },
-                    { value: "O", label: "Otro" },
-                  ]}
-                  required
-                />
+              <div className="two-columns">
+                <div className="field-row">
+                  <label>Nombre completo</label>
+                  <TextInput
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-                <TextInput label="Altura (m)" name="altura" value={formData.altura} onChange={handleChange} />
-                <TextInput label="Peso actual (kg)" name="peso_actual" value={formData.peso_actual} onChange={handleChange} />
-                <TextInput label="Peso deseado (kg)" name="peso_deseado" value={formData.peso_deseado} onChange={handleChange} />
+                <div className="field-row">
+                  <label>Edad</label>
+                  <TextInput
+                    name="edad"
+                    value={formData.edad}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-                <Textarea label="Actividad física" name="actividad_fisica" value={formData.actividad_fisica} onChange={handleChange} autosize minRows={2} />
-                <Textarea label="Antecedentes médicos" name="antecedentes_medicos" value={formData.antecedentes_medicos} onChange={handleChange} autosize minRows={2} />
-                <Textarea label="Alergias" name="alergias" value={formData.alergias} onChange={handleChange} autosize minRows={2} />
-                <Textarea label="Medicamentos" name="medicamentos" value={formData.medicamentos} onChange={handleChange} autosize minRows={2} />
-                <Textarea label="Problemas digestivos" name="problemas_digestivos" value={formData.problemas_digestivos} onChange={handleChange} autosize minRows={2} />
-                <Textarea label="Comidas diarias" name="comidas_diarias" value={formData.comidas_diarias} onChange={handleChange} autosize minRows={2} />
-                <Textarea label="Alimentos a evitar" name="alimentos_evitar" value={formData.alimentos_evitar} onChange={handleChange} autosize minRows={2} />
-                <Textarea label="Horarios de comidas" name="horarios_comidas" value={formData.horarios_comidas} onChange={handleChange} autosize minRows={2} />
+                <div className="field-row">
+                  <label>Sexo</label>
+                  <Select
+                    name="sexo"
+                    value={formData.sexo}
+                    onChange={(value) => handleSelect("sexo", value)}
+                    data={[
+                      { value: "F", label: "Femenino" },
+                      { value: "M", label: "Masculino" },
+                      { value: "O", label: "Otro" },
+                    ]}
+                    required
+                  />
+                </div>
 
-                <TextInput label="Consumo de agua (litros diarios)" name="consumo_agua" value={formData.consumo_agua} onChange={handleChange} />
-                <TextInput label="Consumo de alcohol (veces por semana)" name="consumo_alcohol" value={formData.consumo_alcohol} onChange={handleChange} />
+                <div className="field-row">
+                  <label>Altura (m)</label>
+                  <TextInput
+                    name="altura"
+                    value={formData.altura}
+                    onChange={handleChange}
+                  />
+                </div>
 
-                <Group position="center" mt="md">
-                  <Button type="submit" size="lg" radius="md" className="plansform-btn">
-                    Enviar formulario
-                  </Button>
-                </Group>
-              </Stack>
+                <div className="field-row">
+                  <label>Peso actual (kg)</label>
+                  <TextInput
+                    name="peso_actual"
+                    value={formData.peso_actual}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Peso deseado (kg)</label>
+                  <TextInput
+                    name="peso_deseado"
+                    value={formData.peso_deseado}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* === SECCIÓN 2: HISTORIAL CLÍNICO === */}
+              <h3 className="section-title">Historial Clínico</h3>
+              <div className="section-divider"></div>
+
+              <div className="two-columns">
+                <div className="field-row">
+                  <label>Antecedentes médicos</label>
+                  <Textarea
+                    name="antecedentes_medicos"
+                    value={formData.antecedentes_medicos}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Alergias</label>
+                  <Textarea
+                    name="alergias"
+                    value={formData.alergias}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Medicamentos</label>
+                  <Textarea
+                    name="medicamentos"
+                    value={formData.medicamentos}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Problemas digestivos</label>
+                  <Textarea
+                    name="problemas_digestivos"
+                    value={formData.problemas_digestivos}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+              </div>
+
+              {/* === SECCIÓN 3: HÁBITOS === */}
+              <h3 className="section-title">Hábitos y Rutinas</h3>
+              <div className="section-divider"></div>
+
+              <div className="two-columns">
+                <div className="field-row">
+                  <label>Actividad física</label>
+                  <Textarea
+                    name="actividad_fisica"
+                    value={formData.actividad_fisica}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Comidas diarias</label>
+                  <Textarea
+                    name="comidas_diarias"
+                    value={formData.comidas_diarias}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Alimentos a evitar</label>
+                  <Textarea
+                    name="alimentos_evitar"
+                    value={formData.alimentos_evitar}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Horarios de comidas</label>
+                  <Textarea
+                    name="horarios_comidas"
+                    value={formData.horarios_comidas}
+                    onChange={handleChange}
+                    autosize
+                    minRows={3}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Consumo de agua (litros/día)</label>
+                  <TextInput
+                    name="consumo_agua"
+                    value={formData.consumo_agua}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="field-row">
+                  <label>Consumo de alcohol (veces/semana)</label>
+                  <TextInput
+                    name="consumo_alcohol"
+                    value={formData.consumo_alcohol}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <Group position="center" mt="lg">
+                <Button type="submit" size="lg" radius="md" className="premium-btn">
+                  Guardar ficha clínica
+                </Button>
+              </Group>
             </form>
           </Card>
         </Container>

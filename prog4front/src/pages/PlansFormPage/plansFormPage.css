@@ -29,3 +29,175 @@
 .plansform-btn:hover {
   background-color: #FFD60A;
 }
+
+/* === ESTILO GENERAL DE INPUTS === */
+.plansform-card input,
+.plansform-card textarea,
+.plansform-card .mantine-Select-input {
+  background-color: #0c0c0c !important;
+  border: 1px solid #FFD60A !important;
+  color: white !important;
+}
+
+.plansform-card input::placeholder,
+.plansform-card textarea::placeholder {
+  color: #bbbbbb !important;
+}
+
+.plansform-card label {
+  color: white !important;
+  font-weight: 500;
+}
+
+/* === SELECT LABEL & TEXTO === */
+.plansform-card .mantine-Select-dropdown {
+  background-color: #000 !important;
+  border: 1px solid #FFD60A !important;
+  color: white !important;
+}
+
+.plansform-card .mantine-Select-item {
+  color: white !important;
+}
+
+.plansform-card .mantine-Select-item:hover {
+  background-color: #FFD60A !important;
+  color: black !important;
+}
+
+/* === TEXTAREA === */
+.plansform-card textarea {
+  min-height: 70px;
+}
+
+/* === BOTÓN === */
+.plansform-btn {
+  background-color: #FFD60A !important;
+  color: #000 !important;
+  font-weight: 600;
+  transition: 0.3s;
+  border: none !important;
+}
+
+.plansform-btn:hover {
+  background-color: #e6c109 !important;
+}
+
+/* === CARD === */
+.plansform-card {
+  background-color: #000000 !important;
+  border: 1px solid #FFD60A33;
+  padding: 30px;
+}
+/* FICHA CLÍNICA PREMIUM */
+.premium-form {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* TÍTULOS DE CADA SECCIÓN */
+.section-title {
+  color: #FFD60A;
+  text-transform: uppercase;
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  margin-bottom: 5px;
+}
+
+/* LÍNEA DORADA DIVISORIA */
+.section-divider {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #FFD60A 0%, #806400 100%);
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+
+/* DOS COLUMNAS */
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+/* CUADROS DE CAMPO */
+.field-row {
+  background: #0f0f0f;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #FFD60A33;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: 0.2s ease;
+}
+
+.field-row:hover {
+  border-color: #FFD60A;
+  box-shadow: 0 0 8px #ffd60a55;
+}
+
+/* LABEL PREMIUM */
+.field-row label {
+  color: #FFD60A;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* INPUTS UNIFORMES */
+.field-row input,
+.field-row textarea,
+.field-row .mantine-Select-input {
+  background: #000 !important;
+  border: 1px solid #FFD60A55 !important;
+  color: #fff !important;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+/* BOTÓN PREMIUM */
+.premium-btn {
+  background: #FFD60A;
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 12px 28px;
+  box-shadow: 0 0 12px #ffd60a88;
+  transition: 0.2s ease;
+}
+
+.premium-btn:hover {
+  background: #f5c400;
+  box-shadow: 0 0 18px #ffd60aaa;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .two-columns {
+    grid-template-columns: 1fr;
+  }
+  /* === Banner deslizable premium === */
+.confidential-banner {
+  position: fixed;
+  top: -100px; /* escondido inicialmente */
+  left: 0;
+  width: 100%;
+  padding: 15px 20px;
+  background-color: #0f0f0f;
+  border-bottom: 2px solid #f5c400;
+  color: white;
+  text-align: center;
+  font-size: 0.95rem;
+  font-style: italic;
+  z-index: 999;
+  transition: top 0.5s ease;
+}
+
+.confidential-banner.visible {
+  top: 0; /* aparece con deslizamiento */
+}
+
+}
