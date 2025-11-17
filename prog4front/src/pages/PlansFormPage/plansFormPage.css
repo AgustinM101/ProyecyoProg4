@@ -179,25 +179,5 @@
   .two-columns {
     grid-template-columns: 1fr;
   }
-  /* === Banner deslizable premium === */
-.confidential-banner {
-  position: fixed;
-  top: -100px; /* escondido inicialmente */
-  left: 0;
-  width: 100%;
-  padding: 15px 20px;
-  background-color: #0f0f0f;
-  border-bottom: 2px solid #f5c400;
-  color: white;
-  text-align: center;
-  font-size: 0.95rem;
-  font-style: italic;
-  z-index: 999;
-  transition: top 0.5s ease;
-}
-
-.confidential-banner.visible {
-  top: 0; /* aparece con deslizamiento */
-}
-
+  
 }
