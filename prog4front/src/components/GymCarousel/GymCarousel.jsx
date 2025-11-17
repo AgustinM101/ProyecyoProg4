@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Carousel } from "@mantine/carousel";
 import {
   Container,
@@ -12,11 +12,12 @@ import {
   Stack,
 } from "@mantine/core";
 import { IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
+import Autoplay from 'embla-carousel-autoplay';
 
 export function GymCarousel() {
   const theme = useMantineTheme();
-  const [embla, setEmbla] = useState(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+
+  const autoplay = useRef(Autoplay({ delay: 1000 }));
 
   const competitionImages = [
     "https://res.cloudinary.com/del98x3di/image/upload/v1762952930/WhatsApp_Image_2025-11-12_at_01.07.36_1_ob4bn5.jpg",
@@ -28,19 +29,6 @@ export function GymCarousel() {
     "https://res.cloudinary.com/dkv58dvqy/image/upload/v1757819233/gym5_p0guwa.jpg",
     "https://res.cloudinary.com/dkv58dvqy/image/upload/v1757819233/gym4_hukszk.jpg",
   ];
-
-  const handleScroll = useCallback(() => {
-    if (!embla) return;
-    const progress = Math.max(0, Math.min(1, embla.scrollProgress()));
-    setScrollProgress(progress * 100);
-  }, [embla]);
-
-  useEffect(() => {
-    if (embla) {
-      embla.on("scroll", handleScroll);
-      handleScroll();
-    }
-  }, [embla, handleScroll]);
 
   // URL de WhatsApp personalizada (modificá el número y mensaje)
   const whatsappLink =
@@ -66,13 +54,15 @@ export function GymCarousel() {
               loop
               nextControlIcon={<IconArrowRight size={32} />}
               previousControlIcon={<IconArrowLeft size={32} />}
-              getEmblaApi={setEmbla}
               styles={{
                 control: { color: "white" },
                 indicator: {
                   backgroundColor: theme.colors.yellow[4],
                 },
               }}
+              plugins={[autoplay.current]}
+              onMouseEnter={autoplay.current.stop}
+              onMouseLeave={autoplay.current.reset}
             >
               {competitionImages.map((src, i) => (
                 <Carousel.Slide key={i}>
