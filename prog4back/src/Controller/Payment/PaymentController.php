@@ -2,14 +2,17 @@
 
 use Src\Utils\ControllerUtils;
 use Src\Service\Payment\PaymentService;
+use Src\Service\PlansUser\PlansUserCreatorService;
 
 final readonly class PaymentController
 {
     private PaymentService $service;
+    private PlansUserCreatorService $plansUserCreator;
 
     public function __construct()
     {
         $this->service = new PaymentService();
+        $this->plansUserCreator = new PlansUserCreatorService();
     }
 
     public function start(): void
@@ -35,7 +38,11 @@ final readonly class PaymentController
         }
 
         try {
-            // 🔹 3️⃣ Crear preferencia de pago en Mercado Pago
+            // 🔹 3️⃣ Crear registro en plans_user ANTES de ir a Mercado Pago
+            // Estado inicial para Mercado Pago → chargePending
+            $this->plansUserCreator->create($id_user, $id_plan, "chargePending");
+
+            // 🔹 4️⃣ Crear preferencia de pago en Mercado Pago
             $preference = $this->service->createPreference(
                 $id_plan,
                 $title,
@@ -46,7 +53,7 @@ final readonly class PaymentController
             // 🪵 Log
             file_put_contents(
                 __DIR__ . '/payment_debug.log',
-                date('Y-m-d H:i:s') . " Preferencia creada:\n" . print_r([
+                date('Y-m-d H:i:s') . " Preferencia creada para Mercado Pago:\n" . print_r([
                     'id_user' => $id_user,
                     'id_plan' => $id_plan,
                     'title' => $title,
@@ -56,7 +63,7 @@ final readonly class PaymentController
                 FILE_APPEND
             );
 
-            // 🔙 4️⃣ Respuesta al frontend
+            // 🔙 5️⃣ Respuesta al frontend
             echo json_encode([
                 "status" => "success",
                 "message" => "Preferencia creada correctamente",
