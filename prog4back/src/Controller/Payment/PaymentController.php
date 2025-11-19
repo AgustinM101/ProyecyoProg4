@@ -2,33 +2,85 @@
 
 use Src\Utils\ControllerUtils;
 use Src\Service\Payment\PaymentService;
+use Src\Service\PlansUser\PlansUserCreatorService;
 
 final readonly class PaymentController
 {
     private PaymentService $service;
+    private PlansUserCreatorService $plansUserCreator;
 
     public function __construct()
     {
         $this->service = new PaymentService();
+        $this->plansUserCreator = new PlansUserCreatorService();
     }
 
     public function start(): void
     {
-        $plansUserIdRaw = ControllerUtils::getPost("plans_user_id");
-        $plansUserId = !empty($plansUserIdRaw) ? (int) $plansUserIdRaw : null; // ✅ acepta null
+        header('Content-Type: application/json');
 
-        $title = ControllerUtils::getPost("title");
-        $amount = (float) ControllerUtils::getPost("amount");
+        // 🔹 1️⃣ Leer datos del body JSON
+        $rawInput = json_decode(file_get_contents('php://input'), true);
+
+        $title = $rawInput['title'] ?? null;
+        $amount = isset($rawInput['amount']) ? (float)$rawInput['amount'] : null;
+        $id_user = isset($rawInput['id_user']) ? (int)$rawInput['id_user'] : null;
+        $id_plan = isset($rawInput['id_plan']) ? (int)$rawInput['id_plan'] : null;
+
+        // 🔹 2️⃣ Validación de parámetros
+        if (!$title || !$amount || !$id_user || !$id_plan) {
+            http_response_code(400);
+            echo json_encode([
+                "status" => "error",
+                "message" => "Faltan parámetros obligatorios: title, amount, id_user, id_plan"
+            ]);
+            return;
+        }
 
         try {
-            $initPoint = $this->service->createPreference($plansUserId, $title, $amount);
+            // 🔹 3️⃣ Crear registro en plans_user ANTES de ir a Mercado Pago
+            // Estado inicial para Mercado Pago → chargePending
+            $this->plansUserCreator->create($id_user, $id_plan, "chargePending");
 
+            // 🔹 4️⃣ Crear preferencia de pago en Mercado Pago
+            $preference = $this->service->createPreference(
+                $id_plan,
+                $title,
+                $amount,
+                $id_user
+            );
+
+            // 🪵 Log
+            file_put_contents(
+                __DIR__ . '/payment_debug.log',
+                date('Y-m-d H:i:s') . " Preferencia creada para Mercado Pago:\n" . print_r([
+                    'id_user' => $id_user,
+                    'id_plan' => $id_plan,
+                    'title' => $title,
+                    'amount' => $amount,
+                    'preference' => $preference
+                ], true) . "\n\n",
+                FILE_APPEND
+            );
+
+            // 🔙 5️⃣ Respuesta al frontend
             echo json_encode([
                 "status" => "success",
-                "url" => $initPoint
+                "message" => "Preferencia creada correctamente",
+                "url" => $preference['url'],     // para abrir Mercado Pago
+                "preference_id" => $preference['preference_id']
             ]);
+
         } catch (\Exception $e) {
             http_response_code(500);
+
+            // 🧠 Log error
+            file_put_contents(
+                __DIR__ . '/payment_debug.log',
+                date('Y-m-d H:i:s') . " ERROR:\n" . $e->getMessage() . "\n\n",
+                FILE_APPEND
+            );
+
             echo json_encode([
                 "status" => "error",
                 "message" => $e->getMessage()

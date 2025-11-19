@@ -1,4 +1,4 @@
-import {
+import { 
   Modal,
   Card,
   Title,
@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { IconCreditCard, IconCash, IconWallet } from "@tabler/icons-react";
 import { paymentService } from "../../services/paymentService";
 import { userService } from "../../services/userService";
-import { plansUserService } from "../../services/plansUserService";
 
 export function PurchaseModal({ opened, onClose, plan }) {
   const navigate = useNavigate();
@@ -28,40 +27,34 @@ export function PurchaseModal({ opened, onClose, plan }) {
     setLoading(true);
 
     try {
+      const user = await userService.getCurrentUser();
+      if (!user?.data) {
+        navigate("/login");
+        return;
+      }
+
+      const userId = user.data.id;
+
       if (paymentMethod === "mercadopago") {
+        // 👉 Crear preferencia en el backend
+        console.log("Creando preferencia de pago en Mercado Pago...");
         const data = await paymentService.createPaymentPreference({
           title: plan.name,
           amount: plan.price,
-          planId: plan.id,
+          id_user: userId,
+          id_plan: plan.id,
         });
 
-        const paymentUrl = data?.url?.init_point;
-        if (paymentUrl) window.open(paymentUrl, "_blank");
-        else alert("No se obtuvo la URL de Mercado Pago");
-      } else {
-        const user = await userService.getCurrentUser();
-        if (!user?.data) {
-          navigate("/login");
-          return;
+        // 👉 Redirigir al usuario al checkout de Mercado Pago
+        if (data?.url?.init_point) {
+          window.location.href = data.url.init_point;
+
+       
+        } else {
+          alert("No se obtuvo la URL de Mercado Pago.");
         }
-
-         console.log("Usuario recibido:", user.data);
-         console.log("Plan recibido:", plan);
-        // 🔹 Aquí agregamos el console.log
-      console.log("Datos que se enviarán al backend:", {
-         id_user: user.data.id,   // <--- antes era así
-         id_plan: plan.id,  
-
-        status: "paymentRequest",
-      });
-        await plansUserService.createPlan({
-           id_user: user.data.id,   // <--- antes era así
-           id_plan: plan.id,  
-
-          status: "paymentRequest",
-        
-        });
-
+      } else {
+        // 👉 Otros métodos (transferencia o efectivo)
         alert(
           paymentMethod === "transferencia"
             ? "Tu solicitud de pago por transferencia fue registrada."
@@ -69,10 +62,8 @@ export function PurchaseModal({ opened, onClose, plan }) {
         );
 
         onClose();
-
-        // ✅ Redirige automáticamente al formulario después de 1 segundo
         setTimeout(() => {
-          navigate("/PlansForms");
+          navigate("/plansForms");
         }, 1000);
       }
     } catch (error) {
@@ -92,20 +83,20 @@ export function PurchaseModal({ opened, onClose, plan }) {
       radius="xl"
       overlayProps={{ blur: 6, opacity: 0.55 }}
       transitionProps={{ transition: "pop", duration: 300 }}
-      styles={{
-        content: { borderRadius: "20px", backgroundColor: "#f9fafc" },
-      }}
+      styles={{ content: { borderRadius: "20px", backgroundColor: "#f9fafc" } }}
     >
       <Card shadow="xl" radius="xl" p="xl" withBorder>
         <Stack align="center" spacing="xs" mb="lg">
           <Title order={2} color="blue" style={{ fontWeight: 700 }}>
             {plan?.name || "Compra del plan"}
           </Title>
+
           {plan?.price && (
             <Text size="xl" fw={700} color="teal">
               ${plan.price}
             </Text>
           )}
+
           <Text color="dimmed" size="sm">
             Elegí tu método de pago preferido
           </Text>
@@ -115,8 +106,7 @@ export function PurchaseModal({ opened, onClose, plan }) {
           <Stack spacing="md">
             <Select
               label="Método de pago"
-              placeholder="Se
-              leccioná una opción"
+              placeholder="Seleccioná una opción"
               value={paymentMethod}
               onChange={setPaymentMethod}
               data={[
@@ -145,8 +135,12 @@ export function PurchaseModal({ opened, onClose, plan }) {
                     </ThemeIcon>
                     <div>
                       <Text fw={600}>Datos para transferencia</Text>
-                      <Text size="sm">Alias: <b>infinit.sports</b></Text>
-                      <Text size="sm">CBU: <b>123-4567890-1234567890123</b></Text>
+                      <Text size="sm">
+                        Alias: <b>infinit.sports</b>
+                      </Text>
+                      <Text size="sm">
+                        CBU: <b>123-4567890-1234567890123</b>
+                      </Text>
                     </div>
                   </Group>
                 )}
@@ -178,14 +172,7 @@ export function PurchaseModal({ opened, onClose, plan }) {
             <Divider my="sm" />
 
             <Group position="center" mt="md">
-              <Button
-                type="submit"
-                loading={loading}
-                size="md"
-                radius="md"
-                color="blue"
-                fullWidth
-              >
+              <Button type="submit" loading={loading} size="md" radius="md" color="blue" fullWidth>
                 Confirmar compra
               </Button>
             </Group>

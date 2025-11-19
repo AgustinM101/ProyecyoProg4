@@ -2,50 +2,107 @@
 
 namespace Src\Service\Payment;
 
-use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Exceptions\MPApiException;
 
- class PaymentService
+class PaymentService
 {
-    public function createPreference($id, $title, $price)
-    {
+    public function createPreference(
+        int $id_plan,
+        string $title,
+        float $price,
+        int $id_user
+    ): array {
         try {
-            // Configuramos el Access Token desde las variables de entorno (.env)
-            MercadoPagoConfig::setAccessToken($_ENV['MP_ACCESS_TOKEN']);
 
-            // Creamos un nuevo cliente de preferencias
+            // Verificar token MP
+            if (!isset($_ENV['MP_ACCESS_TOKEN'])) {
+                throw new \Exception("MP_ACCESS_TOKEN no está configurado en .env");
+            }
+
+            MercadoPagoConfig::setAccessToken($_ENV['MP_ACCESS_TOKEN']);
             $client = new PreferenceClient();
 
-            // Creamos la preferencia (el "pago")
+            $backendUrl = rtrim($_ENV['APP_URL'], "/");
+
+            // URL del frontend
+            $frontendUrl = $_ENV['FRONT_URL'] ?? null;
+            if (!$frontendUrl) {
+                throw new \Exception("FRONT_URL no está configurado en .env");
+            }
+            $frontendUrl = rtrim($frontendUrl, "/");
+
+            // Crear preferencia sin back_urls
             $preference = $client->create([
                 "items" => [
                     [
-                        "id" => $id,
+                        "id" => $id_plan,
                         "title" => $title,
                         "quantity" => 1,
                         "unit_price" => (float)$price,
-                        "currency_id" => "ARS"
-                    ]
+                        "currency_id" => "ARS",
+                    ],
                 ],
-                "back_urls" => [
-                    "success" => "https://tuweb.com/success",
-                    "failure" => "https://tuweb.com/failure",
-                    "pending" => "https://tuweb.com/pending"
+                "notification_url" => "$backendUrl/payment_ipn",
+                "metadata" => [
+                    "id_user" => $id_user,
+                    "id_plan" => $id_plan,
                 ],
-                //"notification_url" => "https://tuweb.com/notifications",
-                //"auto_return" => "approved"
+                "external_reference" => "{$id_user}_{$id_plan}",
             ]);
 
-            // Retornamos los datos más importantes
+            // Crear back_urls con el ID
+            $backUrls = [
+                "success" => "$frontendUrl/plansForms?preference_id={$preference->id}",
+                "failure" => "$frontendUrl/plansForms?status=failure",
+                "pending" => "$frontendUrl/plansForms?status=pending"
+            ];
+
+            // Actualizar la preferencia
+            $client->update($preference->id, [
+                "back_urls" => $backUrls
+            ]);
+
+            // Log de debug
+            file_put_contents(
+                __DIR__ . '/mp_debug.log',
+                date('Y-m-d H:i:s') .
+                "\nPreferencia creada y back_urls actualizadas:\n" .
+                print_r($preference, true) . "\n\n",
+                FILE_APPEND
+            );
+
             return [
-                "id" => $preference->id,
-                "init_point" => $preference->init_point,
-                "sandbox_init_point" => $preference->sandbox_init_point ?? null
+                "url" => [
+                    "init_point" => $preference->init_point,
+                    "sandbox_init_point" => $preference->sandbox_init_point ?? null,
+                ],
+                "preference_id" => $preference->id,
             ];
 
         } catch (MPApiException $e) {
-            throw new \Exception("Error al crear la preferencia: " . $e->getMessage());
+
+            file_put_contents(
+                __DIR__ . '/mp_debug.log',
+                date('Y-m-d H:i:s') .
+                " ERROR MPApiException:\n" .
+                print_r($e->getApiResponse(), true) . "\n\n",
+                FILE_APPEND
+            );
+
+            throw new \Exception("Error API Mercado Pago: " . $e->getMessage());
+
+        } catch (\Throwable $e) {
+
+            file_put_contents(
+                __DIR__ . '/mp_debug.log',
+                date('Y-m-d H:i:s') .
+                " ERROR inesperado:\n" . $e->getMessage() . "\n\n",
+                FILE_APPEND
+            );
+
+            throw new \Exception("Error inesperado: " . $e->getMessage());
         }
     }
 }

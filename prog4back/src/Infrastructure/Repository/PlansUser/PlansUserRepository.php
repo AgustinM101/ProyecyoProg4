@@ -7,6 +7,8 @@ use Src\Entity\PlansUser\PlansUser;
 
 final readonly class PlansUserRepository extends PDOManager implements PlansUserRepositoryInterface {
 
+    
+
     /** @return PlansUser[] */
     public function searchPlans(): array {
         $query = <<<SQL
@@ -185,6 +187,30 @@ private function toPlansUser(?array $row): ?PlansUser {
         $row["expiration_date"] ?? null
     );
 }
+    public function updateByUserAndPlan(int $id_user, int $id_plan, array $data): bool {
+        $setClauses = [];
+        $parameters = [
+            "id_user" => $id_user,
+            "id_plan" => $id_plan
+        ];
+
+        foreach ($data as $key => $value) {
+            $setClauses[] = "$key = :$key";
+            $parameters[$key] = $value;
+        }
+
+        $setClause = implode(", ", $setClauses);
+
+        $query = <<<SQL
+            UPDATE plans_user
+            SET $setClause
+            WHERE id_user = :id_user AND id_plan = :id_plan
+        SQL;
+
+         return  $this->execute($query, $parameters);
+         
+    }
+
 
 
 }
