@@ -187,7 +187,7 @@ private function toPlansUser(?array $row): ?PlansUser {
         $row["expiration_date"] ?? null
     );
 }
-    public function updateByUserAndPlan(int $id_user, int $id_plan, array $data): bool {
+    public function updateByUserAndPlan(int $id_user, int $id_plan, array $data): void {
         $setClauses = [];
         $parameters = [
             "id_user" => $id_user,
@@ -207,7 +207,7 @@ private function toPlansUser(?array $row): ?PlansUser {
             WHERE id_user = :id_user AND id_plan = :id_plan
         SQL;
 
-         return  $this->execute($query, $parameters);
+        $this->execute($query, $parameters);
          
     }
 
