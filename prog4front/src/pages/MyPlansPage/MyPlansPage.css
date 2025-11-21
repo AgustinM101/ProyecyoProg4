@@ -1,59 +1,187 @@
-.plan-card {
-  transition: all 0.3s ease;
-  background-color: #fffaf5;
+/* MyPlansPage.css - Tablas 7x5 y tabla de ejercicios - premium */
+
+/* Wrapper */
+.myplans-wrapper {
+  background: linear-gradient(180deg, #070707 0%, #050505 100%);
+  min-height: 100vh;
+  padding-bottom: 60px;
+  color: #fff;
 }
 
-.plan-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(255, 102, 0, 0.2);
+/* Meals/ex tables wrap */
+.meals-table-wrap,
+.ex-table-wrap {
+  overflow-x: auto;
+  margin-top: 10px;
 }
 
-.myplans-table {
-  background-color: rgb(6, 6, 6);
-  border-radius: 10px;
-}
-
-body {
-  background-color: #070707;
-}
-
-/* MyPlans.css */
-
-/* Tablas */
-.myplans-table {
+/* Meals table (7x5) */
+.meals-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  text-align: center;
-  color: white;
-  font-size: 0.9rem;
+  border: 1px solid #000000;
+  min-width: 800px;
+  font-size: 0.95rem;
 }
 
-.myplans-table th,
-.myplans-table td {
-  border: 1px solid #eeff05ff;
+.meals-table thead th {
+  background: linear-gradient(90deg, #0b0b0b, #1b1b1b);
+  color: #fdf8f8;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.meals-table tbody td {
+  background: linear-gradient(90deg, #0e0e0e, #151515);
+  color: #fff;
+  padding: 10px;
+  vertical-align: top;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.meals-table tbody tr:hover td {
+  box-shadow: inset 0 0 0 1px rgba(255,214,0,0.02);
+}
+
+.meals-table .day-cell {
+  font-weight: 700;
+  color: #ebebeb;
+  width: 120px;
+}
+
+.empty-cell { color: #8a8a8a; font-style: italic; }
+
+/* Exercise table styles */
+.ex-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+  font-size: 0.95rem;
+}
+
+.ex-table thead th {
+  background: linear-gradient(90deg, #0b0b0b, #1b1b1b);
+  color: #f4f4f4;
+  font-weight: 800;
+  padding: 10px;
+  border: 1px solid rgba(238,255,5,0.10);
+}
+
+.ex-table td {
+  background: linear-gradient(90deg, #0e0e0e, #151515);
+  color: #fff;
+  padding: 10px;
+  border: 1px solid rgba(238,255,5,0.06);
+}
+
+/* Buttons */
+.btn-download {
+  background: #EEFF05;
+  color: #000;
+  font-weight: 700;
+}
+
+/* PDF export specific: styles that will apply to the cloned node for PDF (white background, black text) */
+.pdf-export {
+  background: #ffffff !important;
+  color: #000 !important;
+  padding: 16px;
+  box-sizing: border-box;
+  width: 210mm; /* approx A4 width for more predictable rendering */
+  max-width: 100%;
+}
+
+/* Override table appearance for PDF - professional simple (style 1) */
+.pdf-export .meals-table,
+.pdf-export .ex-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #000;
+  min-width: 0;
+}
+
+.pdf-export .meals-table thead th,
+.pdf-export .ex-table thead th {
+  background: #fff;
+  color: #000;
+  border: 1px solid #000000;
+  font-weight: 700;
   padding: 8px;
 }
 
-.myplans-table th {
-  background-color: #222;
-  color: #eeff05ff;
+.pdf-export .meals-table tbody td,
+.pdf-export .ex-table td {
+  background: #fff;
+  color: #000;
+  border: 1px solid #191918;
+  padding: 8px;
 }
 
-.myplans-table td {
-  background-color: #333;
+/* day column pdf style */
+.pdf-export .day-cell {
+  color: #000;
+  font-weight: 700;
 }
 
-/* Encabezados de sección */
-.myplans-section-title {
-  margin-top: 10px;
-  margin-bottom: 5px;
-  color: #eeff05ff;
+/* notes block in pdf */
+.pdf-export .card-notes {
+  background: #fff;
+  border: 1px dashed #070707;
+  color: #000;
+  padding: 8px;
+}
+
+/* small responsive */
+@media (max-width: 860px) {
+  .meals-table,
+  .ex-table {
+    min-width: 600px;
+    font-size: 0.88rem;
+  }
+  .table-excel {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #000; /* Fondo negro */
+  color: #e0e0e0; /* Texto gris claro */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Encabezado estilo Excel */
+.table-excel thead tr {
+  background-color: #1a1a1a; 
+  border-bottom: 2px solid #444;
+}
+
+.table-excel thead th {
+  padding: 10px;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
+  border-right: 1px solid #333;
 }
 
-/* Scroll horizontal si hace falta */
-.myplans-table-container {
-  overflow-x: auto;
+/* Filas */
+.table-excel tbody tr {
+  border-bottom: 1px solid #333;
+}
+
+.table-excel tbody td {
+  padding: 10px;
+  border-right: 1px solid #333;
+}
+
+/* Hover profesional */
+.table-excel tbody tr:hover {
+  background-color: #111;
+}
+
+/* Última columna sin borde */
+.table-excel thead th:last-child,
+.table-excel tbody td:last-child {
+  border-right: none;
+}
+
 }
