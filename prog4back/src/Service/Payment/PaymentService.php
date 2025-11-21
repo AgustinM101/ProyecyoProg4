@@ -44,24 +44,17 @@ class PaymentService
                         "currency_id" => "ARS",
                     ],
                 ],
-                "notification_url" => "$backendUrl/payment_ipn",
-                "metadata" => [
+                "external_reference" => json_encode([
                     "id_user" => $id_user,
-                    "id_plan" => $id_plan,
+                    "id_plan" => $id_plan
+                ]),
+                "notification_url" => "$backendUrl/payment_ipn",
+                "back_urls" => [
+                    "success" => "$frontendUrl/plansForms?status=success",
+                    "failure" => "$frontendUrl/plansForms?status=failure",
+                    "pending" => "$frontendUrl/plansForms?status=pending"
                 ],
-                "external_reference" => "{$id_user}_{$id_plan}",
-            ]);
-
-            // Crear back_urls con el ID
-            $backUrls = [
-                "success" => "$frontendUrl/plansForms?preference_id={$preference->id}",
-                "failure" => "$frontendUrl/plansForms?status=failure",
-                "pending" => "$frontendUrl/plansForms?status=pending"
-            ];
-
-            // Actualizar la preferencia
-            $client->update($preference->id, [
-                "back_urls" => $backUrls
+                "auto_return" => "approved"
             ]);
 
             // Log de debug
