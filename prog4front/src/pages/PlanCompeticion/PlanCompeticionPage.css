@@ -1,84 +1,156 @@
-
 .competicion-wrapper {
   min-height: 100vh;
-  background: 
-    linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.85)),
-    url('https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/5607F484-0890-4227-B154-67B45051E638_llzsrm.jpg') 
-    no-repeat center center fixed;
-  background-size: cover;
+  position: relative;
   display: flex;
   justify-content: center;
-  align-items: flex-start; 
-  padding: 4rem 2rem;      
-  filter: drop-shadow(0 0 5px #FFD60A);
+  padding: 5rem 2rem;
+  overflow: hidden;
 }
 
+/* Fondo mejorado */
+.competicion-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
+    url('https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/5607F484-0890-4227-B154-67B45051E638_llzsrm.jpg')
+    center / cover no-repeat;
+  filter: blur(4px);
+  transform: scale(1.15);
+  z-index: -1;
+}
+
+/* CONTENEDOR PRINCIPAL */
 .competicion-container {
-  background-color: rgba(0, 0, 0, 0.75);
-  border-radius: 20px;
-  padding: 3rem 2.5rem;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 26px;
+  padding: 3.5rem;
   width: 100%;
-  max-width: 850px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  margin-top: 2rem; 
+  max-width: 1050px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  border: 1px solid rgba(255, 200, 0, 0.25);
+  backdrop-filter: blur(8px);
+  animation: fadeUp 1s ease forwards;
 }
 
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* CARD */
 .competicion-card {
   background: transparent;
   box-shadow: none;
+}
+
+/* LAYOUT */
+.competicion-layout {
   display: flex;
-  flex-direction: column;
+  gap: 3rem;
   align-items: center;
 }
 
-.competicion-logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
+/* IMAGEN */
+.competicion-image img {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 22px;
+  object-fit: cover;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+  transition: transform 0.6s ease;
 }
 
-.competicion-logo {
-  width: 220px;
-  height: auto;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+.competicion-image img:hover {
+  transform: scale(1.05);
 }
 
+/* INFO */
+.competicion-info {
+  flex: 1;
+}
+
+/* TITULO */
 .competicion-title {
-  font-size: 2.5rem;
-  font-weight: 900;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 3.4rem;
+  letter-spacing: 4px;
   color: #f5c400;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
-  text-align: center;
-  letter-spacing: 2px;
+  line-height: 1;
 }
 
-.competicion-description {
-  font-size: 1.15rem;
+
+/* SUBTITULO */
+.competicion-subtitle {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
   color: #e0e0e0;
-  text-align: center;
   margin-bottom: 2rem;
-  line-height: 1.6;
 }
 
-.competicion-actions {
+
+/* BENEFICIOS */
+.competicion-benefits {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2.5rem;
+}
+
+.competicion-benefits li {
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
 }
 
+/* BOTON */
 .competicion-btn {
-  background: #f5c400; /* 👈 amarillo dorado */
+  background: #f5c400; 
   color: #000;
-  font-weight: 700;
-  padding: 0.9rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.5rem 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
   transition: all 0.3s ease;
+  animation: pulseBtn 2.5s infinite;
+}
+
+/* Pulso atractivo */
+@keyframes pulseBtn {
+  0% { box-shadow: 0 0 0 0 rgba(245,196,0, 0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(245,196,0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245,196,0, 0); }
 }
 
 .competicion-btn:hover {
-  background: #ffdd33; /* 👈 tono más claro al hover */
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  background: #ffe066;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .competicion-layout {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .competicion-title {
+    font-size: 2.4rem;
+  }
+
+  .competicion-benefits li {
+    justify-content: center;
+  }
 }

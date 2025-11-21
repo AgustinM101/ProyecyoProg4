@@ -6,93 +6,93 @@ import { useEffect, useState } from "react";
 import { plansService } from "../../services/plansService";
 
 export function PlanCompeticionPage() {
-      const [plan, setPlan] = useState(null);
-      const [loading, setLoading] = useState(true);
-    
-      useEffect(() => {
-        async function fetchPlan() {
-          try {
-            const response = await plansService.getPlanCompeticionId();
-            setPlan(response.data);
-          } catch (error) {
-            console.error("Error al traer el plan Competicion:", error);
-          } finally {
-            setLoading(false);
-          }
-        }
-    
-        fetchPlan();
-      }, []);
-    
-      if (loading) {
-        return (
-          <Center style={{ height: "100vh" }}>
-            <Loader />
-          </Center>
-        );
+  const [plan, setPlan] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPlan() {
+      try {
+        const response = await plansService.getPlanCompeticionId();
+        setPlan(response.data);
+      } catch (error) {
+        console.error("Error al traer el plan Competicion:", error);
+      } finally {
+        setLoading(false);
       }
-    
-      if (!plan) {
-        return (
-          <Center style={{ height: "100vh" }}>
-            <Text>No se encontró el plan Competicion.</Text>
-          </Center>
-        );
-      }
+    }
 
+    fetchPlan();
+  }, []);
 
+  if (loading) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader />
+      </Center>
+    );
+  }
 
-
-
-
-
+  if (!plan) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Text>No se encontró el plan Competicion.</Text>
+      </Center>
+    );
+  }
 
   return (
     <>
-      {/* Header común */}
       <HeaderMenu />
 
       <div className="competicion-wrapper">
-        <Container size="md" className="competicion-container">
-          <Card shadow="xl" padding="lg" radius="lg" className="competicion-card">
+        <Container size="lg" className="competicion-container">
+          <Card className="competicion-card">
 
-            <div className="competicion-logo-container">
-              <img
-                src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757462534/logo_nuevo_infinit_sports_nsmg9n.png"
-                alt="Logo del Gym"
-                className="competicion-logo"
-              />
+            <div className="competicion-layout">
+
+              {/* IMAGEN */}
+              <div className="competicion-image">
+                <img
+                  src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1763758600/foto_vmfjkx.jpg"
+                  alt="Plan competición"
+                />
+              </div>
+
+              {/* INFO */}
+              <div className="competicion-info">
+
+                <Title className="competicion-title">
+                  PLAN COMPETICIÓN
+                </Title>
+
+                <Text className="competicion-subtitle">
+                  Preparación avanzada para atletas comprometidos
+                </Text>
+
+                <ul className="competicion-benefits">
+                  <li>🏋️ Rutinas personalizadas según tu categoría</li>
+                  <li>📈 Seguimiento y ajustes semanales</li>
+                  <li>🥗 Asesoramiento nutricional específico</li>
+                  <li>🎯 Estrategia completa para escenarios competitivos</li>
+                </ul>
+
+                <Button
+                  component="a"
+                  href="https://wa.me/542346551210?text=Hola%2C%20estoy%20interesado%20en%20el%20Plan%20Competici%C3%B3n"
+                  target="_blank"
+                  size="lg"
+                  className="competicion-btn"
+                >
+                  Contactar por WhatsApp
+                </Button>
+
+              </div>
             </div>
 
-            <Title order={2} className="competicion-title">
-              PLAN COMPETICIÓN
-            </Title>
-
-            <Text size="lg" className="competicion-description">
-              {plan.description}
-              <br /><br />
-              Si estás preparado para dar el siguiente paso, podés ponerte en contacto 
-              directamente con nuestro equipo vía WhatsApp.
-            </Text>
-
-            <div className="competicion-actions">
-              <Button
-                component="a"
-                href="https://wa.me/542346551210?text=Hola%2C%20estoy%20interesado%20en%20el%20Plan%20Competici%C3%B3n%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n."
-                target="_blank"
-                rel="noopener noreferrer"
-                size="lg"
-                radius="md"
-                className="competicion-btn"
-              >
-                Contactar por WhatsApp
-              </Button>
-            </div>
           </Card>
         </Container>
       </div>
 
-      {/* Footer */}
       <Footer />
     </>
   );
