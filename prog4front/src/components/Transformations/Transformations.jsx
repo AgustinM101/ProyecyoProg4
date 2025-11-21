@@ -90,40 +90,37 @@ export function Transformations() {
         {transformations.map((item, i) => (
           <Grid.Col key={i} span={{ base: 12, sm: 6, md: 4 }}>
             <Card
-                shadow="md"
-                radius="lg"
-                padding="md"
-                className={classes.card}
-                onClick={() => window.open(item.link, "_blank")}
-                style={{ cursor: "pointer", transition: "transform 0.2s ease" }}
-                onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "translateY(-6px)")
-                }
-                onMouseLeave={(e) =>
-                (e.currentTarget.style.transform = "translateY(0)")
-                }
+              className={classes.card}
+              onClick={() => window.open(item.link, "_blank")}
+              style={{ cursor: "pointer" }}
             >
-                <Group gap="xs" mb="xs">
-                    <Avatar
-                        src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792207/4FBB1BCE-A702-42C5-942E-410424669533_irk86f.jpg"
-                        alt="logo infinit sport"
-                        size={40}
-                        radius="xl"
-                    />
-                    <Text fw={500} size="lg" c="black">
-                        infinit_sport_
-                    </Text>
-                </Group>
-
-                <Image
-                    src={item.src}
-                    alt={item.caption}
-                    radius="md"
-                    fit="contain"
-                    height={280}
-                    className={classes.imageContainer}
+              {/* Header tipo Instagram */}
+              <div className={classes.cardHeader}>
+                <Avatar
+                  src="https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792207/4FBB1BCE-A702-42C5-942E-410424669533_irk86f.jpg"
+                  radius="xl"
+                  size={36}
                 />
+                <Text fw={500} size="md" c="white">
+                  infinit_sport_
+                </Text>
+              </div>
+
+              {/* Imagen con aspecto de post */}
+              <img src={item.src} alt={item.caption} className={classes.image} />
+
+              {/* Footer tipo post */}
+              <div className={classes.cardFooter}>
+                <Text size="xs">Ver publicación</Text>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/87/87390.png"
+                  height="18"
+                  alt="Instagram Icon"
+                />
+              </div>
             </Card>
+
+
             </Grid.Col>
         ))}
       </Grid>

@@ -35,21 +35,33 @@ export function HeaderMenu() {
     if (isLoggedIn) fetchUser();
   }, [isLoggedIn]);
 
-
   const renderLink = (link, label) => {
-  if (link.startsWith("#")) {
+    // Si NO tiene link (es un menú padre), no debe navegar
+    if (!link) {
+      return (
+        <span className={classes.link} style={{ cursor: "default" }}>
+          {label}
+        </span>
+      );
+    }
+
+    // Si es hash link (#)
+    if (link.startsWith("#")) {
+      return (
+        <HashLink smooth to={link} className={classes.link}>
+          {label}
+        </HashLink>
+      );
+    }
+
+    // En cualquier otro caso, Link normal
     return (
-      <HashLink smooth to={link} className={classes.link}>
+      <Link to={link} className={classes.link}>
         {label}
-      </HashLink>
+      </Link>
     );
-  }
-  return (
-    <Link to={link} className={classes.link}>
-      {label}
-    </Link>
-  );
-};
+  };
+
 
 
   const items = menuConfig.map((link) => {
