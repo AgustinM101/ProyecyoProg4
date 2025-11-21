@@ -14,6 +14,6 @@ interface PlansUserRepositoryInterface {
 
     public function updateStatusAndExpirationById(int $id, string $status, string $expiration_date): void;
     public function removePlanById(int $id): void;
-    public function updateByUserAndPlan(int $id_user, int $id_plan, array $data): bool;
+    public function updateByUserAndPlan(int $id_user, int $id_plan, array $data): void;
 }
 
