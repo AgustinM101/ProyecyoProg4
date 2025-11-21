@@ -141,47 +141,5 @@
     min-width: 600px;
     font-size: 0.88rem;
   }
-  .table-excel {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #000; /* Fondo negro */
-  color: #e0e0e0; /* Texto gris claro */
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-}
-
-/* Encabezado estilo Excel */
-.table-excel thead tr {
-  background-color: #1a1a1a; 
-  border-bottom: 2px solid #444;
-}
-
-.table-excel thead th {
-  padding: 10px;
-  font-weight: bold;
-  text-align: left;
-  border-right: 1px solid #333;
-}
-
-/* Filas */
-.table-excel tbody tr {
-  border-bottom: 1px solid #333;
-}
-
-.table-excel tbody td {
-  padding: 10px;
-  border-right: 1px solid #333;
-}
-
-/* Hover profesional */
-.table-excel tbody tr:hover {
-  background-color: #111;
-}
-
-/* Última columna sin borde */
-.table-excel thead th:last-child,
-.table-excel tbody td:last-child {
-  border-right: none;
-}
-
+  
 }
