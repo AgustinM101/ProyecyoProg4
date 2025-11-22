@@ -4,6 +4,7 @@ use Src\Utils\ControllerUtils;
 use Src\Service\Payment\PaymentService;
 use Src\Service\PlansUser\PlansUserCreatorService;
 
+
 final readonly class PaymentController
 {
     private PaymentService $service;
@@ -38,9 +39,7 @@ final readonly class PaymentController
         }
 
         try {
-            // 🔹 3️⃣ Crear registro en plans_user ANTES de ir a Mercado Pago
-            // Estado inicial para Mercado Pago → chargePending
-            $this->plansUserCreator->create($id_user, $id_plan, "chargePending");
+
 
             // 🔹 4️⃣ Crear preferencia de pago en Mercado Pago
             $preference = $this->service->createPreference(

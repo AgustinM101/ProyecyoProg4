@@ -1,0 +1,307 @@
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:42:00
+GET:
+[]
+POST:
+[]
+RAW BODY:
+
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:45:14
+GET:
+[]
+POST:
+[]
+RAW BODY:
+
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:47:32
+GET:
+{
+    "id": "35776323104",
+    "topic": "merchant_order"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"https://api.mercadolibre.com/merchant_orders/35776323104","topic":"merchant_order"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:47:33
+GET:
+{
+    "data_id": "134182538419",
+    "type": "payment"
+}
+POST:
+[]
+RAW BODY:
+{"action":"payment.created","api_version":"v1","data":{"id":"134182538419"},"date_created":"2025-11-21T23:47:28Z","id":126604606798,"live_mode":true,"type":"payment","user_id":"2957465285"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:47:33
+GET:
+{
+    "id": "134182538419",
+    "topic": "payment"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"134182538419","topic":"payment"}
+==================================
+
+======= INFORMACIÓN DEL PAGO =======
+2025-11-21 20:47:38
+{
+    "id": 134182538419,
+    "acquirer_reconciliation": [],
+    "sponsor_id": null,
+    "operation_type": "regular_payment",
+    "order": {
+        "id": 35776323104,
+        "type": "mercadopago"
+    },
+    "brand_id": null,
+    "build_version": "3.130.1-hotfix-27",
+    "binary_mode": false,
+    "external_reference": "{\"id_user\":21,\"id_plan\":1}",
+    "financing_group": null,
+    "status": "approved",
+    "status_detail": "accredited",
+    "store_id": null,
+    "taxes_amount": 0,
+    "date_created": "2025-11-21T19:47:28.000-04:00",
+    "live_mode": true,
+    "date_last_updated": "2025-11-21T19:47:28.000-04:00",
+    "date_of_expiration": null,
+    "deduction_schema": null,
+    "date_approved": "2025-11-21T19:47:28.000-04:00",
+    "money_release_date": "2025-12-09T19:47:28.000-04:00",
+    "money_release_schema": null,
+    "money_release_status": "pending",
+    "currency_id": "ARS",
+    "transaction_amount": 11001,
+    "transaction_amount_refunded": 0,
+    "payer": {
+        "type": null,
+        "id": "2996192038",
+        "email": "test_user_6623829531438279987@testuser.com",
+        "identification": {
+            "type": "DNI",
+            "number": "1111111"
+        },
+        "first_name": null,
+        "last_name": null,
+        "entity_type": null,
+        "phone": {
+            "area_code": null,
+            "number": null,
+            "extension": null
+        },
+        "operator_id": null
+    },
+    "collector_id": 2957465285,
+    "counter_currency": null,
+    "payment_method_id": "visa",
+    "payment_method": {
+        "data": {},
+        "id": "visa",
+        "type": "credit_card",
+        "issuer_id": "310"
+    },
+    "payment_type_id": "credit_card",
+    "pos_id": null,
+    "transaction_details": {
+        "financial_institution": null,
+        "net_received_amount": 10549.96,
+        "total_paid_amount": 11001,
+        "installment_amount": 11001,
+        "overpaid_amount": 0,
+        "external_resource_url": null,
+        "payment_method_reference_id": null,
+        "acquirer_reference": null,
+        "payable_deferral_period": null
+    },
+    "fee_details": [
+        {
+            "type": "mercadopago_fee",
+            "fee_payer": "collector",
+            "amount": 451.04
+        }
+    ],
+    "differential_pricing_id": null,
+    "authorization_code": "301299",
+    "captured": true,
+    "card": {
+        "id": "9702326547",
+        "last_four_digits": "3704",
+        "first_six_digits": "450995",
+        "expiration_year": 2030,
+        "expiration_month": 11,
+        "date_created": "2025-11-21T19:47:28.000-04:00",
+        "date_last_updated": "2025-11-21T19:47:28.000-04:00",
+        "country": "ARG",
+        "cardholder": {
+            "name": "APRO"
+        },
+        "bin": "45099535"
+    },
+    "call_for_authorize_id": null,
+    "statement_descriptor": "Mercadopago*fake",
+    "shipping_amount": 0,
+    "additional_info": {
+        "ip_address": "201.253.67.27",
+        "tracking_id": "platform:v1-blacklabel,so:ALL,type:N\/A,security:none",
+        "items": [
+            {
+                "id": "1",
+                "title": "Plan PHaV",
+                "quantity": 1,
+                "unit_price": 11001,
+                "map": {
+                    "category_descriptor": "MercadoPago\\Resources\\Preference\\CategoryDescriptor"
+                }
+            }
+        ]
+    },
+    "coupon_amount": 0,
+    "installments": 1,
+    "description": "Plan PHaV",
+    "notification_url": "https:\/\/9aeb3662c98f54.lhr.life\/payment_ipn",
+    "issuer_id": "310",
+    "processing_mode": "aggregator",
+    "merchant_account_id": null,
+    "merchant_number": null,
+    "metadata": [],
+    "release_info": null,
+    "marketplace_owner": null,
+    "integrator_id": null,
+    "corporation_id": null,
+    "platform_id": null,
+    "point_of_interaction": {
+        "type": "CHECKOUT",
+        "application_data": {
+            "name": "checkout-off",
+            "version": "v2"
+        },
+        "transaction_data": {
+            "e2e_id": null
+        }
+    },
+    "accounts_info": null,
+    "tags": null,
+    "refunds": []
+}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:48:12
+GET:
+{
+    "id": "35776323104",
+    "topic": "merchant_order"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"https://api.mercadolibre.com/merchant_orders/35776323104","topic":"merchant_order"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:48:14
+GET:
+{
+    "data_id": "134182538419",
+    "type": "payment"
+}
+POST:
+[]
+RAW BODY:
+{"action":"payment.created","api_version":"v1","data":{"id":"134182538419"},"date_created":"2025-11-21T23:47:28Z","id":126504068705,"live_mode":true,"type":"payment","user_id":"2957465285"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:48:22
+GET:
+{
+    "id": "35776323104",
+    "topic": "merchant_order"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"https://api.mercadolibre.com/merchant_orders/35776323104","topic":"merchant_order"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:48:22
+GET:
+{
+    "data_id": "134182538419",
+    "type": "payment"
+}
+POST:
+[]
+RAW BODY:
+{"action":"payment.created","api_version":"v1","data":{"id":"134182538419"},"date_created":"2025-11-21T23:47:28Z","id":126604651772,"live_mode":true,"type":"payment","user_id":"2957465285"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:49:10
+GET:
+{
+    "id": "35776323104",
+    "topic": "merchant_order"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"https://api.mercadolibre.com/merchant_orders/35776323104","topic":"merchant_order"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 20:49:15
+GET:
+{
+    "id": "35776323104",
+    "topic": "merchant_order"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"https://api.mercadolibre.com/merchant_orders/35776323104","topic":"merchant_order"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 21:05:50
+GET:
+{
+    "id": "35776323104",
+    "topic": "merchant_order"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"https://api.mercadolibre.com/merchant_orders/35776323104","topic":"merchant_order"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-21 21:06:09
+GET:
+{
+    "data_id": "134182538419",
+    "type": "payment"
+}
+POST:
+[]
+RAW BODY:
+{"action":"payment.created","api_version":"v1","data":{"id":"134182538419"},"date_created":"2025-11-21T23:47:28Z","id":126506872135,"live_mode":true,"type":"payment","user_id":"2957465285"}
+==================================
+

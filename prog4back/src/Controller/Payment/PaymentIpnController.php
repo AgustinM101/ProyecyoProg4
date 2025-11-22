@@ -1,17 +1,21 @@
 <?php
 
 use Src\Controller;
-use Src\Infrastructure\Repository\PlansUser\PlansUserRepository;
+
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\MercadoPagoConfig;
+use Src\Service\PlansUser\PlansUserCreatorService;
+use Src\Utils\ControllerUtils; // falta agregar logactions
 
 final class PaymentIpnController
 {
-    private PlansUserRepository $plansUserRepository;
+    
+    private PlansUserCreatorService $plansUserCreator;
 
     public function __construct()
     {
-        $this->plansUserRepository = new PlansUserRepository();
+        
+        $this->plansUserCreator = new PlansUserCreatorService();
         header('Content-Type: application/json');
 
         MercadoPagoConfig::setAccessToken($_ENV['MP_ACCESS_TOKEN']);
@@ -72,28 +76,24 @@ final class PaymentIpnController
             }
 
             // 🔹 Estado en tu sistema
-            $newStatus = match ($payment->status) {
-                'approved' => 'chargePending',  // Confirmá si existe en tu DB
-                'pending' => 'pending',
-                'rejected', 'cancelled' => 'cancelled',
-                default => 'pending'
-            };
+            if ( $payment->status !== 'approved' || $payment->status_detail !== 'accredited') {
+                http_response_code(400);
+                echo json_encode([
+                    'status' => 'error',
+                    'msg' => 'El pago no está aprobado o acreditado'
+                ]);
+                return;
+            }
 
-            // 🔹 Actualizar la tabla plans_user
-            $this->plansUserRepository->updateByUserAndPlan(
-                $id_user,
-                $id_plan,
-                [
-                    'status' => $newStatus,
-                    'expiration_date' => $payment->date_approved ? (new DateTime($payment->date_approved))->format('Y-m-d H:i:s') : null
-                ]
-            );
+            // 🔹 3️⃣ Crear registro en plans_user ANTES de ir a Mercado Pago
+            // Estado inicial para Mercado Pago → chargePending
+            
+            $this->plansUserCreator->create($id_user, $id_plan, "chargePending");
+            
 
-            file_put_contents(
-                __DIR__ . "/ipn_log.txt",
-                date("Y-m-d H:i:s") . " - Estado actualizado: user=$id_user plan=$id_plan status=$newStatus\n",
-                FILE_APPEND
-            );
+
+
+
 
             echo json_encode([
                 'status' => 'success',
