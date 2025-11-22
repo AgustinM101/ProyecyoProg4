@@ -1,97 +1,144 @@
 .phav-wrapper {
   min-height: 100vh;
-  background: 
-    linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
-    url('https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/5607F484-0890-4227-B154-67B45051E638_llzsrm.jpg') no-repeat center center fixed;
-  background-size: cover;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  filter: drop-shadow(0 0 5px #FFD60A);
+  padding: 4rem 2rem;
+  overflow: hidden;
+}
+
+.phav-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
+    url("https://res.cloudinary.com/dkv58dvqy/image/upload/v1757792208/5607F484-0890-4227-B154-67B45051E638_llzsrm.jpg")
+    center/cover no-repeat;
+  filter: blur(6px);
+  transform: scale(1.1);
+  z-index: -1;
 }
 
 .phav-container {
-  background-color: rgba(0, 0, 0, 0.75);
-  border-radius: 20px;
-  padding: 3rem 2.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 24px;
+  padding: 3rem;
+  max-width: 900px;
   width: 100%;
-  max-width: 850px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(245, 196, 0, 0.2);
 }
 
 .phav-card {
   background: transparent;
   box-shadow: none;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.phav-logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.phav-logo {
-  width: 220px;
-  height: auto;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-}
-
+/* TITULO MEJORADO */
 .phav-title {
-  font-size: 2.5rem;
-  font-weight: 900;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 3.6rem;
+  letter-spacing: 3px;
   color: #f5c400;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  text-align: center;
-  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.phav-subtitle {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.25rem;
+  color: #e8e8e8;
+  margin-bottom: 1.5rem;
 }
 
 .phav-description {
-  font-size: 1.15rem;
-  color: #e0e0e0;
-  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.1rem;
+  color: #d5d5d5;
+  line-height: 1.7;
+  max-width: 700px;
   margin-bottom: 2rem;
-  line-height: 1.6;
 }
 
 .phav-details {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 2rem;
-  margin-bottom: 2rem;
+  width: 100%;
+  margin-bottom: 2.5rem;
 }
 
 .phav-item {
   display: flex;
   align-items: center;
   gap: 1rem;
-  min-width: 150px;
 }
 
 .phav-icon {
   color: #f5c400;
-  font-size: 2rem;
 }
 
 .phav-btn {
-  background: #f5c400;
+  background: linear-gradient(135deg, #f5c400, #ffd84d);
   color: #000;
   font-weight: 700;
-  padding: 0.9rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  padding: 1rem 3rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
   transition: all 0.3s ease;
+  animation: pulseBtn 2.5s infinite;
 }
 
 .phav-btn:hover {
-  background: #ffdd33;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  transform: translateY(-3px) scale(1.02);
 }
 
+@keyframes pulseBtn {
+  0% { box-shadow: 0 0 0 0 rgba(245,196,0,0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(245,196,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(245,196,0,0); }
+}
+
+.phav-benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.phav-benefit {
+  background: rgba(255, 198, 0, 0.05);
+  border: 1px solid rgba(255, 198, 0, 0.2);
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  color: #eaeaea;
+  font-weight: 500;
+  text-align: center;
+}
+.phav-title-line {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #f5c400, #ffdd33);
+  border-radius: 50px;
+  margin: 0.8rem auto 1.5rem;
+}
+.phav-card {
+  animation: fadeUp 0.7s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -2,13 +2,13 @@ export const menuConfig = [
 
   { link: '/', label: 'INICIO' },
   {
-    link: '/plans',
     label: 'PLANES',
     links: [
       { link: '/plans/phav', label: 'PHAV' },
       { link: '/plans/competition', label: 'COMPETICIÓN' },
     ],
   },
+
 
   { link: '/nosotros', label: 'NOSOTROS' },
   { link: '#transformations', label: 'TRANSFORMACIONES' },

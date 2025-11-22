@@ -41,24 +41,50 @@
 }
 
 .card {
-    background-color: #FFD60A; 
-    color: white;
-    border-radius: 12px;
-    transition: transform 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    min-height: 380px;
+  max-width: 360px;
+  margin: 0 auto;
+  background-color: #000; 
+  color: white;
+  border-radius: 16px;
+  border: 3px solid #FFD60A; 
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    border-color: #ffd60a; 
-    box-shadow: 0 0 12px rgba(255, 214, 10, 0.6);
-    transform: scale(1.02);
+  transform: translateY(-6px);
+  box-shadow: 0 0 20px rgba(255, 214, 10, 0.4);
 }
+
+/* Header estilo Instagram */
+.cardHeader {
+  padding: 10px 14px;
+  background: #111; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cardFooter {
+  padding: 12px 14px;
+  background: #111;
+  color: #fff;
+  font-size: 0.9rem;
+  border-top: 1px solid #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 .imageContainer {
   background-color: #000; 
   border-radius: 12px; 
   padding: 8px; 
+}
+/* Imagen ocupa todo y se ve mejor */
+.image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: #000;
 }

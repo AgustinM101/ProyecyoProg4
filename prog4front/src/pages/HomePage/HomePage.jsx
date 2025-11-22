@@ -14,14 +14,21 @@ export function HomePage() {
 	return <>
 
 		<HeaderMenu />
-
+		
 		<main>
+
 			<HeroSection />
+
 			<BannerGym />
+			
 			<GymCarousel />
+
 			<Transformations />
+
 			<BannerSubscribe />
+
 			<Faqs />
+
 		</main>
 
 		<Footer />

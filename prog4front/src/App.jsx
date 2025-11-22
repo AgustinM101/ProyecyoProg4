@@ -10,7 +10,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Nosotros } from "./pages/Nosotros/Nosotros";
 import { PrivateRoute, PublicRoute, AdminRoute } from "./Routes";
 
-import { PlansPage } from "./pages/PlansPage/PlansPage";
 import { PlanPhavPage } from "./pages/PlanPhav/PlanPhavPage";
 import { PlanCompeticionPage } from "./pages/PlanCompeticion/PlanCompeticionPage";
 
@@ -38,7 +37,7 @@ function App() {
                     <Routes>
                         {/* Rutas generales */}
                             <Route path="/" element={<HomePage />} />
-                            <Route path="/plans" element={<PlansPage />} />
+
                             <Route path="/plans/phav" element={<PlanPhavPage />} />
                             <Route path="/plans/competition" element={<PlanCompeticionPage />}/>
                             <Route path="/login" element={<LoginPage />} />
