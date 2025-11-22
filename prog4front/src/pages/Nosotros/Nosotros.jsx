@@ -168,7 +168,7 @@ export function Nosotros() {
                       letterSpacing: "1px",
                     }}
                   >
-                    Preparador Físico & Atleta de Culturismo Natural
+                    ADRIAN SALVATORI- Preparador Físico & Atleta de Culturismo Natural 
                   </Title>
 
                   <Divider color="#d4af37" size="sm" />
@@ -182,46 +182,211 @@ export function Nosotros() {
                       color: "#e0e0e0",
                     }}
                   >
-                    Soy preparador físico, atleta profesional de culturismo natural y
-                    especialista en nutrición aplicada al deporte. Cuento con diversas
-                    formaciones que respaldan mi trabajo: Preparador de culturismo
-                    (Federación Argentina de Musculación), Entrenamiento aplicado a la
-                    salud y la obesidad (JMI), Nutrición aplicada al deporte (JMI),
-                    Formación en la Academia de Entrenadores Online y Experto en
-                    Culturismo Natural (ECN).
+                    Soy preparador físico, atleta de culturismo natural y especialista en nutrición deportiva. A lo largo de los años descubrí que el verdadero cambio no comienza en el gimnasio, sino en la mente. Por eso mi enfoque combina entrenamiento, nutrición, disciplina y mentalidad: cuatro pilares que transforman vidas.
                     <br />
                     <br />
-                    Mi experiencia como competidor me permite comprender tanto el
-                    proceso físico como mental que atraviesan quienes buscan un cambio
-                    o se preparan para competir.
+                    Mi experiencia como competidor me enseñó que no existen atajos. Lo que sí existe es la constancia, el trabajo inteligente y la capacidad de superarse todos los días. Acompaño a cada alumno en ese camino, guiándolo para que logre su mejor versión física y mental.
                     <br />
                     <br />
-                    Al iniciarme en el entrenamiento descubrí que mi verdadera pasión
-                    es ayudar a las personas a transformar su vida. Creo firmemente que
-                    los límites están en la mente y que, con disciplina, constancia y
-                    amor por lo que hacemos, todo es posible.
+                    Trabajo con un objetivo claro:
+                    demostrarle a cada persona que puede mucho más de lo que cree.
                     <br />
                     <br />
-                    Fundé mi gimnasio el <b>14 de septiembre de 2020</b> con la misión
-                    de ofrecer un espacio donde las personas puedan mejorar su salud,
-                    cambiar hábitos y formar atletas de culturismo natural.
+                    Mi estilo de vida —entrenamiento diario, hábitos saludables y entre 10.000 y 12.000 pasos por día— refleja la filosofía que enseño: coherencia, esfuerzo y pasión.
+                    La verdadera satisfacción no está en el resultado final, sino en el proceso y en ver cómo cada persona rompe sus propios límites.
                     <br />
                     <br />
-                    Nuestra filosofía se basa en la disciplina, la superación personal,
-                    la salud y la comunidad. Buscamos demostrar que cualquier objetivo
-                    puede cumplirse con constancia y compromiso.
-                    <br />
-                    <br />
-                    Vivo el culturismo como un estilo de vida. Mantengo una rutina
-                    saludable, con entrenamiento constante y entre 10.000 y 12.000
-                    pasos diarios. Mi mayor satisfacción es ver cómo las personas
-                    transforman su cuerpo y su vida, confirmando que lo que parecía
-                    imposible, con disciplina y pasión, se vuelve realidad.
+                    
+                 <Divider color="#d4af37" />
+
+                <Text size="sm" fw={600} style={{ color: "#fff" }}>
+                  Horarios:
+                </Text>
+
+                <Text size="sm" style={{ color: "#d4af37" }}>
+                  Lunes a Viernes: 10:00–13:00  
+                  <br />
+                  Sábados: 10:00–13:00
+                </Text>
                   </Text>
                 </Stack>
               </ScrollArea>
             </SimpleGrid>
           </Card>
+        </Container>
+
+        {/* ========================================================= */}
+        {/* === SECCIÓN PROFESORES / EQUIPO === */}
+        {/* ========================================================= */}
+
+        <Container size="lg" mt={90}>
+          <Title
+            order={2}
+            ta="center"
+            mb="lg"
+            style={{
+              color: "#d4af37",
+              fontWeight: 800,
+              textTransform: "uppercase",
+            }}
+          >
+            Nuestro Equipo de Profesores
+          </Title>
+
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl">
+
+            
+
+            {/* === PROFESOR 2 === */}
+            <Card
+              shadow="lg"
+              radius="lg"
+              padding="lg"
+              style={{
+                backgroundColor: "#0a0a0a",
+                border: "2px solid #d4af37",
+                color: "#fff",
+                transition: "0.3s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.03)";
+                e.currentTarget.style.boxShadow = "0 0 15px #d4af37";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <Image
+                src="https://res.cloudinary.com/del98x3di/image/upload/v1762952926/adrian_con_bruno_kfpw5f.jpg"
+                height={200}
+                radius="md"
+                fit="cover"
+                style={{ borderBottom: "2px solid #d4af37" }}
+              />
+
+              <Stack mt="md" spacing="xs">
+                <Title order={4} style={{ color: "#d4af37", textTransform: "uppercase" }}>
+                 Bruno Gimenez-Atleta y preparador físico
+                </Title>
+
+                <Text size="sm" style={{ color: "#ccc" }}>
+                  Especialista en nutricion y acondicionamiento general.
+                </Text>
+
+                <Divider color="#d4af37" />
+
+                <Text size="sm" fw={600} style={{ color: "#fff" }}>
+                  Horarios:
+                </Text>
+
+                <Text size="sm" style={{ color: "#d4af37" }}>
+                  Lunes a Viernes: 10:00–13:00  
+                  <br />
+                  Sábados: 10:00–13:00
+                </Text>
+              </Stack>
+            </Card>
+
+            {/* === PROFESOR 3 === */}
+            <Card
+              shadow="lg"
+              radius="lg"
+              padding="lg"
+              style={{
+                backgroundColor: "#0a0a0a",
+                border: "2px solid #d4af37",
+                color: "#fff",
+                transition: "0.3s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.03)";
+                e.currentTarget.style.boxShadow = "0 0 15px #d4af37";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <Image
+                src="https://res.cloudinary.com/del98x3di/image/upload/v1763764551/WhatsApp_Image_2025-11-21_at_19.23.59_kxbajr.jpg"
+                height={200}
+                radius="md"
+                fit="cover"
+                style={{ borderBottom: "2px solid #d4af37" }}
+              />
+
+              <Stack mt="md" spacing="xs">
+                <Title order={4} style={{ color: "#d4af37", textTransform: "uppercase" }}>
+                 Sebastian Robles — Instructor de Fuerza y Movilidad
+                </Title>
+
+                <Text size="sm" style={{ color: "#ccc" }}>
+                  Instructor especializado en fuerza, movilidad y rendimiento.
+                </Text>
+
+                <Divider color="#d4af37" />
+
+                <Text size="sm" fw={600} style={{ color: "#fff" }}>
+                  Horarios:
+                </Text>
+
+                <Text size="sm" style={{ color: "#d4af37" }}>
+                  Lunes, Miércoles y Viernes: 13:00–21:00
+                </Text>
+              </Stack>
+            </Card>
+            {/* === PROFESOR 4 === */}
+            <Card
+              shadow="lg"
+              radius="lg"
+              padding="lg"
+              style={{
+                backgroundColor: "#0a0a0a",
+                border: "2px solid #d4af37",
+                color: "#fff",
+                transition: "0.3s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.03)";
+                e.currentTarget.style.boxShadow = "0 0 15px #d4af37";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <Image
+                src="https://res.cloudinary.com/del98x3di/image/upload/v1763764551/WhatsApp_Image_2025-11-21_at_19.27.05_tsyw2s.jpg"
+                height={200}
+                radius="md"
+                fit="cover"
+                style={{ borderBottom: "2px solid #d4af37" }}
+              />
+
+              <Stack mt="md" spacing="xs">
+                <Title order={4} style={{ color: "#d4af37", textTransform: "uppercase" }}>
+                  Gonzalo Insaurralde- Preparador Físico
+                </Title>
+
+                <Text size="sm" style={{ color: "#ccc" }}>
+                  Especialista en entrenamiento funcional y rehabilitación.
+                </Text>
+
+                <Divider color="#d4af37" />
+
+                <Text size="sm" fw={600} style={{ color: "#fff" }}>
+                  Horarios:
+                </Text>
+
+                <Text size="sm" style={{ color: "#d4af37" }}>
+                  Lunes a Viernes: 08:00–10:00 / 16:00–20:00  
+                  <br />
+                  Sábados: 09:00–12:00
+                </Text>
+              </Stack>
+            </Card>
+          </SimpleGrid>
         </Container>
 
         <Footer />
