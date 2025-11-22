@@ -122,6 +122,9 @@ export function MyPlansPage() {
     }
   };
 
+
+  
+
   if (loading) {
     return (
       <Center h="100vh">
@@ -536,6 +539,72 @@ export function MyPlansPage() {
         )}
       </Container>
       <Footer />
+      {/* === CARTELITO FLOTANTE WHATSAPP === */}
+<div
+  style={{
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    backgroundColor: "#000",
+    border: "2px solid #EEFF05",
+    padding: "12px 16px",
+    borderRadius: "14px",
+    boxShadow: "0 0 12px rgba(0,0,0,0.6)",
+    zIndex: 9999,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    maxWidth: "260px",
+    animation: "fadeIn 0.8s ease",
+  }}
+>
+  <Text
+    style={{
+      color: "#e1e0d8ff",
+      fontWeight: "600",
+      fontSize: "13px",
+      textAlign: "center",
+      marginBottom: "8px",
+    }}
+  >
+    ¿Dudas con tu plan?{" "}
+    <span style={{ color: "#EEFF05", fontWeight: "700" }}>
+      Contactá a Adrián.
+    </span>
+  </Text>
+
+  <Button
+    component="a"
+    href="https://wa.me/542346419487?text=Hola%20Adri%C3%A1n,%20tengo%20una%20consulta%20sobre%20mi%20plan"
+    target="_blank"
+    rel="noopener noreferrer"
+    size="xs"
+    radius="xl"
+    style={{
+      backgroundColor: "#25D366",
+      color: "black",
+      fontWeight: "bold",
+      width: "100%",
+    }}
+  >
+    WhatsApp
+  </Button>
+</div>
+
+{/* === ANIMACIÓN CSS === */}
+<style>{`
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`}</style>
+
     </>
   );
 }
