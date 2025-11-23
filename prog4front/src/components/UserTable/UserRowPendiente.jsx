@@ -43,12 +43,6 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
                                 onClick: handleToggleAccordion,
                             },
                             {
-                                label: "Activar",
-                                icon: <IconCheck size={16} />,
-                                color: "green",
-                                onClick: () => onActivate(pu.id),
-                            },
-                            {
                                 label: "Eliminar",
                                 icon: <IconTrash size={16} />,
                                 color: "red",
