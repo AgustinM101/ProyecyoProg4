@@ -16,6 +16,13 @@ final class UserUpdateProfileService
         $this->userRepository = new UserRepository();
     }
 
+    /**
+     * Actualiza el perfil del usuario (nombre y email)
+     *
+     * @param int $userId
+     * @param array $data ['name' => ..., 'email' => ...]
+     * @throws \Exception
+     */
     public function updateProfile(int $userId, array $data): void
     {
         $user = $this->userRepository->find($userId);
@@ -27,24 +34,11 @@ final class UserUpdateProfileService
             $user->setName($data['name']);
         }
 
-        
-
-        if (isset($data['profile_image'])) {
-            $file = $data['profile_image'];
-            $uploadDir = __DIR__ . '/../../../public/uploads/profile_images/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-
-            $filePath = $uploadDir . uniqid() . '_' . $file['name'];
-            move_uploaded_file($file['tmp_name'], $filePath);
-
-            // Guardamos la ruta relativa a la imagen
-            $user->setProfileImage('/uploads/profile_images/' . basename($filePath));
+        if (isset($data['email'])) {
+            $user->setEmail($data['email']);
         }
 
+        // Guardar cambios en la base de datos
         $this->userRepository->update($user);
     }
 }
-
-    

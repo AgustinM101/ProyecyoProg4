@@ -42,9 +42,9 @@ final readonly class UserRoutes {
       // 🔹 Nueva ruta específica para actualizar perfil (desde el front ProfilePage)
       [
         "name" => "user_update_profile",
-        "url" => "/user/profile",
+        "url" => "/user",
         "controller" => "User/UserUpdateProfileController.php",
-        "method" => "PUT"
+        "method" => "POST"
       ],
       [
         "name" => "user_get",
