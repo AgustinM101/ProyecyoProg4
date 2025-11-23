@@ -4,6 +4,8 @@ namespace Src\Service\PlanAlimento;
 
 use Src\Entity\PlanAlimento\PlanAlimento;
 use Src\Infrastructure\Repository\PlanAlimento\PlanAlimentoRepository;
+use Src\Service\PlanAlimento\PlanAlimentoFinderService;
+use Src\Utils\ControllerUtils;
 
 final readonly class PlanAlimentoMassiveUpdaterService
 {
@@ -17,24 +19,64 @@ final readonly class PlanAlimentoMassiveUpdaterService
     }
 
     public function updateAll(int $plansUserId, array $items): void
-{
-    $this->repository->deleteAllByPlansUserId($plansUserId);
-
-    foreach ($items as $item) {
-        // Cada item debe traer descripción, tipo y dia
-        if (!isset($item["descripcion"], $item["tipo"], $item["dia"])) {
-            continue; // opcional: acumular errores
+    {
+        // Intentar limpiar los existentes, loggear si falla pero continuar
+        try {
+            $this->repository->deleteAllByPlansUserId($plansUserId);
+        } catch (\Throwable $e) {
+            ControllerUtils::logAction(
+                "Error al eliminar PlanAlimento(s) existentes para plansUserId={$plansUserId}: " . $e->getMessage(),
+                true,
+                3
+            );
+            // seguir intentando recrear los items
         }
 
-        $plan = PlanAlimento::create(
-            $item["descripcion"],
-            $item["tipo"],
-            $item["dia"],
-            $plansUserId
-        );
+        $created = 0;
 
-        $this->repository->create($plan);
+        foreach ($items as $index => $item) {
+            // Cada item debe traer descripcion, tipo y dia
+            if (!isset($item["descripcion"], $item["tipo"], $item["dia"])) {
+                ControllerUtils::logAction(
+                    "PlanAlimento saltado (datos incompletos) en índice {$index} para plansUserId={$plansUserId}",
+                    true,
+                    2
+                );
+                continue;
+            }
+
+            $plan = PlanAlimento::create(
+                $item["descripcion"],
+                $item["tipo"],
+                $item["dia"],
+                $plansUserId
+            );
+
+            try {
+                $this->repository->create($plan);
+                $created++;
+            } catch (\Throwable $e) {
+                ControllerUtils::logAction(
+                    "Error al crear PlanAlimento (index={$index}) para plansUserId={$plansUserId}: " . $e->getMessage(),
+                    true,
+                    3
+                );
+                // continuar con los demás items
+            }
+        }
+
+        if ($created > 0) {
+            ControllerUtils::logAction(
+                "Se actualizaron {$created} PlanAlimento(s) para plansUserId={$plansUserId}.",
+                false
+                
+            );
+        } else {
+            ControllerUtils::logAction(
+                "No se crearon PlanAlimento(s) para plansUserId={$plansUserId}.",
+                true,
+                2
+            );
+        }
     }
-}
-
 }
