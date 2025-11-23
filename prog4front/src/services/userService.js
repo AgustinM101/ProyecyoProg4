@@ -6,8 +6,11 @@ export const userService = {
   getCurrentUser: async () => api.get("/user"),
   getUserPlans: async (userId) => api.get(`/userplans/${userId}`),
   updateProfile: async (formData) =>
-    api.put("/user", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    }),
+  api.post("/user", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  }),
+
+
+    
 };
 

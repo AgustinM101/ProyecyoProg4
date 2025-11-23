@@ -102,26 +102,26 @@ final readonly class UserRepository extends PDOManager implements UserRepository
      * ✅ Actualiza solo los datos del perfil (nombre, teléfono e imagen)
      * sin tocar contraseña, token o plan.
      */
-    public function updateProfile(int $id, ?string $name, ?string $profileImage): void
-    {
-        $query = <<<SQL
-            UPDATE users
-            SET 
-                name = COALESCE(:name, name),
-                
-                profile_image = COALESCE(:profileImage, profile_image)
-            WHERE id = :id
-        SQL;
+     public function updateProfile(int $id, ?string $name, ?string $email, ?string $profileImage): void
+{
+    $query = <<<SQL
+        UPDATE users
+        SET 
+            name = COALESCE(:name, name),
+            email = COALESCE(:email, email),
+            profile_image = COALESCE(:profileImage, profile_image)
+        WHERE id = :id
+    SQL;
 
-        $parameters = [
-            "id" => $id,
-            "name" => $name,
-            
-            "profileImage" => $profileImage
-        ];
+    $parameters = [
+        "id" => $id,
+        "name" => $name,
+        "email" => $email,
+        "profileImage" => $profileImage
+    ];
 
-        $this->execute($query, $parameters);
-    }
+    $this->execute($query, $parameters);
+}
 
     public function search(): array
     {

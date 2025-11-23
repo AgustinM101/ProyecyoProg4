@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 use Src\Utils\ControllerUtils;
 use Src\Infrastructure\Repository\User\UserRepository;
@@ -29,42 +29,26 @@ final readonly class UserUpdateProfileController {
                 return;
             }
 
-            $name = $_POST['name'] ?? null;
-           
-            $profileImage = $_FILES['profileImage'] ?? null;
-
-            if ($name) $user->setName($name);
             
+            // Recibir datos desde FormData
+           $name  = $_POST['name'] ?? null;
+           $email = $_POST['email'] ?? null;
 
-            if ($profileImage && $profileImage['tmp_name']) {
-                $uploadDir = __DIR__ . '/../../uploads/profiles/';
-                if (!file_exists($uploadDir)) mkdir($uploadDir, 0755, true);
 
-                $filePath = $uploadDir . basename($profileImage['name']);
-                move_uploaded_file($profileImage['tmp_name'], $filePath);
 
-                // Guardamos la ruta relativa para usarla en la web
-                $user->setProfileImage('/uploads/profiles/' . basename($profileImage['name']));
-            }
-            
+            if ($name)  $user->setName($name);
+            if ($email) $user->setEmail($email);
 
+            // Guardar en BD (update tradicional)
             $this->userRepository->update($user);
 
-            // Después de actualizar el usuario
-            ControllerUtils::logAction(
-                "Usuario {$updatedUser->id()} ({$updatedUser->name()}) actualizó sus datos",
-                false
-            );
-            
             echo json_encode([
                 "message" => "Perfil actualizado correctamente",
                 "data" => [
-                    "id" => $user->id(),
-                    "name" => $user->name(),
+                    "id"    => $user->id(),
+                    "name"  => $user->name(),
                     "email" => $user->email(),
-                    
-                    "profileImage" => $user->profileImage(),
-                    "admin" => $user->admin()
+                    "admin" => $user->admin(),
                 ]
             ]);
 
@@ -72,5 +56,8 @@ final readonly class UserUpdateProfileController {
             http_response_code(400);
             echo json_encode(["message" => $e->getMessage()]);
         }
+        
     }
 }
+
+
