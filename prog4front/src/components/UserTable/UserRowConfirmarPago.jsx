@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { Button, Group } from "@mantine/core";
 import { IconCheck, IconTrash, IconEye, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
+import { ActionsMenu } from "./ActionsMenu";
 
 export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
   const [loadingConfirm, setLoadingConfirm] = useState(false);
@@ -12,6 +12,19 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
     setLoadingConfirm(true);
     try {
       await onConfirm(pu); // asumimos que onConfirm devuelve una promesa
+      // notificar para que la tabla se refresque (padre puede escuchar)
+      try {
+        window.dispatchEvent(
+          new CustomEvent("plansUser:refresh", {
+            detail: { id: pu.id, action: "confirm" },
+          })
+        );
+      } catch (e) {
+        console.warn("dispatch plansUser:refresh failed", e);
+      }
+    } catch (e) {
+      console.error("Error al confirmar pago:", e);
+      throw e;
     } finally {
       setLoadingConfirm(false);
     }
@@ -21,6 +34,18 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
     setLoadingReject(true);
     try {
       await onReject(pu); // asumimos que onReject devuelve una promesa
+      try {
+        window.dispatchEvent(
+          new CustomEvent("plansUser:refresh", {
+            detail: { id: pu.id, action: "reject" },
+          })
+        );
+      } catch (e) {
+        console.warn("dispatch plansUser:refresh failed", e);
+      }
+    } catch (e) {
+      console.error("Error al rechazar pago:", e);
+      throw e;
     } finally {
       setLoadingReject(false);
     }
@@ -40,38 +65,31 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
           : "Expirado"}
       </td>
       <td>
-        <Group spacing="xs">
-          <Button
-            variant="subtle"
-            color="blue"
-            onClick={() => onView(pu)}
-            title="Ver formulario"
-          >
-            Ver Formulario
-          </Button>
-
-          <Button
-            variant="subtle"
-            color="green"
-            loading={loadingConfirm}
-            disabled={loadingConfirm || loadingReject}
-            onClick={handleConfirm}
-            title="Confirmar pago"
-          >
-            Confirmar pago
-          </Button>
-
-          <Button
-            variant="subtle"
-            color="red"
-            loading={loadingReject}
-            disabled={loadingReject || loadingConfirm}
-            onClick={handleReject}
-            title="Rechazar pago"
-          >
-            Rechazar pago
-          </Button>
-        </Group>
+        <ActionsMenu
+          items={[
+            {
+              label: "Ver Formulario",
+              icon: <IconEye size={16} />,
+              onClick: () => onView(pu),
+              disabled: loadingConfirm || loadingReject,
+            },
+            {
+              // muestra estado de carga en la etiqueta y deshabilita mientras carga
+              label: loadingConfirm ? "⏳ Confirmando..." : "Confirmar pago",
+              icon: <IconCheck size={16} />,
+              color: "green",
+              onClick: handleConfirm,
+              disabled: loadingConfirm || loadingReject,
+            },
+            {
+              label: loadingReject ? "⏳ Rechazando..." : "Rechazar pago",
+              icon: <IconX size={16} />,
+              color: "red",
+              onClick: handleReject,
+              disabled: loadingReject || loadingConfirm,
+            },
+          ]}
+        />
       </td>
     </tr>
   );

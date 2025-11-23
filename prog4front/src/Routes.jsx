@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import React from "react";
 import { adminService } from "./services/adminService";
+import { FullScreenLoader } from "./components/ui/FullScreenLoader"; // <- nuevo
 
 // 🔓 Rutas públicas (solo sin sesión)
 export function PublicRoute() {
@@ -25,7 +26,7 @@ export function AdminRoute() {
     const validateAdmin = async () => {
       try {
         const res = await adminService.validate();
-        setIsAdmin(res?.admin === 1); // ✅ se compara con el campo correcto del backend
+        setIsAdmin(res?.admin === 1);
       } catch (error) {
         console.error("Error validando admin:", error);
         setIsAdmin(false);
@@ -37,11 +38,9 @@ export function AdminRoute() {
     validateAdmin();
   }, []);
 
-  if (loading) return <div>Cargando validación...</div>;
+  if (loading) return <FullScreenLoader title="Validando usuario" message="Comprobando permisos de administrador..." />;
 
-  // 🚫 Si no es admin, lo redirige al inicio
   if (!isAdmin) return <Navigate to="/" replace />;
 
-  // ✅ Si es admin, muestra las rutas internas
   return <Outlet />;
 }

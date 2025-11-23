@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Group } from "@mantine/core";
 import { IconPlus, IconEye, IconPencil, IconTrash } from "@tabler/icons-react";
+import { ActionsMenu } from "./ActionsMenu";
 import { UserPlansAccordion } from "./UserPlansAccordion";
 import dayjs from "dayjs";
 
@@ -24,43 +25,31 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
                         : "A definir"}
                 </td>
                 <td>
-                    <Group spacing="xs">
-                        <Button
-                            variant="subtle"
-                            color="blue"
-                            onClick={() => onView(pu)}
-                            title="Ver formulario"
-                        >
-                            Ver Formulario
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="yellow"
-                            onClick={() => onEdit(pu)}
-                            title="Editar plan"
-                        >
-                            Editar Estado/Fecha
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="green"
-                            onClick={handleToggleAccordion}
-                            title={showAccordion ? "Ocultar plan" : "Ver plan"}
-                        >
-                            Ver/Editar planes
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="red"
-                            onClick={() => onDelete(pu)}
-                            title="Eliminar registro"
-                        >
-                            <IconTrash size={18} />
-                        </Button>
-                    </Group>
+                    <ActionsMenu
+                        items={[
+                            {
+                                label: "Ver Formulario",
+                                icon: <IconEye size={16} />,
+                                onClick: () => onView(pu),
+                            },
+                            {
+                                label: "Editar Estado/Fecha",
+                                icon: <IconPencil size={16} />,
+                                onClick: () => onEdit(pu),
+                            },
+                            {
+                                label: showAccordion ? "Ocultar plan" : "Ver/Editar planes",
+                                icon: <IconPlus size={16} />,
+                                onClick: handleToggleAccordion,
+                            },
+                            {
+                                label: "Eliminar",
+                                icon: <IconTrash size={16} />,
+                                color: "red",
+                                onClick: () => onDelete(pu),
+                            },
+                        ]}
+                    />
                 </td>
             </tr>
 
