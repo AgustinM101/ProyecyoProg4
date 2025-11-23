@@ -130,25 +130,81 @@ export function UserPlansAccordion({ action, plansUserId, onFinish, onActivate }
 
     // ✅ Render table editable
     const renderTable = (plan, setter, tipos) => {
-        return (
-            <Table striped withBorder>
+    return (
+        <div
+            style={{
+                overflowX: "auto",
+                marginTop: "10px",
+                border: "2px solid #eeff05",
+                borderRadius: "10px",
+                background: "#000",
+                padding: "10px",
+            }}
+        >
+            <table
+                style={{
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    tableLayout: "fixed", // ← cuadradas
+                    color: "white",
+                    fontSize: "14px",
+                }}
+            >
                 <thead>
-                    <tr>
-                        <th>Tipo</th>
+                    <tr style={{ backgroundColor: "#111" }}>
+                        <th
+                            style={{
+                                border: "1px solid #eeff05",
+                                padding: "12px",
+                                textAlign: "center",
+                                width: "130px",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            Tipo
+                        </th>
+
                         {dias.map((dia) => (
-                            <th key={dia}>{dia}</th>
+                            <th
+                                key={dia}
+                                style={{
+                                    border: "1px solid #eeff05",
+                                    padding: "12px",
+                                    width: "130px",
+                                    textAlign: "center",
+                                }}
+                            >
+                                {dia}
+                            </th>
                         ))}
                     </tr>
                 </thead>
+
                 <tbody>
                     {tipos.map((tipo) => (
-                        <tr key={tipo}>
-                            <td style={{ fontWeight: "bold" }}>{tipo}</td>
+                        <tr key={tipo} style={{ backgroundColor: "#1a1a1a" }}>
+                            <td
+                                style={{
+                                    border: "1px solid #eeff05",
+                                    padding: "10px",
+                                    fontWeight: "bold",
+                                    backgroundColor: "#121212",
+                                }}
+                            >
+                                {tipo}
+                            </td>
+
                             {dias.map((dia) => (
-                                <td key={dia}>
-                                    <TextInput
-                                        size="xs"
-                                        placeholder={`${tipo} - ${dia}`}
+                                <td
+                                    key={dia}
+                                    style={{
+                                        border: "1px solid #eeff05",
+                                        padding: "0",
+                                        height: "90px", // ← CUADRADA Y GRANDE
+                                        backgroundColor: "#000",
+                                    }}
+                                >
+                                    <textarea
                                         value={plan[dia]?.[tipo] || ""}
                                         onChange={(e) =>
                                             handleChange(
@@ -156,22 +212,42 @@ export function UserPlansAccordion({ action, plansUserId, onFinish, onActivate }
                                                 plan,
                                                 dia,
                                                 tipo,
-                                                e.currentTarget.value
+                                                e.target.value
                                             )
                                         }
                                         readOnly={
                                             action !== "create" &&
                                             action !== "update"
                                         }
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            background: "transparent",
+                                            color: "white",
+                                            border: "none",
+                                            resize: "none", // estilo Excel
+                                            padding: "10px",
+                                            boxSizing: "border-box",
+                                            outline: "none",
+                                            overflow: "hidden",
+                                            fontSize: "14px",
+                                        }}
+                                        onInput={(e) => {
+                                            e.target.style.height = "auto";
+                                            e.target.style.height =
+                                                e.target.scrollHeight + "px";
+                                        }}
                                     />
                                 </td>
                             ))}
                         </tr>
                     ))}
                 </tbody>
-            </Table>
-        );
-    };
+            </table>
+        </div>
+    );
+};
+
 
     useEffect(() => {
         const fetchPlans = async () => {
