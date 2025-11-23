@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Button, Group } from "@mantine/core";
-import { IconPencil, IconPlus, IconTrash, IconEye } from "@tabler/icons-react";
+import { IconPencil, IconPlus, IconTrash, IconEye, IconCheck } from "@tabler/icons-react";
 import { UserPlansAccordion } from "./UserPlansAccordion";
 import dayjs from "dayjs";
+import { ActionsMenu } from "./ActionsMenu";
 
 export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
     const [showAccordion, setShowAccordion] = useState(false);
@@ -24,43 +25,37 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
                         : "A definir"}
                 </td>
                 <td>
-                    <Group spacing="xs">
-                        <Button
-                            variant="subtle"
-                            color="blue"
-                            onClick={() => onView(pu)}
-                            title="Ver formulario"
-                        >
-                            Ver Formulario
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="yellow"
-                            onClick={() => onEdit(pu)}
-                            title="Editar plan"
-                        >
-                            Editar Estado/Fecha
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="green"
-                            onClick={handleToggleAccordion}
-                            title={showAccordion ? "Ocultar plan" : "Crear plan"}
-                        >
-                            Agregar plan
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="red"
-                            onClick={() => onDelete(pu)}
-                            title="Eliminar registro"
-                        >
-                            <IconTrash size={18} />
-                        </Button>
-                    </Group>
+                    <ActionsMenu
+                        items={[
+                            {
+                                label: "Ver Formulario",
+                                icon: <IconEye size={16} />,
+                                onClick: () => onView(pu),
+                            },
+                            {
+                                label: "Editar Estado/Fecha",
+                                icon: <IconPencil size={16} />,
+                                onClick: () => onEdit(pu),
+                            },
+                            {
+                                label: showAccordion ? "Ocultar plan" : "Agregar plan",
+                                icon: <IconPlus size={16} />,
+                                onClick: handleToggleAccordion,
+                            },
+                            {
+                                label: "Activar",
+                                icon: <IconCheck size={16} />,
+                                color: "green",
+                                onClick: () => onActivate(pu.id),
+                            },
+                            {
+                                label: "Eliminar",
+                                icon: <IconTrash size={16} />,
+                                color: "red",
+                                onClick: () => onDelete(pu),
+                            },
+                        ]}
+                    />
                 </td>
             </tr>
 

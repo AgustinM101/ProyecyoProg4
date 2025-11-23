@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { Button, Group } from "@mantine/core";
 import { IconCheck, IconTrash, IconEye, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
+import { ActionsMenu } from "./ActionsMenu";
 
 export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
   const [loadingConfirm, setLoadingConfirm] = useState(false);
@@ -40,38 +40,29 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
           : "Expirado"}
       </td>
       <td>
-        <Group spacing="xs">
-          <Button
-            variant="subtle"
-            color="blue"
-            onClick={() => onView(pu)}
-            title="Ver formulario"
-          >
-            Ver Formulario
-          </Button>
-
-          <Button
-            variant="subtle"
-            color="green"
-            loading={loadingConfirm}
-            disabled={loadingConfirm || loadingReject}
-            onClick={handleConfirm}
-            title="Confirmar pago"
-          >
-            Confirmar pago
-          </Button>
-
-          <Button
-            variant="subtle"
-            color="red"
-            loading={loadingReject}
-            disabled={loadingReject || loadingConfirm}
-            onClick={handleReject}
-            title="Rechazar pago"
-          >
-            Rechazar pago
-          </Button>
-        </Group>
+        <ActionsMenu
+          items={[
+            {
+              label: "Ver Formulario",
+              icon: <IconEye size={16} />,
+              onClick: () => onView(pu),
+            },
+            {
+              label: "Confirmar pago",
+              icon: <IconCheck size={16} />,
+              color: "green",
+              onClick: handleConfirm,
+              disabled: loadingConfirm || loadingReject,
+            },
+            {
+              label: "Rechazar pago",
+              icon: <IconX size={16} />,
+              color: "red",
+              onClick: handleReject,
+              disabled: loadingReject || loadingConfirm,
+            },
+          ]}
+        />
       </td>
     </tr>
   );

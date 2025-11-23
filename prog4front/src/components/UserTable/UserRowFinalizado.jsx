@@ -3,6 +3,7 @@ import { Button, Group } from "@mantine/core";
 import { IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { UserPlansAccordion } from "./UserPlansAccordion";
+import { ActionsMenu } from "./ActionsMenu";
 
 export function UserRowFinalizado({ pu, onView, onDelete }) {
     const [expanded, setExpanded] = useState(false);
@@ -22,34 +23,26 @@ export function UserRowFinalizado({ pu, onView, onDelete }) {
                         : "A definir"}
                 </td>
                 <td>
-                    <Group spacing="xs">
-                        <Button
-                            variant="subtle"
-                            color="blue"
-                            onClick={() => onView(pu)}
-                            title="Ver formulario"
-                        >
-                            Ver Formulario
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="green"
-                            onClick={() => setExpanded((prev) => !prev)}
-                            title="Ver planes del usuario"
-                        >
-                            Ver planes
-                        </Button>
-
-                        <Button
-                            variant="subtle"
-                            color="red"
-                            onClick={() => onDelete(pu)}
-                            title="Eliminar registro"
-                        >
-                            <IconTrash size={18} />
-                        </Button>
-                    </Group>
+                    <ActionsMenu
+                        items={[
+                            {
+                                label: "Ver Formulario",
+                                icon: <IconEye size={16} />,
+                                onClick: () => onView(pu),
+                            },
+                            {
+                                label: expanded ? "Ocultar planes" : "Ver planes",
+                                icon: <IconPlus size={16} />,
+                                onClick: () => setExpanded((prev) => !prev),
+                            },
+                            {
+                                label: "Eliminar",
+                                icon: <IconTrash size={16} />,
+                                color: "red",
+                                onClick: () => onDelete(pu),
+                            },
+                        ]}
+                    />
                 </td>
             </tr>
 
