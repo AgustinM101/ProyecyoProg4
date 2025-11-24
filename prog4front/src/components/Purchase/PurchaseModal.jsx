@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconCreditCard, IconCash, IconWallet } from "@tabler/icons-react";
 import { paymentService } from "../../services/paymentService";
+import { plansUserService } from "../../services/plansUserService";
 import { userService } from "../../services/userService";
 
 export function PurchaseModal({ opened, onClose, plan }) {
@@ -28,6 +29,7 @@ export function PurchaseModal({ opened, onClose, plan }) {
 
     try {
       const user = await userService.getCurrentUser();
+
       if (!user?.data) {
         navigate("/login");
         return;
@@ -36,8 +38,6 @@ export function PurchaseModal({ opened, onClose, plan }) {
       const userId = user.data.id;
 
       if (paymentMethod === "mercadopago") {
-        // 👉 Crear preferencia en el backend
-        console.log("Creando preferencia de pago en Mercado Pago...");
         const data = await paymentService.createPaymentPreference({
           title: plan.name,
           amount: plan.price,
@@ -45,27 +45,30 @@ export function PurchaseModal({ opened, onClose, plan }) {
           id_plan: plan.id,
         });
 
-        // 👉 Redirigir al usuario al checkout de Mercado Pago
         if (data?.url?.init_point) {
           window.location.href = data.url.init_point;
-
-       
+          return;
         } else {
-          alert("No se obtuvo la URL de Mercado Pago.");
+          alert("Error al generar pago con Mercado Pago.");
+          return;
         }
-      } else {
-        // 👉 Otros métodos (transferencia o efectivo)
-        alert(
-          paymentMethod === "transferencia"
-            ? "Tu solicitud de pago por transferencia fue registrada."
-            : "Tu solicitud de pago en efectivo fue registrada."
-        );
-
-        onClose();
-        setTimeout(() => {
-          navigate("/plansForms");
-        }, 1000);
       }
+
+      await plansUserService.createPlan({
+        id_user: userId,
+        id_plan: plan.id,
+        status: "paymentRequest",
+      });
+
+      alert(
+        paymentMethod === "transferencia"
+          ? "Tu solicitud de pago por transferencia fue registrada."
+          : "Tu solicitud de pago en efectivo fue registrada."
+      );
+
+      onClose();
+      setTimeout(() => navigate("/plansForms"), 1000);
+
     } catch (error) {
       console.error("Error al procesar la compra:", error);
       alert("Hubo un error al procesar la compra.");
@@ -80,26 +83,51 @@ export function PurchaseModal({ opened, onClose, plan }) {
       onClose={onClose}
       centered
       size="lg"
-      radius="xl"
-      overlayProps={{ blur: 6, opacity: 0.55 }}
-      transitionProps={{ transition: "pop", duration: 300 }}
-      styles={{ content: { borderRadius: "20px", backgroundColor: "#f9fafc" } }}
+      radius="lg"
+
+      // 🔥 FONDO OSCURO
+      overlayProps={{
+        color: "#000",
+        opacity: 0.75,
+        blur: 2,
+      }}
+
+      styles={{
+        content: {
+          backgroundColor: "#111", // 🔥 FONDO OSCURO
+          border: "2px solid #f5c400", // 🔥 BORDE DORADO
+          borderRadius: "20px",
+          padding: 0,
+        }
+      }}
     >
-      <Card shadow="xl" radius="xl" p="xl" withBorder>
+      <Card
+        radius="lg"
+        p="xl"
+        style={{
+          backgroundColor: "#111",  // 🔥 OSCURO
+          border: "2px solid #f5c400", // 🔥 DORADO
+          color: "#fff", // 🔥 LETRAS BLANCAS
+          borderRadius: "20px",
+        }}
+      >
         <Stack align="center" spacing="xs" mb="lg">
-          <Title order={2} color="blue" style={{ fontWeight: 700 }}>
-            {plan?.name || "Compra del plan"}
+          <Title
+            order={2}
+            style={{
+              color: "#f5c400", // 🔥 TÍTULO DORADO
+              fontWeight: 900,
+              textAlign: "center"
+            }}
+          >
+            {plan?.name || "Comprar plan"}
           </Title>
 
           {plan?.price && (
-            <Text size="xl" fw={700} color="teal">
+            <Text size="xl" fw={800} style={{ color: "#fff" }}>
               ${plan.price}
             </Text>
           )}
-
-          <Text color="dimmed" size="sm">
-            Elegí tu método de pago preferido
-          </Text>
         </Stack>
 
         <form onSubmit={handleSubmit}>
@@ -116,6 +144,15 @@ export function PurchaseModal({ opened, onClose, plan }) {
               ]}
               radius="md"
               required
+              styles={{
+                input: {
+                  borderRadius: "10px",
+                  border: "1px solid #f5c400", // 🔥 DORADO
+                  background: "#222",          // 🔥 OSCURO
+                  color: "#fff",
+                },
+                label: { color: "#fff" }
+              }}
             />
 
             {paymentMethod && (
@@ -123,59 +160,62 @@ export function PurchaseModal({ opened, onClose, plan }) {
                 mt="sm"
                 p="md"
                 style={{
-                  backgroundColor: "#eef6ff",
-                  borderRadius: 12,
-                  border: "1px solid #d0e4ff",
+                  backgroundColor: "#222",
+                  borderRadius: 10,
+                  border: "1px solid #f5c400", // 🔥 DORADO
+                  color: "#fff",
                 }}
               >
                 {paymentMethod === "transferencia" && (
                   <Group>
-                    <ThemeIcon color="teal" size={38} radius="xl" variant="light">
-                      <IconCash size={22} />
+                    <ThemeIcon size={38} radius="xl" style={{ background: "#f5c400" }}>
+                      <IconCash size={22} color="#000" />
                     </ThemeIcon>
                     <div>
-                      <Text fw={600}>Datos para transferencia</Text>
-                      <Text size="sm">
-                        Alias: <b>infinit.sports</b>
-                      </Text>
-                      <Text size="sm">
-                        CBU: <b>123-4567890-1234567890123</b>
-                      </Text>
+                      <Text fw={600}>Datos bancarios</Text>
+                      <Text size="sm">Alias: <b>infinit.sports</b></Text>
+                      <Text size="sm">CBU: <b>123-4567890-1234567890123</b></Text>
                     </div>
                   </Group>
                 )}
 
                 {paymentMethod === "mercadopago" && (
                   <Group>
-                    <ThemeIcon color="blue" size={38} radius="xl" variant="light">
-                      <IconCreditCard size={22} />
+                    <ThemeIcon size={38} radius="xl" style={{ background: "#f5c400" }}>
+                      <IconCreditCard size={22} color="#000" />
                     </ThemeIcon>
-                    <Text size="sm">
-                      Serás redirigido a Mercado Pago para completar la compra.
-                    </Text>
+                    <Text size="sm">Serás redirigido para completar el pago.</Text>
                   </Group>
                 )}
 
                 {paymentMethod === "efectivo" && (
                   <Group>
-                    <ThemeIcon color="orange" size={38} radius="xl" variant="light">
-                      <IconWallet size={22} />
+                    <ThemeIcon size={38} radius="xl" style={{ background: "#f5c400" }}>
+                      <IconWallet size={22} color="#000" />
                     </ThemeIcon>
-                    <Text size="sm">
-                      Pagá directamente en el gimnasio cuando asistas.
-                    </Text>
+                    <Text size="sm">Pagás al asistir al gimnasio.</Text>
                   </Group>
                 )}
               </Box>
             )}
 
-            <Divider my="sm" />
+            <Divider color="#444" />
 
-            <Group position="center" mt="md">
-              <Button type="submit" loading={loading} size="md" radius="md" color="blue" fullWidth>
-                Confirmar compra
-              </Button>
-            </Group>
+            <Button
+              type="submit"
+              loading={loading}
+              size="md"
+              radius="lg"
+              fullWidth
+              style={{
+                backgroundColor: "#f5c400",
+                color: "#000",
+                fontWeight: 700,
+                borderRadius: "12px",
+              }}
+            >
+              Confirmar compra
+            </Button>
           </Stack>
         </form>
       </Card>
