@@ -1,9 +1,20 @@
+:root {
+  --bg: #000;
+  --surface: #0f0f0f;
+  --muted: #222;
+  --text: #ffffff;
+  --accent: #ffcc00; /* destello naranja */
+  --card-bg: #0b0b0b;
+}
+
+/* contenedor principal */
 .header {
   width: 100%;
   height: 80px;
-  background-color: #000; 
-  border-bottom: 1px solid #222; 
-  
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--muted);
+  color: var(--text);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset;
 }
 
 .inner {
@@ -12,58 +23,136 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
 }
+
+/* enlaces: blanco por defecto, naranja en hover */
 .linksGroup {
   display: flex;
   gap: 16px;
   flex: 1;
-}
-
-.userGroup {
-  display: flex;
   align-items: center;
-  margin-left: auto;
-  gap: 16px;
-  padding-right: 16px;
-  
-
-}
-
-
-
-.menuLink {
-  text-decoration: none;
-  color: inherit;
 }
 
 .link {
   display: block;
   line-height: 1;
-  padding: 8px 24px;
-  border-radius: var(--mantine-radius-sm);
+  padding: 8px 18px;
+  border-radius: 8px;
   text-decoration: none;
-  color: #fff; 
+  color: var(--text);
   font-size: 16px;
-  font-weight: 600; 
-  letter-spacing: 1px; 
-  transition: color 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: color 0.18s ease, background-color 0.18s ease,
+    box-shadow 0.18s ease, transform 0.12s ease;
 }
 
+/* efecto sutil en hover con el acento naranja */
 .link:hover {
-  color: #ffcc00; 
-  background-color: transparent; 
+  color: var(--accent);
+  background-color: rgba(255, 204, 0, 0.06);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  transform: translateY(-1px);
 }
 
 .linkLabel {
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
+/* logo */
 .logoInfinitsports {
   height: 70px;
-  border-radius: 50%; 
+  border-radius: 50%;
+  transition: transform 0.2s ease;
 }
-
 .logoInfinitsports:hover {
   transform: scale(1.05);
-  transition: transform 0.3s ease;
+}
+
+/* user / burger area */
+.userGroup {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 12px;
+  padding-right: 8px;
+}
+
+/* Burger: hidden en desktop, visible en mobile */
+.burger {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text);
+}
+
+/* estilo del icono (Mantine usa svg dentro del botón) */
+.burger svg {
+  color: var(--text);
+  stroke: var(--text);
+}
+
+/* Drawer estilos: fondo oscuro, links blancos y separación naranja en hover */
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 8px;
+  background: var(--card-bg);
+  min-height: 100%;
+  color: var(--text);
+}
+
+.drawerSection {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 10px 0;
+}
+
+.drawerMain {
+  font-weight: 700;
+  padding: 8px 10px;
+  color: var(--text);
+}
+
+.drawerSub {
+  padding-left: 14px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  color: #dcdcdc;
+}
+
+/* active / focus accesibilidad */
+.link:focus,
+.drawerMain:focus,
+.drawerSub:focus {
+  outline: 2px solid rgba(255, 204, 0, 0.18);
+  outline-offset: 2px;
+}
+
+/* Responsive: mobile layout */
+@media (max-width: 768px) {
+  .linksGroup {
+    display: none; /* hide desktop nav */
+  }
+
+  .burger {
+    display: block; /* show burger */
+  }
+
+  .logoInfinitsports {
+    height: 56px;
+  }
+
+  .userGroup {
+    padding-right: 6px;
+  }
+}
+
+/* pequeño ajuste para pantallas muy estrechas */
+@media (max-width: 420px) {
+  .link {
+    padding: 8px 12px;
+    font-size: 15px;
+  }
 }

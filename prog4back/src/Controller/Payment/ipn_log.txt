@@ -1140,3 +1140,29 @@ RAW BODY:
 {"resource":"https://api.mercadolibre.com/merchant_orders/35799253379","topic":"merchant_order"}
 ==================================
 
+======= NUEVA NOTIFICACIÓN =======
+2025-11-24 17:15:55
+GET:
+{
+    "data_id": "135095201224",
+    "type": "payment"
+}
+POST:
+[]
+RAW BODY:
+{"action":"payment.created","api_version":"v1","data":{"id":"135095201224"},"date_created":"2025-11-24T19:21:24Z","id":126579649051,"live_mode":true,"type":"payment","user_id":"2957465285"}
+==================================
+
+======= NUEVA NOTIFICACIÓN =======
+2025-11-24 17:15:55
+GET:
+{
+    "id": "35843407600",
+    "topic": "merchant_order"
+}
+POST:
+[]
+RAW BODY:
+{"resource":"https://api.mercadolibre.com/merchant_orders/35843407600","topic":"merchant_order"}
+==================================
+
