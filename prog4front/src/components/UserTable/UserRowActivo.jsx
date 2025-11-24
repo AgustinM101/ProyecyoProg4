@@ -17,7 +17,7 @@ export function UserRowActivo({ pu, onEdit, onDelete, onView }) {
                 <td>{pu.user_name || pu.user?.name}</td>
                 <td>{pu.user_email || pu.user?.email}</td>
                 <td>{pu.plan_name || pu.plan?.name || "Sin plan"}</td>
-                <td>{pu.plan?.price ? `$${pu.plan.price}` : "-"}</td>
+               
                 <td style={{ color: "green", fontWeight: 700 }}>Activo</td>
                 <td>
                     {pu.expiration_date

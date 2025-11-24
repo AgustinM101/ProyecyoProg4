@@ -15,7 +15,7 @@ export function UserRowFinalizado({ pu, onView, onDelete }) {
                 <td>{pu.user?.name ?? pu.user_name}</td>
                 <td>{pu.user?.email ?? pu.user_email}</td>
                 <td>{pu.plan?.name ?? pu.plan_name ?? "Sin plan"}</td>
-                <td>{pu.plan?.price ? `$${pu.plan.price}` : "-"}</td>
+         
                 <td style={{ color: "gray", fontWeight: 700 }}>Finalizado</td>
                 <td>
                     {pu.expiration_date

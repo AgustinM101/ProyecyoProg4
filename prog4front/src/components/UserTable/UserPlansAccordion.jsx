@@ -111,15 +111,30 @@ export function UserPlansAccordion({ action, plansUserId, onFinish, onActivate }
             await Promise.all(promises);
 
             // Notificar al componente padre que este plansUser quedó activo
-            // onActivate se espera que reciba el id (como en UserTable -> UserRowPendiente)
             try {
                 onActivate?.(plansUserId);
             } catch (e) {
                 console.warn("onActivate callback falló:", e);
             }
 
+            // Si el padre pasó onFinish, lo ejecutamos (y esperamos si devuelve promesa).
+            // Si no hay onFinish, forzamos un reload para que la tabla se actualice.
+            try {
+                if (onFinish) {
+                    const res = onFinish();
+                    if (res && typeof res.then === "function") {
+                        await res;
+                    }
+                } else {
+                    // fallback: recarga completa de la página
+                    window.location.reload();
+                }
+            } catch (e) {
+                console.warn("onFinish falló o reload no funcionó:", e);
+            }
+
             alert("✅ Plan actualizado correctamente");
-            onFinish?.();
+            // ya llamamos onFinish o hicimos reload
         } catch (e) {
             console.error(e);
             alert("❌ Error al actualizar el plan");

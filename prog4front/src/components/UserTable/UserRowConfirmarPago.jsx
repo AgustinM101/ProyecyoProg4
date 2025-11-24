@@ -57,7 +57,7 @@ export function UserRowConfirmarPago({ pu, onView, onConfirm, onReject }) {
       <td>{pu.user?.name || pu.user_name}</td>
       <td>{pu.user?.email || pu.user_email}</td>
       <td>{pu.plan?.name || pu.plan_name || "Sin plan"}</td>
-      <td>{pu.plan?.price ? `$${pu.plan.price}` : "-"}</td>
+      
       <td style={{ color: "orange", fontWeight: 700 }}>Expirado</td>
       <td>
         {pu.expiration_date

@@ -17,7 +17,7 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
                 <td>{pu.user_name || pu.user?.name}</td>
                 <td>{pu.user_email || pu.user?.email}</td>
                 <td>{pu.plan_name || pu.plan?.name || "Sin plan"}</td>
-                <td>{pu.plan?.price ? `$${pu.plan.price}` : "-"}</td>
+                
                 <td style={{ color: "orange", fontWeight: 700 }}>Pendiente</td>
                 <td>
                     {pu.expiration_date
@@ -59,8 +59,8 @@ export function UserRowPendiente({ pu, onEdit, onDelete, onView, onActivate }) {
                         <UserPlansAccordion
                             action="create"
                             plansUserId={pu.id}
-                            onFinish={() => setShowAccordion(false)}
                             onActivate={() => onActivate(pu.id)}
+                            onFinish={() => setShowAccordion(false)}
                         />
                     </td>
                 </tr>

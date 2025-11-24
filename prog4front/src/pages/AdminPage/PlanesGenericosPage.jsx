@@ -126,7 +126,7 @@ export function PlanesGenericosPage() {
                 onChange={(e) => setSearch(e.currentTarget.value)}
               />
               <Button color="#FF6600" onClick={handleCreate}>
-                ➕ Nuevo Plan
+                 Nuevo Plan
               </Button>
             </Group>
           </Group>

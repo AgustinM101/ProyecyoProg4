@@ -41,7 +41,7 @@ export function UserTable({
           <th>Nombre</th>
           <th>Email</th>
           <th>Plan</th>
-          <th>Precio</th>
+          
           <th>Estado</th>
           <th>Expira</th>
           <th>Acciones</th>
