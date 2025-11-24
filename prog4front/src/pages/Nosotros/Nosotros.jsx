@@ -388,9 +388,11 @@ export function Nosotros() {
             </Card>
           </SimpleGrid>
         </Container>
+         </section>
+         <main></main>
 
         <Footer />
-      </section>
+    
     </>
   );
 }

@@ -135,67 +135,70 @@ export function MyPlansPage() {
 
 
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <HeaderMenu />
-      <Container size="md" py="xl">
-        <Title order={1} ta="center" mb="xl">
-          Mi formulario y planes
-        </Title>
 
-        {plansUsers.length === 0 ? (
-          <Text ta="center">No tenés planes activos actualmente.</Text>
-        ) : (
-          <Stack spacing="md">
-            {plansUsers.map((plan) => (
-              <Card
-                key={plan.id}
-                shadow="md"
-                p="lg"
-                radius="md"
-                withBorder
-                style={{
-                  backgroundColor: "#141413ff",
-                  color: "white",
-                  border: "1px solid #eeff05ff",
-                }}
-              >
-                <Group justify="space-between">
-                  <div>
-                    <Title order={4}>{plan.plan_name}</Title>
-                    <Text size="sm" c="dimmed">
-                      Expira:{" "}
-                      {plan.expiration_date
-                        ? new Date(plan.expiration_date).toLocaleDateString()
-                        : "Sin fecha"}
-                    </Text>
-                  </div>
-                  <Badge
-                    color={
-                      plan.status === "active"
-                        ? "green"
-                        : plan.status === "chargePending"
-                          ? "yellow"
-                          : "red"
-                    }
-                    variant="filled"
-                  >
-                    {plan.status}
-                  </Badge>
-                </Group>
+      {/* contenido principal ocupa todo el espacio disponible */}
+      <main style={{ flex: 1 }}>
+        <Container size="md" py="xl">
+          <Title order={1} ta="center" mb="xl">
+            Mi formulario y planes
+          </Title>
 
-                <Group mt="md" justify="end">
-                  <Button
-                    size="sm"
-                    color="teal"
-                    leftSection={<IconEye size={16} />}
-                    onClick={() => handleView(plan)}
-                  >
-                    Ver detalles
-                  </Button>
-                </Group>
+          {plansUsers.length === 0 ? (
+            <Text ta="center">No tenés planes activos actualmente.</Text>
+          ) : (
+            <Stack spacing="md">
+              {plansUsers.map((plan) => (
+                <Card
+                  key={plan.id}
+                  shadow="md"
+                  p="lg"
+                  radius="md"
+                  withBorder
+                  style={{
+                    backgroundColor: "#141413ff",
+                    color: "white",
+                    border: "1px solid #eeff05ff",
+                  }}
+                >
+                  <Group justify="space-between">
+                    <div>
+                      <Title order={4}>{plan.plan_name}</Title>
+                      <Text size="sm" c="dimmed">
+                        Expira:{" "}
+                        {plan.expiration_date
+                          ? new Date(plan.expiration_date).toLocaleDateString()
+                          : "Sin fecha"}
+                      </Text>
+                    </div>
+                    <Badge
+                      color={
+                        plan.status === "active"
+                          ? "green"
+                          : plan.status === "chargePending"
+                            ? "yellow"
+                            : "red"
+                      }
+                      variant="filled"
+                    >
+                      {plan.status}
+                    </Badge>
+                  </Group>
 
-                {selectedPlan === plan.id && (
-                  <Stack mt="md" spacing="md">
+                  <Group mt="md" justify="end">
+                    <Button
+                      size="sm"
+                      color="teal"
+                      leftSection={<IconEye size={16} />}
+                      onClick={() => handleView(plan)}
+                    >
+                      Ver detalles
+                    </Button>
+                  </Group>
+
+                  {selectedPlan === plan.id && (
+                    <Stack mt="md" spacing="md">
 
 
                 
@@ -538,7 +541,11 @@ export function MyPlansPage() {
           </Stack>
         )}
       </Container>
+      </main>
+
+      {/* Footer siempre al final de la pantalla */}
       <Footer />
+
       {/* === CARTELITO FLOTANTE WHATSAPP === */}
 <div
   style={{
@@ -605,6 +612,6 @@ export function MyPlansPage() {
   }
 `}</style>
 
-    </>
+    </div>
   );
 }
