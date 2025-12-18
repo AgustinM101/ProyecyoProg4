@@ -6,6 +6,8 @@
 /vendor/
 composer.phar
 .vscode
+.env
+
 
 src/Controller/Payment/*.log
 src/Service/Payment/*.log
