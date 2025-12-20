@@ -1,13 +1,15 @@
 FROM php:8.2-apache
 
-# Instalar extensiones necesarias para MySQL
-RUN docker-php-ext-install pdo pdo_mysql
+# Timezone
+ENV TZ=UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Habilitar rewrite (rutas tipo /plans)
+# PHP extensions
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+# Apache
 RUN a2enmod rewrite
 
-# Copiar el proyecto
+# App
 COPY . /var/www/html/
-
-# Permisos
 RUN chown -R www-data:www-data /var/www/html
